@@ -156,12 +156,13 @@ v = np.array(y)
 <span style="color:#228b22"># VIEW 1</span>
 ax = fig.add_subplot(<span style="color:#b452cd">121</span>, projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
 ax.scatter(u1, u2, v, s= <span style="color:#b452cd">100</span>, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>)
-ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
+ax.elev, ax.azim = <span style="color:#b452cd">15</span>, -<span style="color:#b452cd">34</span>
+
 
 <span style="color:#228b22"># VIEW 2</span>
 ax = fig.add_subplot(<span style="color:#b452cd">122</span>, projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
 ax.scatter(u1, u2, v, s= <span style="color:#b452cd">100</span>, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>)
-ax.elev, ax.azim = <span style="color:#b452cd">15</span>, -<span style="color:#b452cd">34</span>
+ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_18_0.png#c" alt="png"></p>
@@ -199,7 +200,7 @@ X = np.hstack((np.ones(x1.shape), X))
  [-1.67367126]
  [-1.44884698]]
 </code></pre>
-<h3 id="checking--model-state">Checking  model state</h3>
+<h3 id="checking--model-initial-state">Checking  model initial state</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_init = model(X, Beta)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
 fig = plt.figure(figsize=(<span style="color:#b452cd">15</span>, <span style="color:#b452cd">5</span>))
@@ -221,7 +222,6 @@ plt.title(<span style="color:#cd5555">&#39;y v/s x2&#39;</span>, fontsize = <spa
 plt.xlim([-<span style="color:#b452cd">4</span>, <span style="color:#b452cd">3</span>]), plt.ylim([-<span style="color:#b452cd">250</span>, <span style="color:#b452cd">350</span>])
 plt.xticks(np.arange(-<span style="color:#b452cd">4</span>, <span style="color:#b452cd">3</span>, <span style="color:#b452cd">1</span>)), plt.yticks(np.arange(-<span style="color:#b452cd">250</span>, <span style="color:#b452cd">350</span>, <span style="color:#b452cd">100</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
-plt.show()
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_33_0.png#c" alt="png"></p>
