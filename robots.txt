@@ -1,3 +1,3 @@
 User-agent: *
 
-Sitemap: https://Domsdev.github.io/Data-science-blog/sitemap.xml
+Sitemap: https://domsdev.github.io/Data-science-blog//sitemap.xml

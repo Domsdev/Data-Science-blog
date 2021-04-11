@@ -2529,7 +2529,7 @@ a.box:active {
 
 .title.is-3 code,
 .title.is-4 {
-  font-size: 38px;
+  font-size: 32px;
 }
 
 .title.is-4 code,
@@ -6639,7 +6639,7 @@ div.subtitle.tags {
 
 .copy-code-button {
   color: #b54b38;
-  background-color: #FFF;
+  background-color: #e68686;
   border-color: #272822;
   border: 1px solid;
   border-radius: 3px 3px 0px 0px;
@@ -6655,7 +6655,8 @@ div.subtitle.tags {
 
 .copy-code-button:hover {
   cursor: pointer;
-  background-color: #e68686;
+  background-color: #b452cd;
+  color: #b452cd;
 }
 
 .copy-code-button:focus {

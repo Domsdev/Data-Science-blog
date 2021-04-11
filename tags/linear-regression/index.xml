@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linear Regression on DomsDev Data Science</title>
-    <link>https://Domsdev.github.io/Data-science-blog/tags/linear-regression/</link>
-    <description>Recent content in Linear Regression on DomsDev Data Science</description>
+    <title>Linear Regression on DomsDev Data-Science</title>
+    <link>https://domsdev.github.io/Data-science-blog/tags/linear-regression/</link>
+    <description>Recent content in Linear Regression on DomsDev Data-Science</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/Domsdev&#34;&gt;Doms Dev&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 10 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://Domsdev.github.io/Data-science-blog/tags/linear-regression/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domsdev.github.io/Data-science-blog/tags/linear-regression/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Multiple Linear Regression from scratch</title>
-      <link>https://Domsdev.github.io/Data-science-blog/post/multiple_linear_regression_from_scratch/</link>
+      <link>https://domsdev.github.io/Data-science-blog/post/multiple_linear_regression_from_scratch/</link>
       <pubDate>Thu, 10 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://Domsdev.github.io/Data-science-blog/post/multiple_linear_regression_from_scratch/</guid>
+      <guid>https://domsdev.github.io/Data-science-blog/post/multiple_linear_regression_from_scratch/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.&lt;/p&gt;
 &lt;p&gt;For example, multiple regression analysis may reveal a positive relationship between the demand for sunglasses and different demographics (age, salary) of buyers of that product. Demand increases and decreases with changes in these characteristics.&lt;/p&gt;</description>
@@ -21,10 +21,10 @@
     
     <item>
       <title>A Simple Linear Regression from scratch</title>
-      <link>https://Domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/</link>
+      <link>https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/</link>
       <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://Domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/</guid>
+      <guid>https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/</guid>
       <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;In statistics, linear regression is a linear approach to modelling the relationship between a scalar response and one or more explanatory variables (also known as dependent and independent variables). The case of one explanatory variable is called simple linear regression.&lt;/p&gt;</description>
     </item>
