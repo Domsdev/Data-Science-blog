@@ -144,8 +144,10 @@ y = y.reshape(N_SAMPLES,<span style="color:#b452cd">1</span>)
 </code></pre></div><pre><code>(200, 1) (200, 1)
 </code></pre>
 <h2 id="2polynomial-model-definition">2.Polynomial model definition</h2>
-<p>$$ y = X.\beta + \epsilon$$ The regression function is linear to the unknown parameters that are estimated from the data.</p>
-<p>$$ y_i=\beta_{0} +\beta_{1}.x_i +\beta_{2}.x_{i}^2 + \epsilon_i $$ Although polynomial regression fits a nonlinear model to the data.</p>
+<p>The regression function is linear to the unknown parameters that are estimated from the data.</p>
+<p>$$ y = X.\beta + \epsilon$$</p>
+<p>Although polynomial regression fits a nonlinear model to the data.</p>
+<p>$$ y_i=\beta_{0} +\beta_{1}.x_i +\beta_{2}.x_{i}^2 + \epsilon_i $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Adding x^2 and identity column vector to features: X = [1 x x^2]</span>
 X = np.hstack((np.ones(x.shape), x))
 X = np.hstack((X, x**<span style="color:#b452cd">2</span>))
@@ -183,7 +185,7 @@ plt.yticks(np.arange(-<span style="color:#b452cd">50</span>, <span style="color:
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Polynomial_Regression_from_scratch/2020-09-11/output_29_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Polynomial_Regression_from_scratch/2020-09-11/output_31_0.png#c" alt="png"></p>
 <h2 id="3cost-function--mean-squared-error-mse">3.Cost function : Mean Squared Error (MSE)</h2>
 <p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">costFunction</span>(X, y, Beta):
@@ -233,7 +235,7 @@ plt.yticks(np.arange(-<span style="color:#b452cd">50</span>, <span style="color:
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Polynomial_Regression_from_scratch/2020-09-11/output_44_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Polynomial_Regression_from_scratch/2020-09-11/output_46_0.png#c" alt="png"></p>
 <h2 id="8model-quality">8.Model quality</h2>
 <h3 id="learning-curve">Learning curve</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
@@ -243,7 +245,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Cost value&#39;</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Polynomial_Regression_from_scratch/2020-09-11/output_47_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Polynomial_Regression_from_scratch/2020-09-11/output_49_0.png#c" alt="png"></p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">determinationCoef</span>(y, y_pred):
