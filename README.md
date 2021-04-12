@@ -1,12 +1,9 @@
 
-Hosting my Data Science blog
----
+This is my Data Science blog repository.
 
-#### https://domsdev.github.io/Data-science-blog/
+#### link to my blog page: https://domsdev.github.io/Data-science-blog/
 
-#### This blog is generated with Hugo https://gohugo.io/ 
-
-#### Using customized kiss theme https://github.com/ribice/kiss
+#### This blog is generated with <a href="https://gohugo.io/">Hugo</a> Using customized <a href="https://github.com/ribice/kiss">Kiss</a> theme
 
 ---
 
