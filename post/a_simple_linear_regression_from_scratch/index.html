@@ -144,9 +144,9 @@ y = y.reshape(<span style="color:#b452cd">100</span>,<span style="color:#b452cd"
 <h2 id="2linear-model-definition">2.Linear model definition</h2>
 <p>$$ y = X.\beta + \epsilon$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_i + \epsilon_i $$</p>
-<h3 id="adding-identity-column-vector-to-features-x--1-x">Adding identity column vector to features: X = [1 x]</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((np.ones(x.shape), x))
-X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>] <span style="color:#228b22"># display the 5 first rows of X</span>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Adding identity column vector to features: X = [1 x]</span>
+X = np.hstack((np.ones(x.shape), x))
+X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>]
 </code></pre></div><pre><code>array([[ 1.        ,  0.57810624],
        [ 1.        ,  0.50078512],
        [ 1.        ,  0.56938878],
@@ -178,7 +178,7 @@ plt.yticks(np.arange(-<span style="color:#b452cd">70</span>, <span style="color:
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_29_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_28_0.png#c" alt="png"></p>
 <h2 id="3cost-function-definition-using-mean-squared-error-mse">3.Cost function definition using Mean Squared Error (MSE)</h2>
 <p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">costFunction</span>(X, y, Beta):
@@ -228,7 +228,7 @@ plt.yticks(np.arange(-<span style="color:#b452cd">70</span>, <span style="color:
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_45_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_44_0.png#c" alt="png"></p>
 <h2 id="8model-quality">8.Model quality</h2>
 <h3 id="learning-curve">Learning curve</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
@@ -237,7 +237,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Cost value&#39;</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_48_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_47_0.png#c" alt="png"></p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>Indicates the quality of the prediction.</p>
 <p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>

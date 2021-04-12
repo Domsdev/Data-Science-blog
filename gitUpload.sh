@@ -2,5 +2,6 @@
 git status
 git add *
 git status
-git commit -m "blog update 2021-04-11"
+d = $(date +"%c")
+git commit -m "blog update $d"
 git push origin main

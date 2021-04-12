@@ -178,10 +178,9 @@ y = y.reshape(N_SAMPLES,<span style="color:#b452cd">1</span>)
 </code></pre>
 <h2 id="2multi-linear-model-definition">2.Multi-Linear model definition</h2>
 <p>$$ y = X.\beta + \epsilon$$</p>
-<p>As we got two features x1 and x2:</p>
-<p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
-<h3 id="adding-identity-column-vector-to-features-x--1-x1-x2">Adding identity column vector to features: X = [1 x1 x2]</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1, x2))
+<p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$  As we got two features x1 and x2</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Adding identity column vector to features: X = [1 x1 x2]</span>
+X = np.hstack((x1, x2))
 X = np.hstack((np.ones(x1.shape), X))
 <span style="color:#8b008b;font-weight:bold">print</span>(X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>])
 </code></pre></div><pre><code>[[ 1.         -0.67001488 -0.10074062]
@@ -224,7 +223,7 @@ plt.xticks(np.arange(-<span style="color:#b452cd">4</span>, <span style="color:#
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_33_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_31_0.png#c" alt="png"></p>
 <h2 id="3cost-function--mean-squared-error-mse">3.Cost function : Mean Squared Error (MSE)</h2>
 <p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">costFunction</span>(X, y, Beta):
@@ -281,7 +280,7 @@ plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 plt.show()
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_48_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_46_0.png#c" alt="png"></p>
 <h3 id="regression-plane-visualization">Regression plane visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
 fig = plt.figure(figsize=(<span style="color:#b452cd">16</span>, <span style="color:#b452cd">16</span>))
@@ -312,7 +311,7 @@ v = Final_Beta[<span style="color:#b452cd">0</span>] + Final_Beta[<span style="c
 ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.2</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_50_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_48_0.png#c" alt="png"></p>
 <h2 id="8model-quality">8.Model quality</h2>
 <h3 id="learning-curve">Learning curve</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
@@ -322,7 +321,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Cost value&#39;</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_53_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_Linear_Regression_from_scratch/2020-09-10/output_51_0.png#c" alt="png"></p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>Indicates the quality of the prediction.</p>
 <p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
