@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Building a Neural Network from scratch | DomsDev Data-Science</title>
+
+
+
+<link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="alternate" type="application/rss+xml" title="DomsDev Data-Science">
+
+<link rel="stylesheet" href="https://domsdev.github.io/Data-science-blog/css/style.css"><link rel='stylesheet' href='https://domsdev.github.io/Data-science-blog/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="https://domsdev.github.io/Data-science-blog/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domsdev.github.io/Data-science-blog/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domsdev.github.io/Data-science-blog/favicon-16x16.png">
+<link rel="manifest" href="https://domsdev.github.io/Data-science-blog/site.webmanifest">
+<link rel="mask-icon" href="https://domsdev.github.io/Data-science-blog/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://domsdev.github.io/Data-science-blog/post/building_a_neural_network_from_scratch/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://domsdev.github.io/Data-science-blog/">
+          <h1 id="nav-heading" class="title is-4">DomsDev Data-Science</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/dominique-pothin-dev/'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="github" href='https://github.com/Domsdev'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:domsdev.sender@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://domsdev.github.io/Data-science-blog/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/neural-network/">#Neural Network</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/from-scratch/">#From Scratch</a>
+  
+
+
+      
+    </div>
+    <h2 class="subtitle is-6">October 13, 2020</h2>
+    <h1 class="title">Building a Neural Network from scratch</h1>
+    
+    <div class="content">
+      <!-- raw HTML omitted -->
+<p>Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems vaguely inspired by the biological neural networks that constitute animal brains.</p>
+<p>An ANN is based on a collection of connected units or nodes called artificial neurons, which loosely model the neurons in a biological brain.
+Each connection, like the synapses in a biological brain, can transmit a signal to other neurons.
+An artificial neuron that receives a signal then processes it and can signal neurons connected to it.
+The &ldquo;signal&rdquo; at a connection is a real number, and the output of each neuron is computed by some non-linear function of the sum of its inputs.
+The connections are called edges. Neurons and edges typically have a weight that adjusts as learning proceeds and this weight increases or decreases the strength of the signal at a connection.
+Neurons may have a threshold such that a signal is sent only if the aggregate signal crosses that threshold.
+Typically, neurons are aggregated into layers. Different layers may perform different transformations on their inputs. Signals travel from the first layer (the input layer), to the last layer (the output layer), possibly after traversing the layers multiple times.</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/neural_network_from_scratch.png#c" alt="png"></p>
+<hr>
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+<li><a href="#background">Background</a></li>
+<li><a href="#data">Generating Data</a></li>
+<li><a href="#data_prep_nn">Data Preprocessing</a></li>
+<li><a href="#nn_scratch">Neural Network from Scratch</a></li>
+<li><a href="#evaluation">Model evaluation</a></li>
+</ol>
+<h2 id="1background-a-idbackgrounda">1.Background <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h3 id="summary-of-formulas-and-calculation-steps">Summary of formulas and calculation steps:</h3>
+<h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
+<p>$$$$ 1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$$$</p>
+<p>$$$$ 1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$$$</p>
+<p>$$$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$$$</p>
+<p>$$$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$$$</p>
+<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with $$N$$ samples, and $$g^{[i]}$$ are the activation functions: $$g(x) = \frac{1}{1 + exp(-x)}$$</p>
+<h4 id="step-2-loss-function">Step 2: Loss Function</h4>
+<p>$$$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$$$</p>
+<h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
+<p>$$$$dZ^{[2]} = A^{[2]} - Y$$$$</p>
+<p>$$$$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$$$</p>
+<p>$$$$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $$$$</p>
+<p>$$$$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$$$$</p>
+<p>$$$$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$$$$</p>
+<p>$$$$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $$$$</p>
+<p>Where $$$$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$$$</p>
+<p>$$$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$$$</p>
+<p>$$$$&hellip;$$$$</p>
+<p>And $${g'(z)} = \frac{d}{dz} g(z)$$ where in the case of sigmoid fuction we have: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
+<h3 id="importing-libraries">Importing libraries</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.model_selection</span> <span style="color:#8b008b;font-weight:bold">import</span> train_test_split
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.preprocessing</span> <span style="color:#8b008b;font-weight:bold">import</span> MinMaxScaler
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.neural_network</span> <span style="color:#8b008b;font-weight:bold">import</span> MLPClassifier
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> classification_report
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> confusion_matrix
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">seaborn</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">sns</span>
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">tqdm</span> <span style="color:#8b008b;font-weight:bold">import</span> tqdm
+%matplotlib inline
+np.random.seed(<span style="color:#b452cd">50</span>)
+</code></pre></div><h2 id="2generating-dataa-iddataa">2.Generating Data<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h3 id="lets-generate-our-dataset-using-xor-logical-function">Let&rsquo;s generate our dataset using XOR logical function</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_samples = <span style="color:#b452cd">1000</span>
+mu, sigma = <span style="color:#b452cd">2</span>, <span style="color:#b452cd">3</span>
+X = sigma * np.random.randn(n_samples, <span style="color:#b452cd">2</span>) + mu
+y = np.logical_xor(X[:, <span style="color:#b452cd">0</span>] &gt; <span style="color:#b452cd">0</span>, X[:, <span style="color:#b452cd">1</span>] &gt; <span style="color:#b452cd">0</span>).astype(<span style="color:#658b00">int</span>)
+
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#39;X shape:&#39;</span>, X.shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#39;y shape:&#39;</span>, y.shape)
+</code></pre></div><pre><code>X shape: (1000, 2)
+y shape: (1000,)
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(<span style="color:#b452cd">6</span>):
+    <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Class:{y[i]} | Coordinates:{X[i]}&#34;</span>)
+</code></pre></div><pre><code>Class:1 | Coordinates:[-2.68105633  1.90706719]
+Class:1 | Coordinates:[ 0.13721473 -2.39374146]
+Class:0 | Coordinates:[6.23583837 0.56980357]
+Class:1 | Coordinates:[-0.34140764  5.21080321]
+Class:0 | Coordinates:[-1.84687779 -1.9824367 ]
+Class:0 | Coordinates:[2.37901292 4.58658115]
+</code></pre>
+<h3 id="data-visualization">Data visualization</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># setting plots background color</span>
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
+
+plt.scatter(X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 0&#39;</span>)
+plt.scatter(X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 1&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#34;$$x_1$$&#34;</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.ylabel(<span style="color:#cd5555">&#34;$$x_2$$&#34;</span>, rotation=<span style="color:#b452cd">0</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.title(<span style="color:#cd5555">&#39;Scatter plot of data&#39;</span>)
+plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
+
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_21_0.png#c" alt="png"></p>
+<h2 id="3data-preprocessing-a-iddata_prepa">3.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h3 id="splitting-dataset">Splitting Dataset</h3>
+<p>Dataset is splitted into training set with 80% of the samples and test set with the remaining 20%, using &ldquo;stratified sampling&rdquo; to ensure that relative class frequencies is approximately preserved in each train and test fold.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size= <span style="color:#b452cd">0.2</span>,
+    stratify= y,
+    random_state= <span style="color:#b452cd">50</span>)
+
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#39;X_train shape:&#39;</span>, X_train.shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#39;X_test shape:&#39;</span>, X_test.shape)
+</code></pre></div><pre><code>X_train shape: (800, 2)
+X_test shape: (200, 2)
+</code></pre>
+<h3 id="data-scaling">Data Scaling</h3>
+<p>Transform features by scaling each feature to the given range [0,1].<!-- raw HTML omitted -->
+The transformation is given by:<!-- raw HTML omitted -->
+X_std = (X - X.min) / (X.max - X.min)<!-- raw HTML omitted -->
+X_scaled = X_std * (max - min) + min</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">scaler = MinMaxScaler(feature_range=(<span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>))
+
+X_train = scaler.fit_transform(X_train) <span style="color:#228b22"># fit and transform training set</span>
+X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform testing set with &#34;Scaler&#34; fited</span>
+</code></pre></div><h2 id="4-neural-network-from-scratch-a-idnn_scratcha">4. Neural Network from Scratch <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h3 id="lets-build-step-by-step-a-neural-network-python-class">Let&rsquo;s build step by step a Neural Network python class</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">class</span> <span style="color:#008b45;font-weight:bold">Neural_Network</span>:
+    
+    <span style="color:#228b22"># Step 1: Implementing initialization function with default parameters</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> __init__(self, n_x = <span style="color:#b452cd">2</span>, n_h = <span style="color:#b452cd">3</span>, n_y = <span style="color:#b452cd">1</span>, lr= <span style="color:#b452cd">0.01</span>, num_iter= <span style="color:#b452cd">100</span>):
+        self.W1 = np.random.randn(n_h, n_x)
+        self.b1 = np.random.randn(n_h, <span style="color:#b452cd">1</span>)
+        self.W2 = np.random.randn(n_y, n_h)
+        self.b2 = np.random.randn(n_y, <span style="color:#b452cd">1</span>)
+        self.lr = lr
+        self.num_iter = num_iter
+    
+    <span style="color:#228b22"># Step 2: Implementing sigmoid function and its differential</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">sigmoid</span>(self, t):
+        <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(<span style="color:#b452cd">1</span> + np.exp(-t))
+    
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">sigmoid_derivative</span>(self, t):
+        <span style="color:#8b008b;font-weight:bold">return</span> self.sigmoid(t)*(<span style="color:#b452cd">1</span> - self.sigmoid(t))
+    
+    <span style="color:#228b22"># Step 3: Implementing forward propagation</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">feedforward</span>(self, X):
+        self.Z1 = self.W1.dot(X.T) + self.b1
+        self.A1 = self.sigmoid(self.Z1)
+        self.Z2 = self.W2.dot(self.A1) + self.b2
+        self.A2 = self.sigmoid(self.Z2)
+        <span style="color:#8b008b;font-weight:bold">return</span> self.A2
+    
+    <span style="color:#228b22"># Step 4: Implementing backward backpropagation</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">backpropagation</span>(self, X, y):
+        N = X.shape[<span style="color:#b452cd">0</span>] <span style="color:#228b22"># Number of samples</span>
+        dZ2 = self.A2 - y.T
+        self.dW2 = <span style="color:#b452cd">1</span>/N * dZ2.dot(self.A1.T)
+        self.db2 = <span style="color:#b452cd">1</span>/N * dZ2.sum(axis=<span style="color:#b452cd">1</span>, keepdims= True)
+        dZ1 = self.W2.T.dot(dZ2) * self.sigmoid_derivative(self.Z1)
+        self.dW1 = <span style="color:#b452cd">1</span>/N * dZ1.dot(X)
+        self.db1 = <span style="color:#b452cd">1</span>/N * dZ1.sum(axis=<span style="color:#b452cd">1</span>, keepdims= True)
+        
+    <span style="color:#228b22">#Step 5: Implementing weights and bias update</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">update_parameters</span>(self):
+        self.W1 -= self.lr * self.dW1
+        self.b1 -= self.lr * self.db1
+        self.W2 -= self.lr * self.dW2
+        self.b2 -= self.lr * self.db2
+    
+    <span style="color:#228b22"># Step 6: Implementing cross entropy loss</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">loss</span>(self,y, y_hat):
+        <span style="color:#8b008b;font-weight:bold">return</span> (-y * np.log(y_hat) - (<span style="color:#b452cd">1</span>-y) * np.log(<span style="color:#b452cd">1</span> - y_hat)).mean()
+    
+    <span style="color:#228b22"># Step 7: Implementing the fit function (to train the model on data)</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">fit</span>(self, X, y):
+        loss_history = []
+        accuracy = []
+        
+        <span style="color:#8b008b;font-weight:bold">for</span> <span style="color:#658b00">iter</span> <span style="color:#8b008b">in</span> tqdm(<span style="color:#658b00">range</span>(self.num_iter)):
+            y_hat = self.feedforward(X)
+            loss_history.append(self.loss(y, y_hat))
+            self.backpropagation(X, y)
+            self.update_parameters()
+            
+            y_hat = y_hat.round().reshape(-<span style="color:#b452cd">1</span>)
+            accuracy.append((y_hat == y).mean())
+            
+        <span style="color:#8b008b;font-weight:bold">return</span> loss_history, accuracy
+    
+    <span style="color:#228b22"># Step 8: Implementing probability estimation calculation</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">predict_proba</span>(self, X):
+        <span style="color:#8b008b;font-weight:bold">return</span> self.feedforward(X) <span style="color:#228b22"># return a probability</span>
+    
+    <span style="color:#228b22"># Step 9: Implementing Class label prediction</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">predict</span>(self, X):
+        <span style="color:#8b008b;font-weight:bold">return</span> self.predict_proba(X).round().reshape(-<span style="color:#b452cd">1</span>)
+        <span style="color:#228b22"># if predict_proba &gt; 0.5  -&gt; will return 1</span>
+        <span style="color:#228b22"># if predict_proba &lt;= 0.5 -&gt; will return 0</span>
+</code></pre></div><h3 id="now-we-can-define-some-parameters-and-hyper-parameters-">Now we can define some parameters and hyper parameters &hellip;</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_INPUT_LAYER = X.shape[<span style="color:#b452cd">1</span>]  <span style="color:#228b22"># nb of neurons of input layer (number of features)</span>
+N_HIDDEN_LAYER1 = <span style="color:#b452cd">3</span>         <span style="color:#228b22"># nb of neurons of intermediate layer</span>
+N_OUTPUT_LAYER = <span style="color:#b452cd">1</span>          <span style="color:#228b22"># nb of neurons of output layer (gives predicted class 0 or 1)</span>
+
+LEARNING_RATE = <span style="color:#b452cd">0.1</span>
+ITERATIONS = <span style="color:#b452cd">20000</span>
+</code></pre></div><h3 id="-create-an-instance-of-our-neural-network-class">&hellip; create an instance of our Neural Network class</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">NN_model = Neural_Network(
+    n_x = N_INPUT_LAYER,
+    n_h = N_HIDDEN_LAYER1,
+    n_y = N_OUTPUT_LAYER,
+    lr = LEARNING_RATE,
+    num_iter = ITERATIONS)
+</code></pre></div><h3 id="fit-the-model-over-training-set-">Fit the model over training set &hellip;</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">history, accuracy = NN_model.fit(X_train, y_train)
+</code></pre></div><pre><code>100%|██████████| 20000/20000 [00:08&lt;00:00, 2488.89it/s]
+</code></pre>
+<h2 id="5model-evaluationa-idevaluationa">5.Model evaluation<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h3 id="first-lets-have-a-look-on-accuracy-and-loss-evolution">First let&rsquo;s have a look on accuracy and loss evolution</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">15</span>,<span style="color:#b452cd">5</span>))
+
+plt.subplot(<span style="color:#b452cd">121</span>)
+plt.plot(accuracy, c= <span style="color:#cd5555">&#39;yellowgreen&#39;</span>, linewidth=<span style="color:#b452cd">3</span>)
+plt.xlim([<span style="color:#b452cd">3300</span>, <span style="color:#b452cd">20000</span>]), plt.ylim([<span style="color:#b452cd">0.58</span>, <span style="color:#b452cd">0.76</span>])
+plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(<span style="color:#cd5555">&#39;Accuracy&#39;</span>)
+plt.title(<span style="color:#cd5555">&#39;Accuracy&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+
+plt.subplot(<span style="color:#b452cd">122</span>)
+plt.plot(history, c= <span style="color:#cd5555">&#39;yellowgreen&#39;</span>, linewidth=<span style="color:#b452cd">3</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(<span style="color:#cd5555">&#39;Loss&#39;</span>)
+plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_40_0.png#c" alt="png"></p>
+<h3 id="make-predictions-over-test-set">Make predictions over test set</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_test_pred = NN_model.predict(X_test)
+</code></pre></div><h3 id="measure-the-accuracy-over-test-set">Measure the accuracy over test set</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_accuracy = (y_test_pred == y_test).mean()
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Accuracy over test set = {100 * test_accuracy}%&#39;</span>)
+</code></pre></div><pre><code>Accuracy over test set = 76.5%
+</code></pre>
+<h3 id="classification-report">Classification report</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">report = classification_report(y_test, y_test_pred)
+<span style="color:#8b008b;font-weight:bold">print</span>(report)
+</code></pre></div><pre><code>              precision    recall  f1-score   support
+
+           0       0.79      0.85      0.82       126
+           1       0.71      0.62      0.66        74
+
+    accuracy                           0.77       200
+   macro avg       0.75      0.74      0.74       200
+weighted avg       0.76      0.77      0.76       200
+</code></pre>
+<h3 id="confusion-matrix">Confusion Matrix</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cf_matrix = confusion_matrix(y_test, y_test_pred)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
+
+names = [<span style="color:#cd5555">&#39;True Neg&#39;</span>,<span style="color:#cd5555">&#39;False Pos&#39;</span>,<span style="color:#cd5555">&#39;False Neg&#39;</span>,<span style="color:#cd5555">&#39;True Pos&#39;</span>]
+counts = [f<span style="color:#cd5555">&#39;{value:0.0f}&#39;</span> <span style="color:#8b008b;font-weight:bold">for</span> value <span style="color:#8b008b">in</span> cf_matrix.flatten()]
+percentages = [<span style="color:#cd5555">&#39;{0:.1%}&#39;</span>.format(value) <span style="color:#8b008b;font-weight:bold">for</span> value <span style="color:#8b008b">in</span>
+                     cf_matrix.flatten()/np.sum(cf_matrix)]
+labels = [f<span style="color:#cd5555">&#39;{l1}</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">{l2}</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">{l3}&#39;</span> <span style="color:#8b008b;font-weight:bold">for</span> l1, l2, l3 <span style="color:#8b008b">in</span>
+                           <span style="color:#658b00">zip</span>(names, counts, percentages)]
+labels = np.asarray(labels).reshape(<span style="color:#b452cd">2</span>,<span style="color:#b452cd">2</span>)
+
+sns.heatmap(cf_matrix, annot=labels, annot_kws={<span style="color:#cd5555">&#34;fontsize&#34;</span>:<span style="color:#b452cd">14</span>}, fmt=<span style="color:#cd5555">&#39;&#39;</span>, cmap=<span style="color:#cd5555">&#39;Blues&#39;</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
+
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_49_0.png#c" alt="png"></p>
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://domsdev.github.io/Data-science-blog/post/polynomial_regression_from_scratch/">Polynomial Regression from scratch</a></li>
+	
+	<li><a href="https://domsdev.github.io/Data-science-blog/post/multiple_linear_regression_from_scratch/">Multiple Linear Regression from scratch</a></li>
+	
+	<li><a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">A Simple Linear Regression from scratch</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="https://domsdev.github.io/Data-science-blog/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/Domsdev">Doms Dev</a></p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
+
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
+
+
+</body>
+</html>
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+

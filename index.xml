@@ -7,7 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/Domsdev&#34;&gt;Doms Dev&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 11 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Neural Network from scratch</title>
+      <link>https://domsdev.github.io/Data-science-blog/post/building_a_neural_network_from_scratch/</link>
+      <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://domsdev.github.io/Data-science-blog/post/building_a_neural_network_from_scratch/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems vaguely inspired by the biological neural networks that constitute animal brains.&lt;/p&gt;
+&lt;p&gt;An ANN is based on a collection of connected units or nodes called artificial neurons, which loosely model the neurons in a biological brain.
+Each connection, like the synapses in a biological brain, can transmit a signal to other neurons.
+An artificial neuron that receives a signal then processes it and can signal neurons connected to it.
+The &amp;ldquo;signal&amp;rdquo; at a connection is a real number, and the output of each neuron is computed by some non-linear function of the sum of its inputs.
+The connections are called edges. Neurons and edges typically have a weight that adjusts as learning proceeds and this weight increases or decreases the strength of the signal at a connection.
+Neurons may have a threshold such that a signal is sent only if the aggregate signal crosses that threshold.
+Typically, neurons are aggregated into layers. Different layers may perform different transformations on their inputs. Signals travel from the first layer (the input layer), to the last layer (the output layer), possibly after traversing the layers multiple times.&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Polynomial Regression from scratch</title>
       <link>https://domsdev.github.io/Data-science-blog/post/polynomial_regression_from_scratch/</link>
