@@ -112,24 +112,24 @@ Typically, neurons are aggregated into layers. Different layers may perform diff
 <h2 id="1background-a-idbackgrounda">1.Background <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="summary-of-formulas-and-calculation-steps">Summary of formulas and calculation steps:</h3>
 <h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
-<p>$ 1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$</p>
-<p>$ 1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$</p>
-<p>$ 2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$</p>
-<p>$ 2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$</p>
-<p>Where $X = [x_1, x_2, &hellip;, x_N]$ is the data matrix with $N$ samples, and $g^{[i]}$ are the activation functions: $g(x) = \frac{1}{1 + exp(-x)}$</p>
+<p>$$ 1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
+<p>$$ 1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
+<p>$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
+<p>$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
+<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with $$N$$ samples, and $$g^{[i]}$$ are the activation functions: $$g(x) = \frac{1}{1 + exp(-x)}$$</p>
 <h4 id="step-2-loss-function">Step 2: Loss Function</h4>
-<p>$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$</p>
+<p>$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$</p>
 <h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
-<p>$dZ^{[2]} = A^{[2]} - Y$</p>
-<p>$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$</p>
-<p>$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $</p>
-<p>$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$</p>
-<p>$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$</p>
-<p>$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $</p>
-<p>Where $ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $</p>
-<p>$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$</p>
-<p>$&hellip;$</p>
-<p>And ${g'(z)} = \frac{d}{dz} g(z)$ where in the case of sigmoid fuction we have: ${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$</p>
+<p>$$dZ^{[2]} = A^{[2]} - Y$$</p>
+<p>$$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
+<p>$$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $$</p>
+<p>$$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$$</p>
+<p>$$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$$</p>
+<p>$$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $$</p>
+<p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
+<p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
+<p>$$&hellip;$$</p>
+<p>And $${g'(z)} = \frac{d}{dz} g(z)$$ where in the case of sigmoid fuction we have: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
@@ -170,8 +170,8 @@ plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>
 
 plt.scatter(X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 0&#39;</span>)
 plt.scatter(X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 1&#39;</span>)
-plt.xlabel(<span style="color:#cd5555">&#34;$x_1$&#34;</span>, fontsize=<span style="color:#b452cd">14</span>)
-plt.ylabel(<span style="color:#cd5555">&#34;$x_2$&#34;</span>, rotation=<span style="color:#b452cd">0</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.xlabel(<span style="color:#cd5555">&#34;$$x_1$$&#34;</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.ylabel(<span style="color:#cd5555">&#34;$$x_2$$&#34;</span>, rotation=<span style="color:#b452cd">0</span>, fontsize=<span style="color:#b452cd">14</span>)
 plt.title(<span style="color:#cd5555">&#39;Scatter plot of data&#39;</span>)
 plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 
