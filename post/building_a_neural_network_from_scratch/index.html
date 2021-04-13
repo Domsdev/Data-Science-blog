@@ -128,7 +128,7 @@ Typically, neurons are aggregated into layers. Different layers may perform diff
 <p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
 <p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
 <p>$$&hellip;$$</p>
-<p>And ${g'(z)} = \frac{d}{dz} g(z)$ &hellip; For sigmoid fuction we get: ${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$</p>
+<p>And $${g'(z)} = \frac{d}{dz} g(z)$$ &hellip; For sigmoid fuction we get: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
