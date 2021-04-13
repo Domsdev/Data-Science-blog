@@ -112,24 +112,24 @@ Typically, neurons are aggregated into layers. Different layers may perform diff
 <h2 id="1background-a-idbackgrounda">1.Background <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="summary-of-formulas-and-calculation-steps">Summary of formulas and calculation steps:</h3>
 <h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
-<p>$$ 1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
-<p>$$ 1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
-<p>$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
-<p>$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
-<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with $$N$$ samples, and $$g^{[i]}$$ are the activation functions: $$g(x) = \frac{1}{1 + exp(-x)}$$</p>
+<p>$ 1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$</p>
+<p>$ 1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$</p>
+<p>$ 2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$</p>
+<p>$ 2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$</p>
+<p>Where $X = [x_1, x_2, &hellip;, x_N]$ is the data matrix with $N$ samples, and $g^{[i]}$ are the activation functions: $g(x) = \frac{1}{1 + exp(-x)}$</p>
 <h4 id="step-2-loss-function">Step 2: Loss Function</h4>
-<p>$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$</p>
+<p>$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$</p>
 <h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
-<p>$$dZ^{[2]} = A^{[2]} - Y$$</p>
-<p>$$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
-<p>$$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $$</p>
-<p>$$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$$</p>
-<p>$$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$$</p>
-<p>$$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $$</p>
-<p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
-<p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
-<p>$$&hellip;$$</p>
-<p>And $${g'(z)} = \frac{d}{dz} g(z)$$ where in the case of sigmoid fuction we have: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
+<p>$dZ^{[2]} = A^{[2]} - Y$</p>
+<p>$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$</p>
+<p>$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $</p>
+<p>$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$</p>
+<p>$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$</p>
+<p>$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $</p>
+<p>Where $ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $</p>
+<p>$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$</p>
+<p>$&hellip;$</p>
+<p>And ${g'(z)} = \frac{d}{dz} g(z)$ where in the case of sigmoid fuction we have: ${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$</p>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
@@ -170,8 +170,8 @@ plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>
 
 plt.scatter(X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 0&#39;</span>)
 plt.scatter(X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 1&#39;</span>)
-plt.xlabel(<span style="color:#cd5555">&#34;$$x_1$$&#34;</span>, fontsize=<span style="color:#b452cd">14</span>)
-plt.ylabel(<span style="color:#cd5555">&#34;$$x_2$$&#34;</span>, rotation=<span style="color:#b452cd">0</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.xlabel(<span style="color:#cd5555">&#34;$x_1$&#34;</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.ylabel(<span style="color:#cd5555">&#34;$x_2$&#34;</span>, rotation=<span style="color:#b452cd">0</span>, fontsize=<span style="color:#b452cd">14</span>)
 plt.title(<span style="color:#cd5555">&#39;Scatter plot of data&#39;</span>)
 plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 
@@ -192,10 +192,10 @@ plt.show()
 X_test shape: (200, 2)
 </code></pre>
 <h3 id="data-scaling">Data Scaling</h3>
-<p>Transform features by scaling each feature to the given range [0,1].<!-- raw HTML omitted -->
-The transformation is given by:<!-- raw HTML omitted -->
-X_std = (X - X.min) / (X.max - X.min)<!-- raw HTML omitted -->
-X_scaled = X_std * (max - min) + min</p>
+<p>Transform features by scaling each feature to the given range [0,1].<!-- raw HTML omitted --></p>
+<p>The transformation is given by:</p>
+<p>X_std = (X - X.min) / (X.max - X.min)</p>
+<p>X_scaled = X_std * (max - min) + min</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">scaler = MinMaxScaler(feature_range=(<span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>))
 
 X_train = scaler.fit_transform(X_train) <span style="color:#228b22"># fit and transform training set</span>
@@ -308,7 +308,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_40_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_43_0.png#c" alt="png"></p>
 <h3 id="make-predictions-over-test-set">Make predictions over test set</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_test_pred = NN_model.predict(X_test)
 </code></pre></div><h3 id="measure-the-accuracy-over-test-set">Measure the accuracy over test set</h3>
@@ -345,7 +345,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_49_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_52_0.png#c" alt="png"></p>
       
       <div class="related">
 
