@@ -109,14 +109,13 @@ Typically, neurons are aggregated into layers. Different layers may perform diff
 <li><a href="#nn_scratch">Neural Network from Scratch</a></li>
 <li><a href="#evaluation">Model evaluation</a></li>
 </ol>
-<h2 id="1background-a-idbackgrounda">1.Background <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
-<h3 id="summary-of-formulas-and-calculation-steps">Summary of formulas and calculation steps:</h3>
+<h2 id="1background---summary-of-formulas-and-calculation-stepsa-idbackgrounda">1.Background - Summary of formulas and calculation steps<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
-<p>$$ 1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
-<p>$$ 1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
-<p>$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
-<p>$$ 2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
-<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with N samples, and $$g^{[i]}$$ are the activation functions like Sigmoid: $$g(x) = \frac{1}{1 + exp(-x)}$$</p>
+<p>$$1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
+<p>$$1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
+<p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
+<p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
+<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with N samples, and the $$g^{[i]}$$ are the activation functions like Sigmoid: $$g(x) = \frac{1}{1 + exp(-x)}$$</p>
 <h4 id="step-2-loss-function">Step 2: Loss Function</h4>
 <p>$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$</p>
 <h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
@@ -135,7 +134,6 @@ Typically, neurons are aggregated into layers. Different layers may perform diff
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
 <span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.model_selection</span> <span style="color:#8b008b;font-weight:bold">import</span> train_test_split
 <span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.preprocessing</span> <span style="color:#8b008b;font-weight:bold">import</span> MinMaxScaler
-<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.neural_network</span> <span style="color:#8b008b;font-weight:bold">import</span> MLPClassifier
 <span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> classification_report
 <span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> confusion_matrix
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">seaborn</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">sns</span>
@@ -176,7 +174,7 @@ plt.title(<span style="color:#cd5555">&#39;Scatter plot of data&#39;</span>)
 plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_21_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_20_0.png#c" alt="png"></p>
 <h2 id="3data-preprocessing-a-iddata_prepa">3.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="splitting-dataset">Splitting Dataset</h3>
 <p>Dataset is splitted into training set with 80% of the samples and test set with the remaining 20%, using &ldquo;stratified sampling&rdquo; to ensure that relative class frequencies is approximately preserved in each train and test fold.</p>
@@ -203,7 +201,7 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">class</span> <span style="color:#008b45;font-weight:bold">Neural_Network</span>:
     
     <span style="color:#228b22"># Step 1: Implementing initialization function with default parameters</span>
-    <span style="color:#8b008b;font-weight:bold">def</span> __init__(self, n_x = <span style="color:#b452cd">2</span>, n_h = <span style="color:#b452cd">3</span>, n_y = <span style="color:#b452cd">1</span>, lr= <span style="color:#b452cd">0.01</span>, num_iter= <span style="color:#b452cd">100</span>):
+    <span style="color:#8b008b;font-weight:bold">def</span> __init__(self, n_x = <span style="color:#b452cd">2</span>, n_h = <span style="color:#b452cd">3</span>, n_y = <span style="color:#b452cd">1</span>, lr= <span style="color:#b452cd">0.1</span>, num_iter= <span style="color:#b452cd">1000</span>):
         self.W1 = np.random.randn(n_h, n_x)
         self.b1 = np.random.randn(n_h, <span style="color:#b452cd">1</span>)
         self.W2 = np.random.randn(n_y, n_h)
@@ -250,7 +248,7 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
     <span style="color:#228b22"># Step 7: Implementing the fit function (to train the model on data)</span>
     <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">fit</span>(self, X, y):
         loss_history = []
-        accuracy = []
+        accuracy_history = []
         
         <span style="color:#8b008b;font-weight:bold">for</span> <span style="color:#658b00">iter</span> <span style="color:#8b008b">in</span> tqdm(<span style="color:#658b00">range</span>(self.num_iter)):
             y_hat = self.feedforward(X)
@@ -259,9 +257,9 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
             self.update_parameters()
             
             y_hat = y_hat.round().reshape(-<span style="color:#b452cd">1</span>)
-            accuracy.append((y_hat == y).mean())
+            accuracy_history.append((y_hat == y).mean())
             
-        <span style="color:#8b008b;font-weight:bold">return</span> loss_history, accuracy
+        <span style="color:#8b008b;font-weight:bold">return</span> loss_history, accuracy_history
     
     <span style="color:#228b22"># Step 8: Implementing probability estimation calculation</span>
     <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">predict_proba</span>(self, X):
@@ -277,8 +275,8 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
 N_HIDDEN_LAYER1 = <span style="color:#b452cd">3</span>         <span style="color:#228b22"># nb of neurons of intermediate layer</span>
 N_OUTPUT_LAYER = <span style="color:#b452cd">1</span>          <span style="color:#228b22"># nb of neurons of output layer (gives predicted class 0 or 1)</span>
 
-LEARNING_RATE = <span style="color:#b452cd">0.1</span>
-ITERATIONS = <span style="color:#b452cd">20000</span>
+LEARNING_RATE = <span style="color:#b452cd">0.2</span>
+ITERATIONS = <span style="color:#b452cd">50000</span>
 </code></pre></div><h3 id="-create-an-instance-of-our-neural-network-class">&hellip; create an instance of our Neural Network class</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">NN_model = Neural_Network(
     n_x = N_INPUT_LAYER,
@@ -287,49 +285,48 @@ ITERATIONS = <span style="color:#b452cd">20000</span>
     lr = LEARNING_RATE,
     num_iter = ITERATIONS)
 </code></pre></div><h3 id="fit-the-model-over-training-set--and-finally-evaluate-our-model-">Fit the model over training set &hellip; and finally evaluate our model !</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">history, accuracy = NN_model.fit(X_train, y_train)
-</code></pre></div><pre><code>100%|██████████| 20000/20000 [00:08&lt;00:00, 2488.89it/s]
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">loss, accuracy = NN_model.fit(X_train, y_train)
+</code></pre></div><pre><code>100%|██████████| 50000/50000 [00:20&lt;00:00, 2459.90it/s]
 </code></pre>
 <h2 id="5model-evaluationa-idevaluationa">5.Model evaluation<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
-<h3 id="first-lets-have-a-look-on-accuracy-and-loss-evolution-">First let&rsquo;s have a look on accuracy and loss evolution &hellip;</h3>
+<h3 id="lets-have-a-look-on-our-accuracy-and-loss-evolution-">Let&rsquo;s have a look on our accuracy and loss evolution &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">15</span>,<span style="color:#b452cd">5</span>))
 
 plt.subplot(<span style="color:#b452cd">121</span>)
 plt.plot(accuracy, c= <span style="color:#cd5555">&#39;yellowgreen&#39;</span>, linewidth=<span style="color:#b452cd">3</span>)
-plt.xlim([<span style="color:#b452cd">3300</span>, <span style="color:#b452cd">20000</span>]), plt.ylim([<span style="color:#b452cd">0.58</span>, <span style="color:#b452cd">0.76</span>])
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(<span style="color:#cd5555">&#39;Accuracy&#39;</span>)
 plt.title(<span style="color:#cd5555">&#39;Accuracy&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 
 plt.subplot(<span style="color:#b452cd">122</span>)
-plt.plot(history, c= <span style="color:#cd5555">&#39;yellowgreen&#39;</span>, linewidth=<span style="color:#b452cd">3</span>)
+plt.plot(loss, c= <span style="color:#cd5555">&#39;yellowgreen&#39;</span>, linewidth=<span style="color:#b452cd">3</span>)
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(<span style="color:#cd5555">&#39;Loss&#39;</span>)
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_41_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_40_0.png#c" alt="png"></p>
 <h3 id="and-check-the-models-accuracy-on-training-set">&hellip;and check the model&rsquo;s accuracy on training set</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_test_pred = NN_model.predict(X_train)
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train_pred = NN_model.predict(X_train)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_accuracy = (y_train_pred == y_train).mean()
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Accuracy over training set = {100 * train_accuracy}%&#39;</span>)
-</code></pre></div><pre><code>Accuracy over training set = 73.5%
+</code></pre></div><pre><code>Accuracy over training set = 92.75%
 </code></pre>
 <h3 id="now-lets-check-the-accuracy-of-our-model-on-the-testing-set">Now let&rsquo;s check the accuracy of our model on the testing set</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_test_pred = NN_model.predict(X_test)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_accuracy = (y_test_pred == y_test).mean()
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Accuracy over testing set = {100 * test_accuracy}%&#39;</span>)
-</code></pre></div><pre><code>Accuracy over testing set = 76.5%
+</code></pre></div><pre><code>Accuracy over testing set = 95.0%
 </code></pre>
 <h3 id="checking-classification-capabilities-with-the-classification-report">Checking classification capabilities with the Classification report</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">report = classification_report(y_test, y_test_pred)
 <span style="color:#8b008b;font-weight:bold">print</span>(report)
 </code></pre></div><pre><code>              precision    recall  f1-score   support
 
-           0       0.79      0.85      0.82       126
-           1       0.71      0.62      0.66        74
+           0       0.95      0.98      0.96       126
+           1       0.96      0.91      0.93        74
 
-    accuracy                           0.77       200
-   macro avg       0.75      0.74      0.74       200
-weighted avg       0.76      0.77      0.76       200
+    accuracy                           0.95       200
+   macro avg       0.95      0.94      0.95       200
+weighted avg       0.95      0.95      0.95       200
 </code></pre>
 <h3 id="and-finally-checking-classification-errors-with-the-confusion-matrix">And finally checking classification errors with the Confusion Matrix</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cf_matrix = confusion_matrix(y_test, y_test_pred)
@@ -348,7 +345,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_52_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_51_0.png#c" alt="png"></p>
       
       <div class="related">
 
