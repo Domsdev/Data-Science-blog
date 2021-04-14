@@ -91,7 +91,7 @@
     
     <div class="content">
       <!-- raw HTML omitted -->
-<p>Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems vaguely inspired by the biological neural networks that constitute animal brains.</p>
+<p>Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems inspired by the biological neural networks that constitute animal brains.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/neural_network_from_scratch.png#c" alt="png"></p>
 <p>An ANN is based on a collection of connected units or nodes called artificial neurons, which loosely model the neurons in a biological brain.
 Each connection, like the synapses in a biological brain, can transmit a signal to other neurons.
@@ -100,6 +100,9 @@ The &ldquo;signal&rdquo; at a connection is a real number, and the output of eac
 The connections are called edges. Neurons and edges typically have a weight that adjusts as learning proceeds and this weight increases or decreases the strength of the signal at a connection.
 Neurons may have a threshold such that a signal is sent only if the aggregate signal crosses that threshold.
 Typically, neurons are aggregated into layers. Different layers may perform different transformations on their inputs. Signals travel from the first layer (the input layer), to the last layer (the output layer), possibly after traversing the layers multiple times.</p>
+<h2 id="objective">Objective:</h2>
+<p>The goal is to create a salary predictor based on the experience of the employees, using a simple Linear Regression Model build from scratch, applied to the Kaggle dataset &ldquo;Salary_Data.csv&rdquo; &hellip; Then I will compare the performance of our model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted -->
+I won&rsquo;t explain mathematics here, only background basic equations needed for understanding.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
@@ -174,7 +177,7 @@ plt.title(<span style="color:#cd5555">&#39;Scatter plot of data&#39;</span>)
 plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_21_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_23_0.png#c" alt="png"></p>
 <h2 id="3data-preprocessing-a-iddata_prepa">3.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="splitting-dataset">Splitting Dataset</h3>
 <p>Dataset is splitted into training set with 80% of the samples and test set with the remaining 20%, using &ldquo;stratified sampling&rdquo; to ensure that relative class frequencies is approximately preserved in each train and test fold.</p>
@@ -305,7 +308,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_41_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_43_0.png#c" alt="png"></p>
 <h3 id="and-check-the-models-accuracy-on-training-set">&hellip;and check the model&rsquo;s accuracy on training set</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train_pred = NN_model.predict(X_train)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_accuracy = (y_train_pred == y_train).mean()
@@ -347,7 +350,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_52_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_54_0.png#c" alt="png"></p>
       
       <div class="related">
 

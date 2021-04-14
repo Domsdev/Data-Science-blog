@@ -94,8 +94,8 @@
 <p>In statistics, linear regression is a linear approach to modelling the relationship between a scalar response and one or more explanatory variables (also known as dependent and independent variables). The case of one explanatory variable is called simple linear regression.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/linear_regression.png#c" alt="png"></p>
 <h2 id="objective">Objective:</h2>
-<p>The goal is to create a salary predictor based on the experience of the employees, using a simple Linear Regression Model build from scratch, applied to the Kaggle dataset &ldquo;Salary_Data.csv&rdquo; &hellip; Then I will compare the performance of our model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted -->
-I won&rsquo;t explain mathematics here, only background basic equations needed for understanding.</p>
+<p>The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &ldquo;Salary_Data.csv&rdquo; Kaggle&rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted --></p>
+<p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
@@ -114,9 +114,10 @@ I won&rsquo;t explain mathematics here, only background basic equations needed f
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
 </code></pre></div><h2 id="1dataset">1.Dataset</h2>
-<p>Get the dataset here: <a href="https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression">https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression</a></p>
+<p>The dataset is constituted of “YearsExperience” and “Salary” informations for 30 employees in an X company.<!-- raw HTML omitted --></p>
+<p>Get the original dataset here: <a href="https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression">https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression</a></p>
 <h3 id="importing-dataset">Importing dataset</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = pd.read_csv(<span style="color:#cd5555">&#34;Salary_Data.csv&#34;</span>, delimiter= <span style="color:#cd5555">&#39;,&#39;</span>)
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = pd.read_csv(<span style="color:#cd5555">&#34;Data_Salary.csv&#34;</span>, delimiter= <span style="color:#cd5555">&#39;,&#39;</span>)
 </code></pre></div><p>A simple dataframe visualization using markdown format:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
 <span style="color:#8b008b;font-weight:bold">print</span>(df.head(<span style="color:#b452cd">7</span>).to_markdown())
@@ -151,7 +152,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
 plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_20_0.png#c" alt="png"></p>
-<!-- raw HTML omitted -->
+<p>One can see on plot that annual salaries of employees looks linearly correlated to years of experience !</p>
 <h2 id="2linear-model-definition">2.Linear model definition</h2>
 <p>$$ y = X.\beta + \epsilon$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_i + \epsilon_i $$</p>
@@ -178,8 +179,8 @@ X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>]
 <p>For visualization purpose, I added a constant value to Beta initial values.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Beta = np.random.randn(<span style="color:#b452cd">2</span>, <span style="color:#b452cd">1</span>) + <span style="color:#b452cd">10000</span>
 <span style="color:#8b008b;font-weight:bold">print</span>(Beta)
-</code></pre></div><pre><code>[[10001.49407907]
- [ 9999.79484174]]
+</code></pre></div><pre><code>[[10000.3130677 ]
+ [ 9999.14590426]]
 </code></pre>
 <h3 id="checking-model-initial-state">Checking model initial state</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_init = model(X, Beta)
@@ -189,14 +190,16 @@ plt.plot(x, y_init, label=<span style="color:#cd5555">&#39;Custom model initial 
          c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker=<span style="color:#cd5555">&#39;None&#39;</span>, linestyle= <span style="color:#cd5555">&#39;solid&#39;</span>)
 plt.scatter(x, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
+plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
-plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">12</span>, <span style="color:#b452cd">1</span>))
+plt.yticks(np.arange(<span style="color:#b452cd">20000</span>, <span style="color:#b452cd">140000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_37_0.png#c" alt="png"></p>
-<!-- raw HTML omitted -->
+<p>One clearly see that the model is not yet fitted to our data.</p>
 <h2 id="3loss-function-definition-using-mean-squared-error-mse">3.Loss function definition using Mean Squared Error (MSE)</h2>
 <p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">lossFunction</span>(X, y, Beta):
@@ -204,7 +207,7 @@ plt.show()
         <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(<span style="color:#b452cd">2</span>*m) * np.sum(np.square(model(X, Beta) - y))
 </code></pre></div><p>Let&rsquo;s check the initial loss value.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lossFunction(X, y, Beta)
-</code></pre></div><pre><code>99621224.35713793
+</code></pre></div><pre><code>99678031.14791892
 </code></pre>
 <h2 id="4gradient-definition">4.Gradient definition</h2>
 <p>$$\frac{\partial J(\beta) }{\partial \beta} = \frac{1}{m} X^T.(X.\beta - y)$$</p>
@@ -229,7 +232,7 @@ LEARNING_RATE = <span style="color:#b452cd">0.001</span>
 </code></pre></div><p>&hellip;so I can get the regression coefficients.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Intercept = {Final_Beta[0][0]:.2f}&#34;</span>)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;coefficient = {Final_Beta[1][0]:.2f}&#34;</span>)
-</code></pre></div><pre><code>Intercept = 25566.40
+</code></pre></div><pre><code>Intercept = 25566.39
 coefficient = 9483.47
 </code></pre>
 <p>Let&rsquo;s have a look on the Learning Curve:</p>
@@ -249,14 +252,16 @@ plt.plot(x, y_pred_custom, label=<span style="color:#cd5555">&#39;Custom model p
          c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker=<span style="color:#cd5555">&#39;None&#39;</span>, linestyle= <span style="color:#cd5555">&#39;solid&#39;</span>)
 plt.scatter(x, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>, loc=<span style="color:#cd5555">&#34;upper left&#34;</span>)
+plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
-plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">12</span>, <span style="color:#b452cd">1</span>))
+plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="color:#b452cd">140000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_62_0.png#c" alt="png"></p>
-<!-- raw HTML omitted -->
+<p>We can see on this plot that the model fits pretty good on the data !</p>
 <h3 id="salary-estimation">Salary estimation</h3>
 <p>Now let&rsquo;s imagine that we want to have an estimation of the salary for someone who have 12 years of experience.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_estimation = np.array([<span style="color:#b452cd">12</span>])
@@ -265,7 +270,7 @@ y_estimation = model(X_estimation, Final_Beta)
 
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;The estimated annual salary of someone who has 12 years of experience is </span><span style="color:#cd5555">\
 </span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0]:.0f}€ </span><span style="color:#cd5555">\n</span><span style="color:#cd5555">... according to our dataset.&#39;</span>)
-</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139368$$ 
+</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139368€ 
 ... according to our dataset.
 </code></pre>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
@@ -276,14 +281,16 @@ plt.plot(x, y_pred_custom, label=<span style="color:#cd5555">&#39;Custom model p
          c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker=<span style="color:#cd5555">&#39;None&#39;</span>, linestyle= <span style="color:#cd5555">&#39;solid&#39;</span>)
 plt.scatter(x, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>, loc=<span style="color:#cd5555">&#34;upper left&#34;</span>)
+plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
-plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">13</span>, <span style="color:#b452cd">1</span>))
+plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="color:#b452cd">150000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_67_0.png#c" alt="png"></p>
-<!-- raw HTML omitted -->
+<p>One can see on plot the estimated salary for someone who has 12 years of experience in the company.</p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>This coefficient indicates the quality of predictions made with our model.</p>
 <p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
@@ -324,9 +331,11 @@ plt.plot(X, y_pred_sklearn, label=<span style="color:#cd5555">&#39;Sklearn model
          c= <span style="color:#cd5555">&#39;darkturquoise&#39;</span>, marker=<span style="color:#cd5555">&#39;None&#39;</span>, linestyle= <span style="color:#cd5555">&#39;solid&#39;</span>)
 plt.scatter(X, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>, loc=<span style="color:#cd5555">&#34;upper left&#34;</span>)
+plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
-plt.title(<span style="color:#cd5555">&#39;Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">12</span>, <span style="color:#b452cd">1</span>))
+plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="color:#b452cd">140000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
