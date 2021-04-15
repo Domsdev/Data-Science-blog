@@ -246,7 +246,8 @@ plt.show()
 <h2 id="7model-evaluation">7.Model evaluation</h2>
 <h3 id="prediction">Prediction</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_pred_custom = model(X, Final_Beta)
-</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
+</code></pre></div><p>Let&rsquo;s have a look on the regression line:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
 
 plt.plot(x, y_pred_custom, label=<span style="color:#cd5555">&#39;Custom model prediction&#39;</span>,
          c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker=<span style="color:#cd5555">&#39;None&#39;</span>, linestyle= <span style="color:#cd5555">&#39;solid&#39;</span>)
@@ -260,8 +261,8 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_62_0.png#c" alt="png"></p>
-<p>We can see on this plot that the model fits pretty good on the data !</p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_63_0.png#c" alt="png"></p>
+<p>We can see on this plot that the now model fits pretty good on the data !</p>
 <h3 id="salary-estimation">Salary estimation</h3>
 <p>Now let&rsquo;s imagine that we want to have an estimation of the salary for someone who have 12 years of experience.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_estimation = np.array([<span style="color:#b452cd">12</span>])
@@ -273,6 +274,7 @@ y_estimation = model(X_estimation, Final_Beta)
 </code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139368€ 
 ... according to our dataset.
 </code></pre>
+<p>Let&rsquo;s visualize the result on the plot:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
 
 plt.scatter(x_estimation, y_estimation, label=<span style="color:#cd5555">&#39;Estimation&#39;</span>,
@@ -289,7 +291,7 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_67_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_69_0.png#c" alt="png"></p>
 <p>One can see on plot the estimated salary for someone who has 12 years of experience in the company.</p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>This coefficient indicates the quality of predictions made with our model.</p>
@@ -301,6 +303,7 @@ plt.show()
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_prediction):0.2f}&#34;</span>)
 </code></pre></div><pre><code>R2 = 0.98
 </code></pre>
+<p>We almost reach the maximum value of 1 !! The model can estimate accuratly any salary given the number of years of experience of an employee in the company.</p>
 <h2 id="8comparison-with-sklearn-linearregression-model">8.Comparison with sklearn LinearRegression model</h2>
 <p>Scikit-Learn already provides a well built Linear Regression model for general purpose (linear, multi-linear or polynomial regressions). <!-- raw HTML omitted -->
 I will use it on the Salary_data.csv dataset in order to compare and check the quality of my custom linear regression model.</p>
@@ -339,14 +342,14 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_86_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_89_0.png#c" alt="png"></p>
 <p>Salary estimation:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_estimation = np.array([<span style="color:#b452cd">12</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
 y_estimation = LR_model.predict(X_estimation)
 
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;The estimated annual salary of someone who has 12 years of experience is </span><span style="color:#cd5555">\
 </span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0][0]:.0f}€&#39;</span>)
-</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139192$$
+</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139192€
 </code></pre>
 <h2 id="9conclusion">9.Conclusion</h2>
 <p><strong>The custom model build from scratch looks pretty good to predict salary given years of experience and fits pretty well to the data.</strong><!-- raw HTML omitted --></p>
