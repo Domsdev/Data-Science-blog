@@ -91,8 +91,11 @@
     
     <div class="content">
       <!-- raw HTML omitted -->
-<p>Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems inspired by the biological neural networks that constitute animal brains.</p>
+<h2 id="objective">Objective:</h2>
+<p>The goal is to create a salary predictor based on the experience of the employees, using a simple Linear Regression Model build from scratch, applied to the Kaggle dataset &ldquo;Salary_Data.csv&rdquo; &hellip; Then I will compare the performance of our model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted -->
+I won&rsquo;t explain mathematics here, only background basic equations needed for understanding.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/neural_network_from_scratch.png#c" alt="png"></p>
+<p>Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems inspired by the biological neural networks that constitute animal brains.</p>
 <p>An ANN is based on a collection of connected units or nodes called artificial neurons, which loosely model the neurons in a biological brain.
 Each connection, like the synapses in a biological brain, can transmit a signal to other neurons.
 An artificial neuron that receives a signal then processes it and can signal neurons connected to it.
@@ -100,9 +103,6 @@ The &ldquo;signal&rdquo; at a connection is a real number, and the output of eac
 The connections are called edges. Neurons and edges typically have a weight that adjusts as learning proceeds and this weight increases or decreases the strength of the signal at a connection.
 Neurons may have a threshold such that a signal is sent only if the aggregate signal crosses that threshold.
 Typically, neurons are aggregated into layers. Different layers may perform different transformations on their inputs. Signals travel from the first layer (the input layer), to the last layer (the output layer), possibly after traversing the layers multiple times.</p>
-<h2 id="objective">Objective:</h2>
-<p>The goal is to create a salary predictor based on the experience of the employees, using a simple Linear Regression Model build from scratch, applied to the Kaggle dataset &ldquo;Salary_Data.csv&rdquo; &hellip; Then I will compare the performance of our model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted -->
-I won&rsquo;t explain mathematics here, only background basic equations needed for understanding.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
@@ -119,7 +119,7 @@ I won&rsquo;t explain mathematics here, only background basic equations needed f
 <p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
 <p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
 <p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with N samples, and the $$g^{[i]}$$ are the activation functions like Sigmoid: $$\sigma(x) = \frac{1}{1 + exp(-x)}$$</p>
-<h4 id="step-2-loss-function">Step 2: Loss Function</h4>
+<h4 id="step-2-loss-function-logistic-regression-case">Step 2: Loss Function (logistic regression case)</h4>
 <p>$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$</p>
 <h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
 <p>$$dZ^{[2]} = A^{[2]} - Y$$</p>

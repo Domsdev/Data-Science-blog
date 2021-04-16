@@ -95,14 +95,14 @@
     
     <div class="content">
       <!-- raw HTML omitted -->
+<h2 id="objective">Objective:</h2>
+<p>The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &ldquo;Boston Housing Dataset&rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.<!-- raw HTML omitted --></p>
+<p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation.gif#c" alt="Alt Text"></p>
 <p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.
 For example, multiple regression analysis may reveal a positive relationship between the demand for sunglasses and different demographics (age, salary) of buyers of that product. Demand increases and decreases with changes in these characteristics.</p>
 <p>Polynomial regression is a form of regression analysis in which the relationship between the independent variable x and the dependent variable y is modelled as an nth degree polynomial in x.
 Polynomial regression fits a nonlinear relationship between the value of x and the corresponding conditional mean of y. Although polynomial regression fits a nonlinear model to the data, as a statistical estimation problem it is linear, in the sense that the regression function is linear in the unknown parameters that are estimated from the data. For this reason, polynomial regression is considered to be a special case of multiple linear regression.</p>
-<p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation.gif#c" alt="Alt Text"></p>
-<h2 id="objective">Objective:</h2>
-<p>The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch applied on the &ldquo;Boston Housing Dataset&rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.<!-- raw HTML omitted --></p>
-<p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
@@ -217,13 +217,13 @@ dtypes: float64(14)
 memory usage: 55.5 KB
 </code></pre>
 <p>One can see with df.info() that our dataframe is composed of 14 columns and 506 entries (rows). All values are as float type and there is no null values.</p>
-<p>Let&rsquo;s have a look on statistical values:</p>
+<p>Amways intersting to have a look on statistical values:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dfi.export(df.describe(), <span style="color:#cd5555">&#34;boston_dataframe_describe.png&#34;</span>)
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/boston_dataframe_describe.png#c" alt="png"></p>
 <h3 id="outliers">Outliers</h3>
-<p><strong>An interesing fact on the dataset is about the max value of MEDV! From the original dataset description, we can read:</strong><!-- raw HTML omitted --></p>
+<p><strong>An interesing fact on this dataset is about the max value of MEDV! From the original dataset description, we can read:</strong><!-- raw HTML omitted --></p>
 <p><em>Variable #14 seems to be censored at 50.00 (corresponding to a median price of 50,000 Dollars); Censoring is suggested by the fact that the highest median price of exactly 50,000 Dollars is reported in 16 cases, while 15 cases have prices between 40,000 and 50,000 Dollars, with prices rounded to the nearest hundred. Harrison and Rubinfeld do not mention any censoring.</em></p>
-<p>So let&rsquo;s remove these outliers where MEDV = 50.0 :</p>
+<p>So let&rsquo;s remove these problematic values where MEDV = 50.0 :</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = df[~(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>] &gt;= <span style="color:#b452cd">50.0</span>)]
 </code></pre></div><h3 id="correlation-matrix">Correlation matrix</h3>
 <p>Now we want to explore our data and see how our target is correlated to a feature or another.</p>
@@ -235,10 +235,10 @@ sns.heatmap(correlation.round(<span style="color:#b452cd">2</span>), mask=mask, 
             vmin=-<span style="color:#b452cd">1</span>, vmax=<span style="color:#b452cd">1</span>, center= <span style="color:#b452cd">0</span>, linewidths=<span style="color:#b452cd">2</span>, linecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_33_0.png#c" alt="png"></p>
-<p>Remember, our target is the median price <strong>MEDV</strong> ! We need to read the last line of our table.<!-- raw HTML omitted --></p>
-<p>We can observe that it is <strong>highly and positively correlated to the RM</strong> feature (the average number of rooms per dwelling) and it looks normal as the more a dwelling has rooms, the more its price is.<!-- raw HTML omitted --></p>
-<p>On the other hand, we see that the target is <strong>highly and negatively correlated to the LSTAT</strong> feature (% lower status of the population) &hellip; houses prices are lower when the amount of lower status people increase.</p>
-<p><strong>So we keep RM and LSTAT features for analysis as they are the two most correlated to our target.</strong></p>
+<p>Remember, our target is the median price <strong>MEDV</strong> ! So we need to read the last line of our table.<!-- raw HTML omitted --></p>
+<p>We can observe that <strong>the target is highly and positively correlated to the RM</strong> feature (the average number of rooms per dwelling) and it looks normal as the more a dwelling has rooms, the more its price is.<!-- raw HTML omitted --></p>
+<p>On the other hand, we see that <strong>the target is highly and negatively correlated to the LSTAT</strong> feature (% lower status of the population) &hellip; houses prices are lower when the amount of lower status people increase.</p>
+<p><strong>Given these observations, I will keep RM and LSTAT features for analysis as they are the two most correlated to our target.</strong></p>
 <h3 id="data-visualization">Data visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># setting plots background color</span>
 plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
@@ -255,7 +255,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">%
 plt.title(<span style="color:#cd5555">&#39;Median Price v/s </span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">wer Status People&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_38_0.png#c" alt="png"></p>
-<p>Except for few poitns, the median price looks approximatly linearly correlated to our features ! This is why I choosed this dataset for multiple linear regression analysis.</p>
+<p>Except for few poitns, the median price looks approximately linearly correlated to our features ! For a first approach, let&rsquo;s consider the hypothesis of a linear correlation between the target MEDV and features RM and LSTAT.</p>
 <h3 id="3d-data-visualization">3D data visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># interactive plot:  %matplotlib notebook</span>
 <span style="color:#228b22"># normal mode plot:  %matplotlib inline</span>
@@ -265,11 +265,10 @@ plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>
 fig = plt.figure(figsize=(<span style="color:#b452cd">14</span>, <span style="color:#b452cd">14</span>))
 fig.suptitle(<span style="color:#cd5555">&#39;Dataset 3D Visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
 fig.subplots_adjust(top=<span style="color:#b452cd">1.2</span>)
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
 ax.set_xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 ax.set_ylabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 ax.set_zlabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
-
-ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
 
 u1 = np.array(df[<span style="color:#cd5555">&#39;RM&#39;</span>])
 u2 = np.array(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>])
@@ -293,7 +292,8 @@ y = df[<span style="color:#cd5555">&#39;MEDV&#39;</span>].values.reshape(-<span 
 <span style="color:#8b008b;font-weight:bold">print</span>(x1.shape, x2.shape, y.shape)
 </code></pre></div><pre><code>(490, 1) (490, 1) (490, 1)
 </code></pre>
-<p>Adding identity column vector to features: X = [1 x1 x2]</p>
+<p>Adding identity column vector to features:</p>
+<p>$$X = [1 \hspace{3mm} x_1 \hspace{3mm} x_2]$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1, x2))
 X = np.hstack((np.ones(x1.shape), X))
 <span style="color:#8b008b;font-weight:bold">print</span>(X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>])
@@ -342,7 +342,7 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.5</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_56_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_57_0.png#c" alt="png"></p>
 <p>One clearly see on plot that the model is not fitted yet to our data !</p>
 <h2 id="3loss-function--mean-squared-error-mse">3.Loss function : Mean Squared Error (MSE)</h2>
 <p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
@@ -389,7 +389,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_77_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_78_0.png#c" alt="png"></p>
 <p>What a beatifull learning curve isn&rsquo;t it ?!</p>
 <h2 id="7prediction">7.Prediction</h2>
 <h3 id="regression-plane-visualization">Regression plane visualization</h3>
@@ -439,7 +439,7 @@ anim.save(<span style="color:#cd5555">&#39;animation1.gif&#39;</span>, fps=<span
 <p><strong>The model could be too simple to well modelize the data.</strong></p>
 <h2 id="8model-evaluation">8.Model evaluation</h2>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
-<p>Coefficient between [0, 1] that indicates the quality of the prediction.</p>
+<p>Coefficient values between [0, 1].  Indicates the quality of the prediction.</p>
 <p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">determinationCoef</span>(y, y_pred):
     u = ((y - y_pred)**<span style="color:#b452cd">2</span>).sum()      <span style="color:#228b22"># Residual sum of squares SSR</span>
@@ -452,7 +452,7 @@ anim.save(<span style="color:#cd5555">&#39;animation1.gif&#39;</span>, fps=<span
 <p>The R2 coefficient is quite high, but far from the maximum value.<!-- raw HTML omitted --></p>
 <p><strong>This confirms what we can see on graphics: the model must be too simple&hellip; So let&rsquo;s try to improve it !</strong></p>
 <h2 id="9multiple-polynomial-regression">9.Multiple Polynomial Regression</h2>
-<h3 id="this-time-we-will-consider-a-non-linear---polynomial-correlation-between-the-median-price-value-and-the-percentage-of-lower-status-people-feature">This time we will consider a non linear - polynomial correlation between the median price value and the percentage of lower status people feature.</h3>
+<p><strong>This time we will consider a non linear - polynomial correlation between the median price value and the percentage of lower status people feature.</strong></p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/feature_plots.png#c" alt="png"></p>
 <p><strong>The regression function remains linear to the unknown parameters that are estimated from the data.</strong></p>
 <p>$$ y = X.\beta + \epsilon$$</p>
@@ -481,7 +481,7 @@ x1 = RM_scaler.fit_transform(x1)
 x2 = LSTAT_scaler.fit_transform(x2)
 y = MEDV_scaler.fit_transform(y)
 </code></pre></div><p>Now we need to add identity and non-linear terms column vector features:</p>
-<p>X = [1 x1 x2 x1*x2 x2^2]</p>
+<p>$$X = [1 \hspace{3mm} x_1 \hspace{3mm} x_2 \hspace{3mm} x_1.x_2 \hspace{3mm} x_2^2]$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1, x2))
 X = np.hstack((X, x1*x2))
 X = np.hstack((X, x2**<span style="color:#b452cd">2</span>))
@@ -528,7 +528,7 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_113_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_114_0.png#c" alt="png"></p>
 <p>Ok great! It works well&hellip; and we can see that the regression surface is far from the dataset points.</p>
 <h3 id="lets-launch-the-train-">Let&rsquo;s launch the train &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">50000</span>
@@ -589,7 +589,7 @@ anim.save(<span style="color:#cd5555">&#39;animation2.gif&#39;</span>, fps=<span
 </code></pre>
 <p>We can see that for this model, the coefficient of determination is really better, and the regression surface fits pretty well to our data !</p>
 <h2 id="10-median-houses-prices-estimations">10. Median houses prices Estimations</h2>
-<h3 id="ok-now-that-we-have-a-quite-good-model-lets-try-to-do-what-we-are-here-for--make-some-estimations">Ok, now that we have a quite good model, let&rsquo;s try to do what we are here for : make some estimations.</h3>
+<p><strong>Ok, now that we have a quite good model, let&rsquo;s try to do what we are here for : make some estimations.</strong></p>
 <p>Imagine that new data incoming &hellip; we get new lines in our dataframe, and it reveals that:<!-- raw HTML omitted --></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
 data_new = {<span style="color:#cd5555">&#39;RM&#39;</span>: [<span style="color:#b452cd">4</span>, <span style="color:#b452cd">8</span>], <span style="color:#cd5555">&#39;LSTAT&#39;</span>: [<span style="color:#b452cd">35</span>, <span style="color:#b452cd">6</span>]}
@@ -600,11 +600,11 @@ df_new = pd.DataFrame(data=data_new)
 |  0 |    4 |      35 |
 |  1 |    8 |       6 |
 </code></pre>
-<p><strong>Now, as it is our goal, we want to estimate the median price value (MEDV) !</strong><!-- raw HTML omitted --></p>
+<p><strong>Now, as it is our goal, we want to estimate the median price value (MEDV) for these new data!</strong><!-- raw HTML omitted --></p>
 <p>Let&rsquo;s convert our data into arrays:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1_new_data = np.array([<span style="color:#b452cd">4</span>, <span style="color:#b452cd">8</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
 x2_new_data = np.array([<span style="color:#b452cd">30</span>, <span style="color:#b452cd">6</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
-</code></pre></div><p>Do do the prediction calculation, we need to go in the scaled space !</p>
+</code></pre></div><p>To do the prediction calculation, we need to go in the scaled space !</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1_new = RM_scaler.transform(x1_new_data)
 x2_new = LSTAT_scaler.transform(x2_new_data)
 </code></pre></div><p>And add identity and non-linear terms column vector to feature as usual &hellip;</p>
@@ -669,7 +669,7 @@ ax.scatter(x1_new_data[<span style="color:#b452cd">0</span>], x2_new_data[<span 
 ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span style="color:#b452cd">1</span>], y_prediciton[<span style="color:#b452cd">1</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;yellow&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_139_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_140_0.png#c" alt="png"></p>
 <h1 id="11conclusion">11.Conclusion</h1>
 <p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<!-- raw HTML omitted --></p>
 <h4 id="multiple-linear-regression-model">Multiple Linear regression model</h4>
