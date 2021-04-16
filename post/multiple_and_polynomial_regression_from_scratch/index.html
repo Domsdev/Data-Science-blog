@@ -94,7 +94,613 @@
     <h1 class="title">Multiple and Polynomial Regression from scratch</h1>
     
     <div class="content">
-      
+      <!-- raw HTML omitted -->
+<p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.
+For example, multiple regression analysis may reveal a positive relationship between the demand for sunglasses and different demographics (age, salary) of buyers of that product. Demand increases and decreases with changes in these characteristics.</p>
+<p>Polynomial regression is a form of regression analysis in which the relationship between the independent variable x and the dependent variable y is modelled as an nth degree polynomial in x.
+Polynomial regression fits a nonlinear relationship between the value of x and the corresponding conditional mean of y. Although polynomial regression fits a nonlinear model to the data, as a statistical estimation problem it is linear, in the sense that the regression function is linear in the unknown parameters that are estimated from the data. For this reason, polynomial regression is considered to be a special case of multiple linear regression.</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/multiple_linear_regression.png#c" alt="png"></p>
+<h2 id="objective">Objective:</h2>
+<p>The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch applied on the &ldquo;Boston Housing Dataset&rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.<!-- raw HTML omitted --></p>
+<p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
+<hr>
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+<li><a href="">Dataset</a></li>
+<li><a href="">Linear model definition</a></li>
+<li><a href="">Loss function definition</a></li>
+<li><a href="">Gradient definition</a></li>
+<li><a href="">Gradient descent algorithm</a></li>
+<li><a href="">Training model on data</a></li>
+<li><a href="">Model evaluation</a></li>
+<li><a href="">Multiple Polynomial Regression</a></li>
+<li><a href="">Conclusion</a></li>
+</ol>
+<h3 id="importing-libraries">Importing libraries</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">seaborn</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">sns</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">dataframe_image</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">dfi</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">csv</span>
+%matplotlib inline
+</code></pre></div><h2 id="1dataset">1.Dataset</h2>
+<h3 id="importing-dataset">Importing dataset</h3>
+<p>Fist we need to load the &ldquo;Boston Housing Dataset&rdquo; using sklearn datasets library:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.datasets</span> <span style="color:#8b008b;font-weight:bold">import</span> load_boston
+boston = load_boston()
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">boston.keys()
+</code></pre></div><pre><code>dict_keys(['data', 'target', 'feature_names', 'DESCR', 'filename'])
+</code></pre>
+<p>From these keys, we can get more informations about the data and construct a pandas dataframe !</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(boston.DESCR)
+</code></pre></div><pre><code>.. _boston_dataset:
+
+Boston house prices dataset
+---------------------------
+
+**Data Set Characteristics:**  
+
+    :Number of Instances: 506 
+
+    :Number of Attributes: 13 numeric/categorical predictive. Median Value (attribute 14) is usually the target.
+
+    :Attribute Information (in order):
+        - CRIM     per capita crime rate by town
+        - ZN       proportion of residential land zoned for lots over 25,000 sq.ft.
+        - INDUS    proportion of non-retail business acres per town
+        - CHAS     Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)
+        - NOX      nitric oxides concentration (parts per 10 million)
+        - RM       average number of rooms per dwelling
+        - AGE      proportion of owner-occupied units built prior to 1940
+        - DIS      weighted distances to five Boston employment centres
+        - RAD      index of accessibility to radial highways
+        - TAX      full-value property-tax rate per $$10,000
+        - PTRATIO  pupil-teacher ratio by town
+        - B        1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
+        - LSTAT    % lower status of the population
+        - MEDV     Median value of owner-occupied homes in $$1000's
+
+    :Missing Attribute Values: None
+
+    :Creator: Harrison, D. and Rubinfeld, D.L.
+
+This is a copy of UCI ML housing dataset.
+https://archive.ics.uci.edu/ml/machine-learning-databases/housing/
+
+
+This dataset was taken from the StatLib library which is maintained at Carnegie Mellon University.
+
+The Boston house-price data of Harrison, D. and Rubinfeld, D.L. 'Hedonic
+prices and the demand for clean air', J. Environ. Economics &amp; Management,
+vol.5, 81-102, 1978.   Used in Belsley, Kuh &amp; Welsch, 'Regression diagnostics
+...', Wiley, 1980.   N.B. Various transformations are used in the table on
+pages 244-261 of the latter.
+
+The Boston house-price data has been used in many machine learning papers that address regression
+problems.   
+     
+.. topic:: References
+
+   - Belsley, Kuh &amp; Welsch, 'Regression diagnostics: Identifying Influential Data and Sources of Collinearity', Wiley, 1980. 244-261.
+   - Quinlan,R. (1993). Combining Instance-Based and Model-Based Learning. In Proceedings on the Tenth International Conference of Machine Learning, 236-243, University of Massachusetts, Amherst. Morgan Kaufmann.
+</code></pre>
+<p><strong>The &ldquo;13 numeric/categorical predictive&rdquo; are the feature variables based on which we will predict the median value of houses &ldquo;MEDV&rdquo; &hellip; our target !</strong></p>
+<h3 id="dataframe-construction">Dataframe construction</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = pd.DataFrame(boston.data, columns=boston.feature_names)
+df[<span style="color:#cd5555">&#39;MEDV&#39;</span>] = boston.target  <span style="color:#228b22"># set the target as MEDV</span>
+</code></pre></div><p>Ok now let&rsquo;s visualize our dataframe:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pd.options.display.float_format = <span style="color:#cd5555">&#39;{:.2f}&#39;</span>.format
+dfi.export(df.head(<span style="color:#b452cd">7</span>), <span style="color:#cd5555">&#34;boston_dataframe.png&#34;</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/boston_dataframe.png#c" alt="png"></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df.info()
+</code></pre></div><pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 506 entries, 0 to 505
+Data columns (total 14 columns):
+ #   Column   Non-Null Count  Dtype  
+---  ------   --------------  -----  
+ 0   CRIM     506 non-null    float64
+ 1   ZN       506 non-null    float64
+ 2   INDUS    506 non-null    float64
+ 3   CHAS     506 non-null    float64
+ 4   NOX      506 non-null    float64
+ 5   RM       506 non-null    float64
+ 6   AGE      506 non-null    float64
+ 7   DIS      506 non-null    float64
+ 8   RAD      506 non-null    float64
+ 9   TAX      506 non-null    float64
+ 10  PTRATIO  506 non-null    float64
+ 11  B        506 non-null    float64
+ 12  LSTAT    506 non-null    float64
+ 13  MEDV     506 non-null    float64
+dtypes: float64(14)
+memory usage: 55.5 KB
+</code></pre>
+<p>One can see with df.info() that our dataframe is composed of 14 columns and 506 entries (rows). All values are as float type and there is no null values.</p>
+<p>Let&rsquo;s have a look on statistical values:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df.describe()
+</code></pre></div><!-- raw HTML omitted -->
+<h3 id="outliers">Outliers</h3>
+<p><strong>An interesing fact on the dataset is about the max value of MEDV! From the original dataset description, we can read:</strong><!-- raw HTML omitted --></p>
+<p><em>Variable #14 seems to be censored at 50.00 (corresponding to a median price of 50,000 Dollars); Censoring is suggested by the fact that the highest median price of exactly 50,000 Dollars is reported in 16 cases, while 15 cases have prices between 40,000 and 50,000 Dollars, with prices rounded to the nearest hundred. Harrison and Rubinfeld do not mention any censoring.</em></p>
+<p>So let&rsquo;s remove these outliers where MEDV = 50.0 :</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = df[~(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>] &gt;= <span style="color:#b452cd">50.0</span>)]
+</code></pre></div><h3 id="correlation-matrix">Correlation matrix</h3>
+<p>Now we want to explore our data and see how our target is correlated to a feature or another.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">correlation = df.corr()
+
+fig = plt.figure(figsize=(<span style="color:#b452cd">13</span>, <span style="color:#b452cd">9</span>))
+mask = np.triu(np.ones(correlation.shape)).astype(<span style="color:#658b00">bool</span>)
+sns.heatmap(correlation.round(<span style="color:#b452cd">2</span>), mask=mask, annot=True, cmap=<span style="color:#cd5555">&#39;BrBG&#39;</span>,
+            vmin=-<span style="color:#b452cd">1</span>, vmax=<span style="color:#b452cd">1</span>, center= <span style="color:#b452cd">0</span>, linewidths=<span style="color:#b452cd">2</span>, linecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_32_0.png#c" alt="png"></p>
+<p>Remember, our target is the median price <strong>MEDV</strong> ! We need to read the last line of our table.<!-- raw HTML omitted --></p>
+<p>We can observe that it is <strong>highly and positively correlated to the RM</strong> feature (the average number of rooms per dwelling) and it looks normal as the more a dwelling has rooms, the more its price is.<!-- raw HTML omitted --></p>
+<p>On the other hand, we see that the target is <strong>highly and negatively correlated to the LSTAT</strong> feature (% lower status of the population) &hellip; houses prices are lower when the amount of lower status people increase.</p>
+<p><strong>So we keep RM and LSTAT features for analysis as they are the two most correlated to our target.</strong></p>
+<h3 id="data-visualization">Data visualization</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># setting plots background color</span>
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig = plt.figure(figsize=(<span style="color:#b452cd">15</span>, <span style="color:#b452cd">5</span>))
+
+plt.subplot(<span style="color:#b452cd">121</span>)
+plt.scatter(df[<span style="color:#cd5555">&#39;RM&#39;</span>], df[<span style="color:#cd5555">&#39;MEDV&#39;</span>], c= <span style="color:#cd5555">&#39;yellowgreen&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>), plt.ylabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>)
+plt.title(<span style="color:#cd5555">&#39;Median Price v/s Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+
+plt.subplot(<span style="color:#b452cd">122</span>)
+plt.scatter(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>], df[<span style="color:#cd5555">&#39;MEDV&#39;</span>], c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>), plt.ylabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>)
+plt.title(<span style="color:#cd5555">&#39;Median Price v/s </span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">wer Status People&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_37_0.png#c" alt="png"></p>
+<p>Except for few poitns, the median price looks approximatly linearly correlated to our features ! This is why I choosed this dataset for multiple linear regression analysis.</p>
+<h3 id="3d-data-visualization">3D data visualization</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># interactive plot:  %matplotlib notebook</span>
+<span style="color:#228b22"># normal mode plot:  %matplotlib inline</span>
+
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+fig = plt.figure(figsize=(<span style="color:#b452cd">12</span>, <span style="color:#b452cd">12</span>))
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Dataset 3D visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+
+u1 = np.array(df[<span style="color:#cd5555">&#39;RM&#39;</span>])
+u2 = np.array(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>])
+v = np.array(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>])
+
+ax.scatter(u1, u2, v, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+ax.set_xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+
+ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b452cd">130</span>
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_40_0.png#c" alt="png"></p>
+<h2 id="2multiple-linear-model-definition">2.Multiple-Linear model definition</h2>
+<p>$$ y = X.\beta + \epsilon$$</p>
+<p>And $$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
+<p>&hellip; as we consider two features for our model</p>
+<h3 id="converting-data-into-arrays">Converting data into arrays</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1 = df[<span style="color:#cd5555">&#39;RM&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
+x2 = df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
+y = df[<span style="color:#cd5555">&#39;MEDV&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(x1.shape, x2.shape, y.shape)
+</code></pre></div><pre><code>(490, 1) (490, 1) (490, 1)
+</code></pre>
+<p>Adding identity column vector to features: X = [1 x1 x2]</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1, x2))
+X = np.hstack((np.ones(x1.shape), X))
+<span style="color:#8b008b;font-weight:bold">print</span>(X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>])
+</code></pre></div><pre><code>[[1.    6.575 4.98 ]
+ [1.    6.421 9.14 ]
+ [1.    7.185 4.03 ]
+ [1.    6.998 2.94 ]
+ [1.    7.147 5.33 ]]
+</code></pre>
+<h3 id="defining-model">Defining model</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">model</span>(X, Beta):
+    <span style="color:#8b008b;font-weight:bold">return</span> X.dot(Beta)
+</code></pre></div><h3 id="parameters-initialization">Parameters initialization</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">np.random.seed(<span style="color:#b452cd">50</span>)
+Beta = np.random.randn(<span style="color:#b452cd">3</span>, <span style="color:#b452cd">1</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(Beta)
+</code></pre></div><pre><code>[[-1.56035211]
+ [-0.0309776 ]
+ [-0.62092842]]
+</code></pre>
+<h3 id="checking--models-initial-state-by-visualizing-the-regression-plane">Checking  model&rsquo;s initial state by visualizing the regression plane</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+fig = plt.figure(figsize=(<span style="color:#b452cd">12</span>, <span style="color:#b452cd">12</span>))
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+
+ax.set_xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Initial State Regression Plane Visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+
+<span style="color:#228b22"># Dataset plot</span>
+u1 = np.array(df[<span style="color:#cd5555">&#39;RM&#39;</span>])
+u2 = np.array(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>])
+v = np.array(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>])
+ax.scatter(u1, u2, v, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+
+<span style="color:#228b22"># Hyperplane regression plot</span>
+u1 = np.linspace(<span style="color:#b452cd">0</span>,<span style="color:#b452cd">9</span>,<span style="color:#b452cd">10</span>)
+u2 = np.linspace(<span style="color:#b452cd">0</span>,<span style="color:#b452cd">40</span>,<span style="color:#b452cd">10</span>)
+u1, u2 = np.meshgrid(u1, u2)
+v = Beta[<span style="color:#b452cd">0</span>] + Beta[<span style="color:#b452cd">1</span>]*u1 + Beta[<span style="color:#b452cd">2</span>]*u2
+ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.5</span>, cmap=<span style="color:#cd5555">&#39;plasma&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;plum&#39;</span>)
+
+ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b452cd">130</span>
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_54_0.png#c" alt="png"></p>
+<p>One clearly see on plot that the model is not fitted to our data !</p>
+<h2 id="3loss-function--mean-squared-error-mse">3.Loss function : Mean Squared Error (MSE)</h2>
+<p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">lossFunction</span>(X, y, Beta):
+        m = y.shape[<span style="color:#b452cd">0</span>]
+        <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(<span style="color:#b452cd">2</span>*m) * np.sum((model(X, Beta) - y)**<span style="color:#b452cd">2</span>)
+</code></pre></div><p>Let&rsquo;s check the initial loss value:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lossFunction(X, y, Beta)
+</code></pre></div><pre><code>507.7838312721567
+</code></pre>
+<h2 id="4gradient-definition">4.Gradient definition</h2>
+<p>$$\frac{\partial J(\beta) }{\partial \beta} = \frac{1}{m} X^T.(X.\beta - y)$$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradient</span>(X, y, Beta):
+    m = y.shape[<span style="color:#b452cd">0</span>]
+    <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/m * X.T.dot(model(X, Beta) - y)
+</code></pre></div><h2 id="5gradient-descent-algorithm">5.Gradient descent algorithm</h2>
+<p>$$\beta' = \beta - \alpha \frac{\partial J(\beta) }{\partial \beta}$$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradientDescent</span>(X, y, Beta, learning_rate, n_iterations):
+    loss_history = np.zeros(n_iterations)
+    <span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(n_iterations):
+        Beta = Beta - learning_rate * gradient(X, y, Beta)
+        loss_history[i] = lossFunction(X, y, Beta)
+    
+    <span style="color:#8b008b;font-weight:bold">return</span> Beta, loss_history
+</code></pre></div><h2 id="6training-the-model">6.Training the model</h2>
+<p>Fisrt I define the hypermarameters:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">500</span>
+LEARNING_RATE = <span style="color:#b452cd">0.001</span>
+</code></pre></div><p>Then I train the model on the data&hellip;</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Final_Beta, loss_history = gradientDescent(X, y, Beta, LEARNING_RATE, N_ITERATIONS)
+</code></pre></div><p>&hellip;so I can get the regression coefficients.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Intercept = {Final_Beta[0][0]:.2f}&#34;</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;coefficient 1 = {Final_Beta[1][0]:.2f}&#34;</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;coefficient 2 = {Final_Beta[2][0]:.2f}&#34;</span>)
+</code></pre></div><pre><code>Intercept = -0.88
+coefficient 1 = 4.76
+coefficient 2 = -0.56
+</code></pre>
+<p>Let&rsquo;s have a look on the Learning Curve:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
+plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
+plt.plot(<span style="color:#658b00">range</span>(N_ITERATIONS), loss_history, c= <span style="color:#cd5555">&#39;purple&#39;</span>)
+plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>)
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_75_0.png#c" alt="png"></p>
+<p>What a beatifull learning curve isn&rsquo;t it ?!</p>
+<h2 id="7prediction">7.Prediction</h2>
+<h3 id="regression-plane-visualization">Regression plane visualization</h3>
+<p>Let&rsquo;s create a 3D plot animation for better visualization:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">matplotlib</span> <span style="color:#8b008b;font-weight:bold">import</span> animation
+
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+fig = plt.figure(figsize=(<span style="color:#b452cd">12</span>, <span style="color:#b452cd">12</span>))
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+
+ax.set_xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Final Regression Plane Visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+plt.close()
+
+<span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">init</span>():
+    <span style="color:#228b22"># Dataset plot</span>
+    u1 = np.array(df[<span style="color:#cd5555">&#39;RM&#39;</span>])
+    u2 = np.array(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>])
+    v = np.array(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>])
+    ax.scatter(u1, u2, v, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+    
+    <span style="color:#228b22"># Regression plane plot</span>
+    u1 = np.linspace(<span style="color:#b452cd">0</span>,<span style="color:#b452cd">9</span>,<span style="color:#b452cd">20</span>)
+    u2 = np.linspace(<span style="color:#b452cd">0</span>,<span style="color:#b452cd">40</span>,<span style="color:#b452cd">20</span>)
+    u1, u2 = np.meshgrid(u1, u2)
+    v = Final_Beta[<span style="color:#b452cd">0</span>] + Final_Beta[<span style="color:#b452cd">1</span>]*u1 + Final_Beta[<span style="color:#b452cd">2</span>]*u2
+    ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<span style="color:#cd5555">&#39;plasma&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;plum&#39;</span>)
+    
+    <span style="color:#8b008b;font-weight:bold">return</span> fig,
+
+<span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">animate</span>(i):
+    ax.view_init(elev=<span style="color:#b452cd">10.</span>, azim=i)
+    <span style="color:#8b008b;font-weight:bold">return</span> fig,
+
+<span style="color:#228b22"># Creating the animation</span>
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=<span style="color:#b452cd">360</span>, interval=<span style="color:#b452cd">40</span>, blit=True)
+
+<span style="color:#228b22"># Saving the animation</span>
+anim.save(<span style="color:#cd5555">&#39;animation.gif&#39;</span>, fps=<span style="color:#b452cd">25</span>)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">io</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">base64</span>
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">IPython.display</span> <span style="color:#8b008b;font-weight:bold">import</span> HTML
+
+<span style="color:#228b22"># Display the animation</span>
+video = io.open(<span style="color:#cd5555">&#39;animation.gif&#39;</span>, <span style="color:#cd5555">&#39;r+b&#39;</span>).read()
+encoded = base64.b64encode(video)
+HTML(data=<span style="color:#cd5555">&#39;&#39;&#39;&lt;img src=&#34;data:image/gif;base64,{0}&#34; type=&#34;gif&#34; /&gt;&#39;&#39;&#39;</span>.format(encoded.decode(<span style="color:#cd5555">&#39;ascii&#39;</span>)))
+</code></pre></div><p><!-- raw HTML omitted --></p>
+<p>The regression plane seems to fit pretty good on median prices lower than 40000 Dollars, But not so good for higher values ! It fits badly as well for median prices where the percentage of low status people is high. <!-- raw HTML omitted --></p>
+<p><strong>The model could be too simple to well modelize the data.</strong><!-- raw HTML omitted --></p>
+<p>NB: did you see this uggly title ?! Maybe due to the animation process &hellip;</p>
+<h2 id="8model-evaluation">8.Model evaluation</h2>
+<h3 id="coefficient-of-determination">Coefficient of determination</h3>
+<p>Coefficient between [0, 1] that indicates the quality of the prediction.</p>
+<p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">determinationCoef</span>(y, y_pred):
+    u = ((y - y_pred)**<span style="color:#b452cd">2</span>).sum()      <span style="color:#228b22"># Residual sum of squares SSR</span>
+    v = ((y - y.mean())**<span style="color:#b452cd">2</span>).sum()    <span style="color:#228b22"># Total sum of squares SST</span>
+    <span style="color:#8b008b;font-weight:bold">return</span> np.sqrt(<span style="color:#b452cd">1</span> - u/v)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_prediction = model(X, Final_Beta)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_prediction):0.2f}&#34;</span>)
+</code></pre></div><pre><code>R2 = 0.81
+</code></pre>
+<p>The R2 coefficient is quite high, but far from the maximum value.<!-- raw HTML omitted --></p>
+<p><strong>This confirms what we can see on graphics: the model may be too simple&hellip; So let&rsquo;s try to improve it !</strong></p>
+<h2 id="9multiple-polynomial-regression">9.Multiple Polynomial Regression</h2>
+<h3 id="this-time-we-will-consider-a-non-linear---polynomial-correlation-between-the-median-price-value-and-the-percentage-of-lower-status-people-feature">This time we will consider a non linear - polynomial correlation between the median price value and the percentage of lower status people feature.</h3>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/feature_plots.png#c" alt="png"></p>
+<p><strong>The regression function remains linear to the unknown parameters that are estimated from the data.</strong></p>
+<p>$$ y = X.\beta + \epsilon$$</p>
+<p><strong>Although polynomial regression fits a nonlinear model to the data:</strong></p>
+<p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} +\beta_{3}.x_{1 i}.x_{2 i} +\beta_{4}.x_{2 i}^2 + \epsilon_i $$</p>
+<h3 id="converting-data-into-arrays-1">Converting data into arrays</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1 = df[<span style="color:#cd5555">&#39;RM&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
+x2 = df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
+y = df[<span style="color:#cd5555">&#39;MEDV&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(x1.shape, x2.shape, y.shape)
+</code></pre></div><pre><code>(490, 1) (490, 1) (490, 1)
+</code></pre>
+<h3 id="here-we-need-to-scale-our-data-in-order-to-avoid-memory-overflow-">Here we need to scale our data in order to avoid memory overflow !!</h3>
+<p>Calculations without scaling brings too high values &hellip;</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/overflow_encountered.png#c" alt="png"></p>
+<p>I used the sklearn MinMaxScaler preprocessing to scale the data:<!-- raw HTML omitted --></p>
+<p>$$X_{scaled} = X_{std} * (max - min) + min$$<!-- raw HTML omitted --></p>
+<p>where <!-- raw HTML omitted --></p>
+<p>$$X_{std} = (X - X_{min}) / (X_{max} - X_{min})$$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.preprocessing</span> <span style="color:#8b008b;font-weight:bold">import</span> MinMaxScaler
+RM_scaler = MinMaxScaler([-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>])
+LSTAT_scaler = MinMaxScaler([-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>])
+MEDV_scaler = MinMaxScaler([-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>])
+
+x1 = RM_scaler.fit_transform(x1)
+x2 = LSTAT_scaler.fit_transform(x2)
+y = MEDV_scaler.fit_transform(y)
+</code></pre></div><p>Now we need to add identity and non-linear terms column vector to feature: X = [1 x1 x2 x1*x2 x2^2]</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1, x2))
+X = np.hstack((X, x1*x2))
+X = np.hstack((X, x2**<span style="color:#b452cd">2</span>))
+X = np.hstack((np.ones(x1.shape), X))
+<span style="color:#8b008b;font-weight:bold">print</span>(X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>])
+</code></pre></div><pre><code>[[ 1.          0.15501054 -0.83328702 -0.12916827  0.69436726]
+ [ 1.          0.0959954  -0.6021117  -0.05779995  0.3625385 ]
+ [ 1.          0.3887718  -0.88607947 -0.34448271  0.78513682]
+ [ 1.          0.31711056 -0.94665185 -0.3001933   0.89614972]
+ [ 1.          0.37420962 -0.81383718 -0.3045457   0.66233095]]
+</code></pre>
+<h3 id="time-for-hyperparameters-initialization">Time for hyperparameters initialization:</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">np.random.seed(<span style="color:#b452cd">50</span>)
+Beta = np.random.randn(<span style="color:#b452cd">5</span>, <span style="color:#b452cd">1</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(Beta)
+</code></pre></div><pre><code>[[-1.56035211]
+ [-0.0309776 ]
+ [-0.62092842]
+ [-1.46458049]
+ [ 1.41194612]]
+</code></pre>
+<h3 id="ok-now-we-can-check-models-initial-state-by-visualizing-the-3d-regression-surface">Ok now we can check model&rsquo;s initial state by visualizing the 3D regression surface</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+
+fig = plt.figure(figsize=(<span style="color:#b452cd">12</span>, <span style="color:#b452cd">12</span>))
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+ax.set_xlabel(<span style="color:#cd5555">&#39;Scaled Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;Scaled </span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Scaled Median Price&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Initial State Regression surface Visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+
+<span style="color:#228b22"># Dataset plot</span>
+ax.scatter(x1, x2, y, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+
+<span style="color:#228b22"># Regression surface plot</span>
+u1 = np.linspace(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>,<span style="color:#b452cd">20</span>)
+u2 = np.linspace(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>,<span style="color:#b452cd">20</span>)
+u1, u2 = np.meshgrid(u1, u2)
+v = Beta[<span style="color:#b452cd">0</span>] + Beta[<span style="color:#b452cd">1</span>]*u1 + Beta[<span style="color:#b452cd">2</span>]*u2  + Beta[<span style="color:#b452cd">3</span>]* u1*u2 + Beta[<span style="color:#b452cd">4</span>]* u2**<span style="color:#b452cd">2</span>
+ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<span style="color:#cd5555">&#39;plasma&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;plum&#39;</span>)
+
+ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_109_0.png#c" alt="png"></p>
+<p>Ok great! It works well&hellip; and we can see that the regression surface is far from the dataset points !!</p>
+<h3 id="lets-launch-the-train-">Let&rsquo;s launch the train &hellip;</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">50000</span>
+LEARNING_RATE = <span style="color:#b452cd">0.01</span>
+
+Final_Beta, loss_history = gradientDescent(X, y, Beta, LEARNING_RATE, N_ITERATIONS)
+<span style="color:#8b008b;font-weight:bold">print</span>(Final_Beta)
+</code></pre></div><pre><code>[[-0.54116164]
+ [ 0.01817997]
+ [-0.62022455]
+ [-0.98121716]
+ [-0.04114927]]
+</code></pre>
+<h3 id="-and-visualize-the-updated-regression-surface-">&hellip; and visualize the updated regression surface !</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+
+fig = plt.figure(figsize=(<span style="color:#b452cd">12</span>, <span style="color:#b452cd">12</span>))
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+ax.set_xlabel(<span style="color:#cd5555">&#39;Scaled Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;Scaled </span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Scaled Median Price&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Final Regression surface Visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+
+<span style="color:#228b22"># Dataset plot</span>
+ax.scatter(x1, x2, y, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+
+<span style="color:#228b22"># Regression Surface plot</span>
+u1 = np.linspace(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>,<span style="color:#b452cd">20</span>).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
+u2 = np.linspace(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>,<span style="color:#b452cd">20</span>).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
+u1, u2 = np.meshgrid(u1, u2)
+v = Final_Beta[<span style="color:#b452cd">0</span>] + Final_Beta[<span style="color:#b452cd">1</span>]*u1 + Final_Beta[<span style="color:#b452cd">2</span>]*u2  + Final_Beta[<span style="color:#b452cd">3</span>]* u1*u2 + Final_Beta[<span style="color:#b452cd">4</span>]* u2**<span style="color:#b452cd">2</span>
+ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<span style="color:#cd5555">&#39;plasma&#39;</span>, edgecolor =<span style="color:#cd5555">&#39;plum&#39;</span>)
+
+ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">110</span>
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_114_0.png#c" alt="png"></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+
+fig = plt.figure(figsize=(<span style="color:#b452cd">12</span>, <span style="color:#b452cd">12</span>))
+ax = fig.add_subplot(projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+ax.set_xlabel(<span style="color:#cd5555">&#39;Scaled Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;Scaled </span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Scaled Median Price&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Final Regression surface Visualization&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+plt.close()
+
+<span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">init</span>():
+    <span style="color:#228b22"># Dataset plot</span>
+    ax.scatter(x1, x2, y, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+    
+    <span style="color:#228b22"># Regression surface plot</span>
+    u1 = np.linspace(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>,<span style="color:#b452cd">20</span>).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
+    u2 = np.linspace(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>,<span style="color:#b452cd">20</span>).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
+    u1, u2 = np.meshgrid(u1, u2)
+    v = Final_Beta[<span style="color:#b452cd">0</span>] + Final_Beta[<span style="color:#b452cd">1</span>]*u1 + Final_Beta[<span style="color:#b452cd">2</span>]*u2  + Final_Beta[<span style="color:#b452cd">3</span>]* u1*u2 + Final_Beta[<span style="color:#b452cd">4</span>]* u2**<span style="color:#b452cd">2</span>
+    
+    ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<span style="color:#cd5555">&#39;plasma&#39;</span>, edgecolor =<span style="color:#cd5555">&#39;plum&#39;</span>)
+    
+    <span style="color:#8b008b;font-weight:bold">return</span> fig,
+
+<span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">animate</span>(i):
+    ax.view_init(elev=<span style="color:#b452cd">10.</span>, azim=i)
+    <span style="color:#8b008b;font-weight:bold">return</span> fig,
+
+<span style="color:#228b22"># Creating the animation</span>
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=<span style="color:#b452cd">360</span>, interval=<span style="color:#b452cd">40</span>, blit=True)
+
+<span style="color:#228b22"># Saving the animation</span>
+anim.save(<span style="color:#cd5555">&#39;animation2.gif&#39;</span>, fps=<span style="color:#b452cd">25</span>)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">io</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">base64</span>
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">IPython.display</span> <span style="color:#8b008b;font-weight:bold">import</span> HTML
+
+<span style="color:#228b22"># Display the animation</span>
+video = io.open(<span style="color:#cd5555">&#39;animation2.gif&#39;</span>, <span style="color:#cd5555">&#39;r+b&#39;</span>).read()
+encoded = base64.b64encode(video)
+HTML(data=<span style="color:#cd5555">&#39;&#39;&#39;&lt;img src=&#34;data:image/gif;base64,{0}&#34; type=&#34;gif&#34; /&gt;&#39;&#39;&#39;</span>.format(encoded.decode(<span style="color:#cd5555">&#39;ascii&#39;</span>)))
+</code></pre></div><p><!-- raw HTML omitted --></p>
+<h3 id="coefficient-of-determination-1">Coefficient of determination</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_prediction = model(X, Final_Beta)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_prediction):0.2f}&#34;</span>)
+</code></pre></div><pre><code>R2 = 0.87
+</code></pre>
+<p>We can see that for this model, the coefficient of determination is really better, and the regression surface fits pretty well to our data !</p>
+<h2 id="10-median-houses-prices-estimations">10. Median houses prices Estimations</h2>
+<h3 id="ok-now-that-we-have-a-quite-good-model-lets-try-to-do-what-we-are-here-for--make-some-estimations">Ok, now that we have a quite good model, let&rsquo;s try to do what we are here for : make some estimations.</h3>
+<p>Imagine that new data incoming &hellip; we get new lines in our dataframe, and it reveals that:<!-- raw HTML omitted --></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
+data_new = {<span style="color:#cd5555">&#39;RM&#39;</span>: [<span style="color:#b452cd">4</span>, <span style="color:#b452cd">8</span>], <span style="color:#cd5555">&#39;LSTAT&#39;</span>: [<span style="color:#b452cd">35</span>, <span style="color:#b452cd">6</span>]}
+df_new = pd.DataFrame(data=data_new)
+<span style="color:#8b008b;font-weight:bold">print</span>(df_new.to_markdown())
+</code></pre></div><pre><code>|    |   RM |   LSTAT |
+|---:|-----:|--------:|
+|  0 |    4 |      35 |
+|  1 |    8 |       6 |
+</code></pre>
+<p><strong>Now, as it is our goal, we want to estimate the median price value (MEDV) !</strong></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1_new_data = np.array([<span style="color:#b452cd">4</span>, <span style="color:#b452cd">8</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
+x2_new_data = np.array([<span style="color:#b452cd">30</span>, <span style="color:#b452cd">6</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
+</code></pre></div><p>We need to go in the scaled space &hellip;</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1_new = RM_scaler.transform(x1_new_data)
+x2_new = LSTAT_scaler.transform(x2_new_data)
+</code></pre></div><p>And to convert our data into arrays as usual &hellip;</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1_new, x2_new))
+X = np.hstack((X, x1_new*x2_new))
+X = np.hstack((X, x2_new**<span style="color:#b452cd">2</span>))
+X = np.hstack((np.ones(x1_new.shape), X))
+<span style="color:#8b008b;font-weight:bold">print</span>(X)
+</code></pre></div><pre><code>[[ 1.         -0.83176854  0.55709919 -0.46337758  0.31035951]
+ [ 1.          0.70109216 -0.77660461 -0.54447141  0.60311472]]
+</code></pre>
+<p>So we can estimate a scaled median price:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_prediciton_scaled = model(X, Final_Beta)
+</code></pre></div><p>Go back to real values !!</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_prediciton = MEDV_scaler.inverse_transform(y_prediciton_scaled)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;The estimated median price for (RM=4,LSTAT=35) is {y_prediciton[0][0]*1000:.0f} Dollars !&#34;</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;The estimated median price for (RM=8,LSTAT=6) is {y_prediciton[1][0]*1000:.0f} Dollars !&#34;</span>)
+</code></pre></div><pre><code>The estimated median price for (RM=4,LSTAT=35) is 16828 Dollars !
+The estimated median price for (RM=8,LSTAT=6) is 37033 Dollars !
+</code></pre>
+<p>&hellip; And finally report the estimated median price values on plots:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;white&#39;</span>})
+
+fig = plt.figure(figsize=(<span style="color:#b452cd">15</span>, <span style="color:#b452cd">15</span>))
+
+<span style="color:#228b22"># VIEW 1</span>
+ax = fig.add_subplot(<span style="color:#b452cd">121</span>, projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+ax.set_xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Median Price Estimation&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+ax.elev, ax.azim = <span style="color:#b452cd">8</span>, -<span style="color:#b452cd">130</span>
+
+<span style="color:#228b22"># Dataset plot</span>
+u1 = np.array(df[<span style="color:#cd5555">&#39;RM&#39;</span>])
+u2 = np.array(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>])
+v = np.array(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>])
+ax.scatter(u1, u2, v, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+
+<span style="color:#228b22"># Prediction plot</span>
+ax.scatter(x1_new_data[<span style="color:#b452cd">0</span>], x2_new_data[<span style="color:#b452cd">0</span>], y_prediciton[<span style="color:#b452cd">0</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;aqua&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
+ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span style="color:#b452cd">1</span>], y_prediciton[<span style="color:#b452cd">1</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;yellow&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
+
+
+<span style="color:#228b22"># VIEW 2</span>
+ax = fig.add_subplot(<span style="color:#b452cd">122</span>, projection=<span style="color:#cd5555">&#39;3d&#39;</span>)
+ax.set_xlabel(<span style="color:#cd5555">&#39;Avg Nb Rooms&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_ylabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">w Status&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_zlabel(<span style="color:#cd5555">&#39;Median Price (1000$$)&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+ax.set_title(<span style="color:#cd5555">&#39;Median Price Estimation&#39;</span>, fontsize=<span style="color:#b452cd">20</span>)
+ax.elev, ax.azim = <span style="color:#b452cd">25</span>, -<span style="color:#b452cd">160</span>
+
+<span style="color:#228b22"># Dataset plot</span>
+u1 = np.array(df[<span style="color:#cd5555">&#39;RM&#39;</span>])
+u2 = np.array(df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>])
+v = np.array(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>])
+ax.scatter(u1, u2, v, color=<span style="color:#cd5555">&#39;lightcoral&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">50</span>)
+
+<span style="color:#228b22"># Prediction plot</span>
+ax.scatter(x1_new_data[<span style="color:#b452cd">0</span>], x2_new_data[<span style="color:#b452cd">0</span>], y_prediciton[<span style="color:#b452cd">0</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;aqua&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
+ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span style="color:#b452cd">1</span>], y_prediciton[<span style="color:#b452cd">1</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;yellow&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
+
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_135_0.png#c" alt="png"></p>
+<h1 id="11conclusion">11.Conclusion</h1>
+<p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<!-- raw HTML omitted --></p>
+<h4 id="multiple-linear-regression-model">Multiple Linear regression model</h4>
+<p>R2 = 81<!-- raw HTML omitted --></p>
+<h4 id="multiple-polynomial-regression-model">Multiple Polynomial regression model</h4>
+<p>R2 = 87<!-- raw HTML omitted --></p>
+<p><strong>Now we can estimate pretty accuratly median house price for Boston City !</strong></p>
       
       <div class="related">
 
@@ -110,6 +716,8 @@
     
   </div>
 </section>
+
+    <script src="https://domsdev.github.io/Data-science-blog/js/copycode.js"></script>
 
 
 
