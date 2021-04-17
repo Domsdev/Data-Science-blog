@@ -433,8 +433,6 @@ anim = animation.FuncAnimation(fig, animate, init_func=init,
 
 <span style="color:#228b22"># Saving the animation</span>
 anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<span style="color:#b452cd">25</span>)
-</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># For animation display put:</span>
-<span style="color:#228b22">#![Alt Text](/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation1.gif#c) in a markdown cell !</span>
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation1.gif#c" alt="Alt Text"></p>
 <p>The regression plane seems to fit pretty good on median prices lower than 40000 Dollars, But not so good for higher values ! It fits badly as well for median prices where the percentage of low status people is high. <!-- raw HTML omitted --></p>
 <p><strong>The model could be too simple to well modelize the data.</strong></p>
@@ -530,7 +528,7 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_115_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_114_0.png#c" alt="png"></p>
 <p>Perfect ! We can see that the regression surface is far from the dataset points. It&rsquo;s time to train our polynomial regression model.</p>
 <h3 id="lets-launch-the-train-">Let&rsquo;s launch the train &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">50000</span>
@@ -671,7 +669,7 @@ ax.scatter(x1_new_data[<span style="color:#b452cd">0</span>], x2_new_data[<span 
 ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span style="color:#b452cd">1</span>], y_prediciton[<span style="color:#b452cd">1</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;yellow&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_141_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_140_0.png#c" alt="png"></p>
 <h1 id="10conclusion">10.Conclusion</h1>
 <p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<!-- raw HTML omitted --></p>
 <p><strong>Multiple Linear regression model:  R2 = 81<!-- raw HTML omitted --></strong></p>
