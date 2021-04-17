@@ -368,7 +368,7 @@ plt.show()
 <p>Over the 200 samples of the test set, we get only 7 samples with a Type I error (false positive) and only 11 samples with a Type II error (false negative).<!-- raw HTML omitted --></p>
 <p><strong>We can say that our model has good classification capabilities regarding the given data.</strong></p>
 <h2 id="6comparison-with-sklearn-mlpclassifier-modela-idcomparisona">6.Comparison with sklearn MLPClassifier model<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
-<p>Fisrt I define hyperparameters:</p>
+<p>Fisrt I define hyperparameters, choosing same parameters that I used for the custom model, except the number of iterations set to 500 &hellip; that will be enough with this model.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_HIDDEN_LAYER1 = <span style="color:#b452cd">3</span> <span style="color:#228b22"># nb of neurons of intermediate layer</span>
 
 LEARNING_RATE = <span style="color:#b452cd">0.2</span>
@@ -396,7 +396,7 @@ plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span st
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_72_0.png#c" alt="png"></p>
-<p>Clearly, this model converges much faster than our ANN model built from scratch ! It needs less that 200 iterations to do so. This is due to the efficiency of the ADAM optimization algorithm which is much faster than our custom loss optimizer.</p>
+<p>Clearly, this model converges much faster than our ANN model built from scratch ! It needs around 200 iterations to do so. This is due to the efficiency of the ADAM optimization algorithm which is much faster than our loss optimizer.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> accuracy_score
 
 y_train_pred = MLP_model.predict(X_train)
@@ -437,7 +437,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_76_0.png#c" alt="png"></p>
 <h2 id="7conclusiona-idconclusiona">7.Conclusion<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
-<p><strong>Comparing both models, one can see that the custom model is very close to the Sklearn model:</strong></p>
+<p><strong>Comparing both models, one can see that the custom model is very close to the Sklearn model, ery similar results are observed:</strong></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
 results = {
@@ -455,7 +455,7 @@ df_results = pd.DataFrame(data=results).set_index(<span style="color:#cd5555">&#
 | Custom AnN  | 91   |        91.5 |     91   | 3.5%         | 5.5%          |
 | Sklearn ANN | 91.5 |        91.5 |     91.5 | 4.0%         | 4.5%          |
 </code></pre>
-<p>Very similar results are observed for both models.</p>
+<p><strong>On the other hand</strong>, the Sklearn model is a lot more faster in term of convergence, as it uses a faster and ADAM  optimizer (see table below)</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">learning = {
     <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom AnN&#34;</span>, <span style="color:#cd5555">&#39;Sklearn ANN&#39;</span>],
     <span style="color:#cd5555">&#39;lear iter&#39;</span>: [<span style="color:#b452cd">80000</span>, MLP_model.loss_curve_.index(MLP_model.loss_curve_[-<span style="color:#b452cd">1</span>])],
@@ -468,9 +468,8 @@ df_learning = pd.DataFrame(data=learning).set_index(<span style="color:#cd5555">
 | Custom AnN  |       80000 |        0.198 |
 | Sklearn ANN |         217 |        0.221 |
 </code></pre>
-<p>On the other hand, the Sklearn model is a lot more faster in term of convergence, as it uses a faster and ADAM  optimizer.</p>
-<p><strong>Now we have a custom Artificial Neural Network, built from scratch, with great classification capabilities for all simple Xor-like datasets.<!-- raw HTML omitted --></strong></p>
-<p><strong>Compared to some prebuilt models that already exists in Sklearn library, this custom model is not so fast and optimized&hellip; but that is a funny and good start exercise for a better background comprehension of artificial neural networks.</strong></p>
+<p><strong>Now we have a custom Artificial Neural Network, built from scratch, with quiet good classification capabilities for all simple Xor-like datasets.<!-- raw HTML omitted --></strong></p>
+<p><strong>Compared to the prebuilt model that already exists in Sklearn library, this custom model is not so fast and optimized&hellip; but that is a funny and good start exercise for a better background comprehension of artificial neural networks.</strong></p>
 <p><strong>It is also a starting point from which we can improve and adapt this model to new issues! Ex: by adding more layers, implementing more robust optimizers, etc &hellip;</strong></p>
       
       <div class="related">

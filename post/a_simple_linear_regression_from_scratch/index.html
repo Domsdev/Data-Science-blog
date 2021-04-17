@@ -167,12 +167,7 @@ y = df[<span style="color:#cd5555">&#34;Salary&#34;</span>].values.reshape(-<spa
 <p>&hellip;And add identity column vector to feature:</p>
 <p>$$X = [1 \hspace{3mm} x_1]$$</p>
 <p>in order to do the product:</p>
-<p>$$X.\beta \hspace{3mm}where\hspace{3mm}\beta=
-\begin{bmatrix}
-\beta_{0} \<br>
-\beta_{1} \<br>
-\end{bmatrix}
-\quad
+<p>$$X.\beta \hspace{3mm}where\hspace{3mm}\beta= [\beta_{0} \hspace{3mm}\beta_{1}]^T
 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((np.ones(x.shape), x))
 X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>]
