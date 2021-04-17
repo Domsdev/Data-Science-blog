@@ -94,7 +94,7 @@
 <h2 id="objective">Objective:</h2>
 <p>The goal here is to deal with the XOr classification problem that can&rsquo;t be solved with classical logistic regression models. The XOr, or “exclusive or” problem is a classic problem that can be solved with Artificial Neural Network to predict the outputs of XOr logic gates given two binary inputs. The XOr function returns a true value if the two inputs are not equal and a false value if they are equal.<!-- raw HTML omitted --></p>
 <p>I will apply a such <strong>ANN built from scratch</strong> to a custom dataset generated for XOr binary classification.</p>
-<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/img/xor_example.png#c" alt="png"></p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/xor_example.png#c" alt="png"></p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
@@ -160,7 +160,7 @@ plt.title(<span style="color:#cd5555">&#39;Scatter plot of the data&#39;</span>,
 plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_14_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/ut_14_0.png#c" alt="png"></p>
 <p>This is the kind of dataset where it is not possible to find a simple linear or non-linear frontier of separation between the two classes, and this is why an artificial neural network is helpfull in this case.</p>
 <h2 id="2data-preprocessing-a-iddataprepa">2.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="splitting-dataset">Splitting Dataset</h3>
@@ -188,10 +188,10 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
 </code></pre></div><h2 id="3ann---model-and-backgrounda-idbackgrounda">3.ANN - Model and background<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h4 id="artificial-neuron">Artificial Neuron</h4>
 <p>As a reminder and support visualization for background equations, this is the structure of an artificial neuron.</p>
-<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/img/perceptron.png#c" alt="png"></p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/perceptron.png#c" alt="png"></p>
 <h4 id="artificial-neural-network-model-definition">Artificial Neural Network Model definition</h4>
 <p>This is the model&rsquo;s structure that I&rsquo;m going to build from scratch:</p>
-<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/img/neural_network_model.png#c" alt="png"></p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/neural_network_model.png#c" alt="png"></p>
 <h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
 <p>$$1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
 <p>$$1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
@@ -319,7 +319,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_48_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/ut_48_0.png#c" alt="png"></p>
 <p>Note how many many iterations the model needs in order to converge.</p>
 <h3 id="now-we-can-check-the-models-accuracy-on-training-set-">Now we can check the model&rsquo;s accuracy on training set &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train_pred = ANN_model.predict(X_train)
@@ -363,7 +363,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_61_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/ut_61_0.png#c" alt="png"></p>
 <p>On the 200 samples of the test set, we get only 7 samples with a Type I error (false positive) and only 11 samples with a Type II error (false negative).<!-- raw HTML omitted --></p>
 <p><strong>We can say that our model has good classification capabilities regarding the given data.</strong></p>
 <h2 id="6comparison-with-sklearn-mlpclassifier-modela-idcomparisona">6.Comparison with sklearn MLPClassifier model<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
@@ -393,7 +393,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_70_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/ut_70_0.png#c" alt="png"></p>
 <p>Clearly, this model converges much faster than our ANN model from scratch ! It needs less that 90 iterations to do so. This is due to the efficiency of the ADAM optimization algorithm which is much faster than our custom loss optimizer.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> accuracy_score
 
@@ -433,7 +433,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_74_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/ut_74_0.png#c" alt="png"></p>
 <h2 id="7conclusiona-idconclusiona">7.Conclusion<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
       
       <div class="related">
