@@ -94,7 +94,7 @@
 <h2 id="objective">Objective:</h2>
 <p>The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &ldquo;Salary_Data.csv&rdquo; Kaggle&rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted --></p>
 <p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
-<p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/img/linear_regression.png#c" alt="png"></p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/linear_regression.png#c" alt="png"></p>
 <p>In statistics, linear regression is a linear approach to modelling the relationship between a scalar response and one or more explanatory variables (also known as dependent and independent variables). The case of one explanatory variable is called simple linear regression.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
@@ -139,8 +139,8 @@
 dfi.export(df.head(<span style="color:#b452cd">7</span>), <span style="color:#cd5555">&#34;img/linear_regression_dataframe.png&#34;</span>)
 
 <span style="color:#228b22"># To print the png export in the notebook, write in a markdown cell:</span>
-<span style="color:#228b22">#![png](/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/img/linear_regression_dataframe.png#c)</span>
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/img/linear_regression_dataframe.png#c" alt="png"></p>
+<span style="color:#228b22">#![png](/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/linear_regression_dataframe.png#c)</span>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/linear_regression_dataframe.png#c" alt="png"></p>
 <h3 id="data-visualization">Data visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22">#setting plots background color</span>
 plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
