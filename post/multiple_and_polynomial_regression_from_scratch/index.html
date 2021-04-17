@@ -103,13 +103,14 @@
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
 <li><a href="">Dataset</a></li>
-<li><a href="">Linear model definition</a></li>
+<li><a href="">Multiple Linear model definition</a></li>
 <li><a href="">Loss function definition</a></li>
 <li><a href="">Gradient definition</a></li>
 <li><a href="">Gradient descent algorithm</a></li>
 <li><a href="">Training model on data</a></li>
 <li><a href="">Model evaluation</a></li>
 <li><a href="">Multiple Polynomial Regression</a></li>
+<li><a href="">Median houses prices Estimations</a></li>
 <li><a href="">Conclusion</a></li>
 </ol>
 <h3 id="importing-libraries">Importing libraries</h3>
@@ -252,7 +253,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">%
 plt.title(<span style="color:#cd5555">&#39;Median Price v/s </span><span style="color:#cd5555">% Lo</span><span style="color:#cd5555">wer Status People&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_38_0.png#c" alt="png"></p>
-<p>Except for few poitns, the median price looks approximately linearly correlated to our features ! For a first approach, let&rsquo;s consider the hypothesis of a linear correlation between the target MEDV and features RM and LSTAT.</p>
+<p>Except for few points, the median price looks approximately linearly correlated to our features ! For a first approach, let&rsquo;s consider the hypothesis of a linear correlation between the target MEDV and features RM and LSTAT.</p>
 <h3 id="3d-data-visualization">3D data visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># interactive plot:  %matplotlib notebook</span>
 <span style="color:#228b22"># normal mode plot:  %matplotlib inline</span>
@@ -390,7 +391,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>, fontsize = <
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_79_0.png#c" alt="png"></p>
 <p>What a beatifull learning curve isn&rsquo;t it ?!</p>
-<h2 id="7prediction">7.Prediction</h2>
+<h2 id="7model-evaluation">7.Model evaluation</h2>
 <h3 id="regression-plane-visualization">Regression plane visualization</h3>
 <p>Let&rsquo;s create a 3D plot animation for better visualization:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">matplotlib</span> <span style="color:#8b008b;font-weight:bold">import</span> animation
@@ -437,7 +438,6 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation1.gif#c" alt="Alt Text"></p>
 <p>The regression plane seems to fit pretty good on median prices lower than 40000 Dollars, But not so good for higher values ! It fits badly as well for median prices where the percentage of low status people is high. <!-- raw HTML omitted --></p>
 <p><strong>The model could be too simple to well modelize the data.</strong></p>
-<h2 id="8model-evaluation">8.Model evaluation</h2>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>Coefficient values between [0, 1].  Indicates the quality of the prediction.</p>
 <p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
@@ -451,7 +451,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<
 </code></pre>
 <p>The R2 coefficient is quite high, but far from the maximum value.<!-- raw HTML omitted --></p>
 <p><strong>This confirms what we can see on graphics: the model must be too simple&hellip; So let&rsquo;s try to improve it !</strong></p>
-<h2 id="9multiple-polynomial-regression">9.Multiple Polynomial Regression</h2>
+<h2 id="8multiple-polynomial-regression">8.Multiple Polynomial Regression</h2>
 <p><strong>This time we will consider a non linear - polynomial correlation between the median price value and the percentage of lower status people feature.</strong></p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/feature_plots.png#c" alt="png"></p>
 <p>Polynomial regression is a form of regression analysis in which the relationship between the independent variable x and the dependent variable y is modelled as an nth degree polynomial in x.
@@ -530,7 +530,7 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_116_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_115_0.png#c" alt="png"></p>
 <p>Perfect ! We can see that the regression surface is far from the dataset points. It&rsquo;s time to train our polynomial regression model.</p>
 <h3 id="lets-launch-the-train-">Let&rsquo;s launch the train &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">50000</span>
@@ -590,7 +590,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation2.gif&#39;</span>, fps=<
 </code></pre></div><pre><code>R2 = 0.87
 </code></pre>
 <p>We see that for this model, the coefficient of determination is really better, in addition to the fact that the regression surface adapts quite well to our data!</p>
-<h2 id="10-median-houses-prices-estimations">10. Median houses prices Estimations</h2>
+<h2 id="9-median-houses-prices-estimations">9. Median houses prices Estimations</h2>
 <p><strong>Ok, now that we have a quite good model, let&rsquo;s try to do what we are here for : make some estimations.</strong></p>
 <p>Imagine that new data incoming &hellip; we get new lines in our dataframe, and it reveals that:<!-- raw HTML omitted --></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
@@ -671,14 +671,12 @@ ax.scatter(x1_new_data[<span style="color:#b452cd">0</span>], x2_new_data[<span 
 ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span style="color:#b452cd">1</span>], y_prediciton[<span style="color:#b452cd">1</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;yellow&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_142_0.png#c" alt="png"></p>
-<h1 id="11conclusion">11.Conclusion</h1>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_141_0.png#c" alt="png"></p>
+<h1 id="10conclusion">10.Conclusion</h1>
 <p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<!-- raw HTML omitted --></p>
-<h4 id="multiple-linear-regression-model">Multiple Linear regression model</h4>
-<p>R2 = 81<!-- raw HTML omitted --></p>
-<h4 id="multiple-polynomial-regression-model">Multiple Polynomial regression model</h4>
-<p>R2 = 87<!-- raw HTML omitted --></p>
-<p><strong>Now we have a tool which can help Boston City&rsquo;s real estate agencies to estimate the median house price as a support fot their business activity.</strong></p>
+<p><strong>Multiple Linear regression model:  R2 = 81<!-- raw HTML omitted --></strong></p>
+<p><strong>Multiple Polynomial regression model: R2 = 87</strong></p>
+<p><strong>Now we have a tool which can help Boston City&rsquo;s real estate agencies to estimate the median house price as a support for their business activity.</strong></p>
       
       <div class="related">
 
