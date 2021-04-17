@@ -210,7 +210,7 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
 <!-- raw HTML omitted -->
 <p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
 <p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
-<p>With $${g'(z)} = \frac{d}{dz} g(z) = \frac{dA^{[2]}}{dZ^{[2]}} $$</p>
+<p>With $${g'(z)} = \frac{d}{dz} g(z) $$</p>
 <p>Knwowing that for sigmoid fuction we get: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
 <h2 id="4-ann-from-scratch-a-idnn_scratcha">4. ANN from Scratch <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="lets-build-step-by-step-a-neural-network-python-class">Let&rsquo;s build step by step a Neural Network python class</h3>
@@ -333,6 +333,7 @@ plt.show()
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Accuracy over testing set = {100 * test_accuracy:.2f}%&#39;</span>)
 </code></pre></div><pre><code>Accuracy over testing set = 91.00%
 </code></pre>
+<p>We obtain a great accuracy on test data !!</p>
 <h3 id="checking-classification-capabilities-with-the-classification-report-">Checking classification capabilities with the Classification report &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">report = classification_report(y_test, y_test_pred)
 <span style="color:#8b008b;font-weight:bold">print</span>(report)
@@ -345,7 +346,7 @@ plt.show()
    macro avg       0.91      0.91      0.91       200
 weighted avg       0.91      0.91      0.91       200
 </code></pre>
-<p>We get some pretty good scores here !</p>
+<p>We get pretty good classification scores here !</p>
 <h3 id="-and-the-confusion-matrix">&hellip; And the Confusion Matrix</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cf_matrix = confusion_matrix(y_test, y_test_pred)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
@@ -363,8 +364,8 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_61_0.png#c" alt="png"></p>
-<p>On the 200 samples of the test set, we get only 7 samples with a Type I error (false positive) and only 11 samples with a Type II error (false negative).<!-- raw HTML omitted --></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_62_0.png#c" alt="png"></p>
+<p>Over the 200 samples of the test set, we get only 7 samples with a Type I error (false positive) and only 11 samples with a Type II error (false negative).<!-- raw HTML omitted --></p>
 <p><strong>We can say that our model has good classification capabilities regarding the given data.</strong></p>
 <h2 id="6comparison-with-sklearn-mlpclassifier-modela-idcomparisona">6.Comparison with sklearn MLPClassifier model<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <p>Fisrt I define hyperparameters:</p>
@@ -380,11 +381,12 @@ MLP_model = MLPClassifier(
     solver=<span style="color:#cd5555">&#39;adam&#39;</span>,
     learning_rate_init=LEARNING_RATE,
     max_iter=ITERATIONS)
-</code></pre></div><p>&hellip;fit the model to the data&hellip;</p>
+</code></pre></div><p>&hellip; and fit the model to the data.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">MLP_model.fit(X_train, y_train)
 </code></pre></div><pre><code>MLPClassifier(activation='logistic', hidden_layer_sizes=3,
               learning_rate_init=0.2, max_iter=500)
 </code></pre>
+<p>Let&rsquo;s have a look on the learning curve:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
 plt.figure(figsize=(<span style="color:#b452cd">8</span>,<span style="color:#b452cd">5</span>))
 
@@ -393,8 +395,8 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_70_0.png#c" alt="png"></p>
-<p>Clearly, this model converges much faster than our ANN model from scratch ! It needs less that 90 iterations to do so. This is due to the efficiency of the ADAM optimization algorithm which is much faster than our custom loss optimizer.</p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_72_0.png#c" alt="png"></p>
+<p>Clearly, this model converges much faster than our ANN model built from scratch ! It needs less that 200 iterations to do so. This is due to the efficiency of the ADAM optimization algorithm which is much faster than our custom loss optimizer.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> accuracy_score
 
 y_train_pred = MLP_model.predict(X_train)
@@ -433,8 +435,33 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_74_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_76_0.png#c" alt="png"></p>
 <h2 id="7conclusiona-idconclusiona">7.Conclusion<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<p><strong>Comparing both models, one can see that the custom model is very close to the Sklearn model:</strong></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
+results = {
+    <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom AnN&#34;</span>, <span style="color:#cd5555">&#39;Sklearn ANN&#39;</span>],
+    <span style="color:#cd5555">&#39;f1&#39;</span>: [<span style="color:#b452cd">91</span>, <span style="color:#b452cd">91</span>],
+    <span style="color:#cd5555">&#39;precision&#39;</span>: [<span style="color:#b452cd">91.5</span>, <span style="color:#b452cd">91.5</span>],
+    <span style="color:#cd5555">&#39;recall&#39;</span>: [<span style="color:#b452cd">91</span>, <span style="color:#b452cd">91</span>],
+    <span style="color:#cd5555">&#39;err Type I&#39;</span>: [<span style="color:#cd5555">&#39;3.5%&#39;</span>, <span style="color:#cd5555">&#39;7.5%&#39;</span>],
+    <span style="color:#cd5555">&#39;err Type II&#39;</span>: [<span style="color:#cd5555">&#39;5.5%&#39;</span>, <span style="color:#cd5555">&#39;1.5%&#39;</span>],
+    <span style="color:#cd5555">&#39;lear iter&#39;</span>: [<span style="color:#b452cd">80000</span>, <span style="color:#b452cd">200</span>],
+    <span style="color:#cd5555">&#39;final loss&#39;</span>: [<span style="color:#658b00">round</span>(loss[-<span style="color:#b452cd">1</span>],<span style="color:#b452cd">3</span>), <span style="color:#658b00">round</span>(MLP_model.loss_curve_[-<span style="color:#b452cd">1</span>], <span style="color:#b452cd">3</span>)]}
+
+
+df_results = pd.DataFrame(data=results).set_index(<span style="color:#cd5555">&#39;Model&#39;</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(df_results.to_markdown())
+</code></pre></div><pre><code>| Model       |   f1 |   precision |   recall | err Type I   | err Type II   |   lear iter |   final loss |
+|:------------|-----:|------------:|---------:|:-------------|:--------------|------------:|-------------:|
+| Custom AnN  |   91 |        91.5 |       91 | 3.5%         | 5.5%          |       80000 |        0.198 |
+| Sklearn ANN |   91 |        91.5 |       91 | 7.5%         | 1.5%          |         200 |        0.244 |
+</code></pre>
+<p>Very similar results are observed for both models, although the custom model does more Type II errors while the Sklearn model prefers type I errors. In addition, the Sklearn model is far better optimized in term of convergence.</p>
+<p><strong>Now we have a custom Artificial Neural Network, built from scratch, with great classification capabilities for all simple Xor-like datasets.<!-- raw HTML omitted --></strong></p>
+<p><strong>Compared to some prebuilt models that already exists in Sklearn library, this custom model is not so fast and optimized&hellip; but that is a funny and good start exercise for a better background comprehension of artificial neural networks.</strong></p>
+<p><strong>It is also a starting point from which we can improve and adapt this model to new issues! Ex: by adding more layers, implementing more robust optimizers, etc &hellip;</strong></p>
       
       <div class="related">
 

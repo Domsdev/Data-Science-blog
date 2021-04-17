@@ -95,7 +95,6 @@
 <p>The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &ldquo;Salary_Data.csv&rdquo; Kaggle&rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted --></p>
 <p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/linear_regression.png#c" alt="png"></p>
-<p>In statistics, linear regression is a linear approach to modelling the relationship between a scalar response and one or more explanatory variables (also known as dependent and independent variables). The case of one explanatory variable is called simple linear regression.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
@@ -151,9 +150,11 @@ plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
 plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_20_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_19_0.png#c" alt="png"></p>
 <p>One can see on plot that annual salaries of employees looks linearly correlated to years of experience !</p>
 <h2 id="2linear-model-definition">2.Linear model definition</h2>
+<p>In statistics, linear regression is a linear approach to modelling the relationship between a scalar response and one or more explanatory variables (also known as dependent and independent variables). The case of one explanatory variable is called simple linear regression.</p>
+<p>The model is defined by:</p>
 <p>$$ y = X.\beta + \epsilon$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_i + \epsilon_i $$</p>
 <h3 id="converting-data-into-arrays">Converting data into arrays</h3>
@@ -163,7 +164,16 @@ y = df[<span style="color:#cd5555">&#34;Salary&#34;</span>].values.reshape(-<spa
 <span style="color:#8b008b;font-weight:bold">print</span>(x.shape, y.shape)
 </code></pre></div><pre><code>(30, 1) (30, 1)
 </code></pre>
-<p>&hellip;And we need to add identity column vector to feature: X = [1 x] to do the product X.Beta</p>
+<p>&hellip;And add identity column vector to feature:</p>
+<p>$$X = [1 \hspace{3mm} x_1]$$</p>
+<p>in order to do the product:</p>
+<p>$$X.\beta \hspace{3mm}where\hspace{3mm}\beta=
+\begin{bmatrix}
+\beta_{0} \<br>
+\beta_{1} \<br>
+\end{bmatrix}
+\quad
+$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((np.ones(x.shape), x))
 X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>]
 </code></pre></div><pre><code>array([[1. , 1.1],
@@ -198,7 +208,7 @@ plt.yticks(np.arange(<span style="color:#b452cd">20000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_37_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_41_0.png#c" alt="png"></p>
 <p>One clearly see that the model is not yet fitted to our data.</p>
 <h2 id="3loss-function-definition-using-mean-squared-error-mse">3.Loss function definition using Mean Squared Error (MSE)</h2>
 <p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
@@ -242,7 +252,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_58_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_62_0.png#c" alt="png"></p>
 <h2 id="7model-evaluation">7.Model evaluation</h2>
 <h3 id="prediction">Prediction</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_pred_custom = model(X, Final_Beta)
@@ -261,7 +271,7 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_63_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_67_0.png#c" alt="png"></p>
 <p>We can see on plot that this time the model fits pretty good on the data !</p>
 <h3 id="salary-estimation">Salary estimation</h3>
 <p>Now let&rsquo;s imagine that we want to have an estimation of the salary for someone who have 12 years of experience in the company.</p>
@@ -291,7 +301,7 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_69_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_73_0.png#c" alt="png"></p>
 <p>One can see on plot the estimated salary for someone who has 12 years of experience in the company.</p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>This coefficient indicates the quality of predictions made with our model.</p>
@@ -342,7 +352,7 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_89_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_93_0.png#c" alt="png"></p>
 <p>Salary estimation:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_estimation = np.array([<span style="color:#b452cd">12</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
 y_estimation = LR_model.predict(X_estimation)
