@@ -92,46 +92,19 @@
     <div class="content">
       <!-- raw HTML omitted -->
 <h2 id="objective">Objective:</h2>
-<p>The goal is to create a salary predictor based on the experience of the employees, using a simple Linear Regression Model build from scratch, applied to the Kaggle dataset &ldquo;Salary_Data.csv&rdquo; &hellip; Then I will compare the performance of our model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted -->
-I won&rsquo;t explain mathematics here, only background basic equations needed for understanding.</p>
-<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/neural_network_from_scratch.png#c" alt="png"></p>
-<p>Artificial neural networks (ANNs), usually simply called neural networks (NNs), are computing systems inspired by the biological neural networks that constitute animal brains.</p>
-<p>An ANN is based on a collection of connected units or nodes called artificial neurons, which loosely model the neurons in a biological brain.
-Each connection, like the synapses in a biological brain, can transmit a signal to other neurons.
-An artificial neuron that receives a signal then processes it and can signal neurons connected to it.
-The &ldquo;signal&rdquo; at a connection is a real number, and the output of each neuron is computed by some non-linear function of the sum of its inputs.
-The connections are called edges. Neurons and edges typically have a weight that adjusts as learning proceeds and this weight increases or decreases the strength of the signal at a connection.
-Neurons may have a threshold such that a signal is sent only if the aggregate signal crosses that threshold.
-Typically, neurons are aggregated into layers. Different layers may perform different transformations on their inputs. Signals travel from the first layer (the input layer), to the last layer (the output layer), possibly after traversing the layers multiple times.</p>
+<p>The goal here is to deal with the XOr classification problem. The XOr, or “exclusive or” problem is a classic problem that can be solved with Artificial Neural Network to predict the outputs of XOr logic gates given two binary inputs. The XOr function returns a true value if the two inputs are not equal and a false value if they are equal.<!-- raw HTML omitted --></p>
+<p>I will apply a such <strong>ANN buit from scratch</strong> to a custom generated dataset for XOr binary classification.</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/xor_dataset.png#c" alt="png"></p>
+<p>The king of dataset where it is not possible to find a simple linear or non-linear frontier separate two classes.</p>
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
-<li><a href="#background">Background</a></li>
 <li><a href="#data">Generating Data</a></li>
 <li><a href="#data_prep_nn">Data Preprocessing</a></li>
-<li><a href="#nn_scratch">Neural Network from Scratch</a></li>
+<li><a href="#background">ANN - Model and background</a></li>
+<li><a href="#nn_scratch">ANN from Scratch</a></li>
 <li><a href="#evaluation">Model evaluation</a></li>
 </ol>
-<h2 id="1background---summary-of-formulas-and-calculation-stepsa-idbackgrounda">1.Background - Summary of formulas and calculation steps<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
-<h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
-<p>$$1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
-<p>$$1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
-<p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
-<p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
-<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with N samples, and the $$g^{[i]}$$ are the activation functions like Sigmoid: $$\sigma(x) = \frac{1}{1 + exp(-x)}$$</p>
-<h4 id="step-2-loss-function-logistic-regression-case">Step 2: Loss Function (logistic regression case)</h4>
-<p>$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$</p>
-<h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
-<p>$$dZ^{[2]} = A^{[2]} - Y$$</p>
-<p>$$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
-<p>$$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $$</p>
-<p>$$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$$</p>
-<p>$$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$$</p>
-<p>$$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $$</p>
-<p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
-<p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
-<p>$$&hellip;$$</p>
-<p>And $${g'(z)} = \frac{d}{dz} g(z)$$ &hellip; Where for sigmoid fuction we get: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
@@ -143,42 +116,48 @@ Typically, neurons are aggregated into layers. Different layers may perform diff
 <span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">tqdm</span> <span style="color:#8b008b;font-weight:bold">import</span> tqdm
 %matplotlib inline
 np.random.seed(<span style="color:#b452cd">50</span>)
-</code></pre></div><h2 id="2generating-dataa-iddataa">2.Generating Data<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+</code></pre></div><h2 id="1generating-dataa-iddataa">1.Generating Data<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="lets-generate-our-dataset-using-xor-logical-function">Let&rsquo;s generate our dataset using XOR logical function</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_samples = <span style="color:#b452cd">1000</span>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">np.random.seed(<span style="color:#b452cd">40</span>)
+n_samples = <span style="color:#b452cd">1000</span>
 mu, sigma = <span style="color:#b452cd">2</span>, <span style="color:#b452cd">3</span>
 X = sigma * np.random.randn(n_samples, <span style="color:#b452cd">2</span>) + mu
-y = np.logical_xor(X[:, <span style="color:#b452cd">0</span>] &gt; <span style="color:#b452cd">0</span>, X[:, <span style="color:#b452cd">1</span>] &gt; <span style="color:#b452cd">0</span>).astype(<span style="color:#658b00">int</span>)
+y = np.logical_xor(X[:, <span style="color:#b452cd">0</span>] &gt; <span style="color:#b452cd">1</span>, X[:, <span style="color:#b452cd">1</span>] &gt; <span style="color:#b452cd">2</span>).astype(<span style="color:#658b00">int</span>)
+
+transformation = [[<span style="color:#b452cd">12</span>, <span style="color:#b452cd">7</span>], [-<span style="color:#b452cd">5</span>, <span style="color:#b452cd">4</span>]]
+X = np.dot(X, transformation) + <span style="color:#b452cd">80</span> * np.ones(X.shape)
 
 <span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#39;X shape:&#39;</span>, X.shape)
 <span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#39;y shape:&#39;</span>, y.shape)
 </code></pre></div><pre><code>X shape: (1000, 2)
 y shape: (1000,)
 </code></pre>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(<span style="color:#b452cd">6</span>):
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(<span style="color:#b452cd">4</span>):
     <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Class:{y[i]} | Coordinates:{X[i]}&#34;</span>)
-</code></pre></div><pre><code>Class:1 | Coordinates:[-2.68105633  1.90706719]
-Class:1 | Coordinates:[ 0.13721473 -2.39374146]
-Class:0 | Coordinates:[6.23583837 0.56980357]
-Class:1 | Coordinates:[-0.34140764  5.21080321]
-Class:0 | Coordinates:[-1.84687779 -1.9824367 ]
-Class:0 | Coordinates:[2.37901292 4.58658115]
+</code></pre></div><pre><code>Class:0 | Coordinates:[74.02032912 87.72786138]
+Class:1 | Coordinates:[55.42344986 98.76784345]
+Class:0 | Coordinates:[34.60659914 57.6635492 ]
+Class:0 | Coordinates:[169.19750154 156.00801786]
 </code></pre>
 <h3 id="data-visualization">Data visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># setting plots background color</span>
 plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
-</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
 
-plt.scatter(X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 0&#39;</span>)
-plt.scatter(X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>], c= <span style="color:#cd5555">&#39;purple&#39;</span>, marker= <span style="color:#cd5555">&#39;.&#39;</span>, label= <span style="color:#cd5555">&#39;Class 1&#39;</span>)
-plt.xlabel(<span style="color:#cd5555">&#34;$$x_1$$&#34;</span>, fontsize=<span style="color:#b452cd">14</span>)
-plt.ylabel(<span style="color:#cd5555">&#34;$$x_2$$&#34;</span>, rotation=<span style="color:#b452cd">0</span>, fontsize=<span style="color:#b452cd">14</span>)
+plt.figure(figsize=(<span style="color:#b452cd">12</span>,<span style="color:#b452cd">8</span>))
+
+plt.scatter(X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>],
+            c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, marker= <span style="color:#cd5555">&#39;o&#39;</span>, label= <span style="color:#cd5555">&#39;Class 1&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, alpha=<span style="color:#b452cd">0.8</span>, s=<span style="color:#b452cd">80</span>)
+plt.scatter(X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">0</span>], X[y == <span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>],
+            c= <span style="color:#cd5555">&#39;mediumorchid&#39;</span>, marker= <span style="color:#cd5555">&#39;o&#39;</span>, label= <span style="color:#cd5555">&#39;Class 2&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, alpha=<span style="color:#b452cd">0.8</span>, s=<span style="color:#b452cd">80</span>)
+plt.xlabel(<span style="color:#cd5555">&#34;$$x_1$$&#34;</span>, fontsize=<span style="color:#b452cd">16</span>)
+plt.ylabel(<span style="color:#cd5555">&#34;$$x_2$$&#34;</span>, fontsize=<span style="color:#b452cd">16</span>)
 plt.title(<span style="color:#cd5555">&#39;Scatter plot of data&#39;</span>)
 plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_23_0.png#c" alt="png"></p>
-<h2 id="3data-preprocessing-a-iddata_prepa">3.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_15_0.png#c" alt="png"></p>
+<h2 id="2data-preprocessing-a-iddata_prepa">2.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="splitting-dataset">Splitting Dataset</h3>
 <p>Dataset is splitted into training set with 80% of the samples and test set with the remaining 20%, using &ldquo;stratified sampling&rdquo; to ensure that relative class frequencies is approximately preserved in each train and test fold.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train, X_test, y_train, y_test = train_test_split(
@@ -201,7 +180,34 @@ $$X_{std} = (X - X_{min}) / (X_{max} - X_{min})$$</p>
 
 X_train = scaler.fit_transform(X_train) <span style="color:#228b22"># fit and transform training set</span>
 X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform testing set with &#34;Scaler&#34; fited</span>
-</code></pre></div><h2 id="4-neural-network-from-scratch-a-idnn_scratcha">4. Neural Network from Scratch <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+</code></pre></div><h2 id="3ann---model-and-backgrounda-idbackgrounda">3.ANN - Model and background<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h4 id="artificial-neuron">Artificial Neuron</h4>
+<p>As a reminder and support visualization for background equations, this is the structure of an artificial neuron.</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/perceptron.png#c" alt="png"></p>
+<h4 id="artificial-neural-network-model-definition">Artificial Neural Network Model definition</h4>
+<p>This is the model&rsquo;s structure that I&rsquo;m going to build from scratch:</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/neural_network_model.png#c" alt="png"></p>
+<h4 id="step-1-forward-propagation">Step 1: Forward Propagation</h4>
+<p>$$1^{st} \hspace{2mm}layer\hspace{2mm}summation: Z^{[1]} = W^{[1]}X + b^{[1]}$$</p>
+<p>$$1^{st} \hspace{2mm}layer\hspace{2mm}activation: A^{[1]} = g^{[1]}{(Z^{[1]})}$$</p>
+<p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}summation: Z^{[2]} = W^{[2]}A^{[1]} + b^{[2]}$$</p>
+<p>$$2^{nd} \hspace{2mm}layer\hspace{2mm}activation: A^{[2]} = g^{[2]}{( Z^{[2]} )}$$</p>
+<p>Where $$X = [x_1, x_2, &hellip;, x_N]$$ is the data matrix with N samples, and the $$g^{[i]}$$ are the activation functions  Sigmoid: $$\sigma(x) = \frac{1}{1 + exp(-x)}$$</p>
+<h4 id="step-2-loss-function-logistic-regression-case">Step 2: Loss Function (logistic regression case)</h4>
+<p>$$J = \frac{1}{N} \sum\limits_{i = 0}^{N} \large{(} \small - y^{(i)}\log\left(a^{[2] (i)}\right) - (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)}$$</p>
+<h4 id="step-3-back-propagation">Step 3: Back Propagation</h4>
+<p>$$dZ^{[2]} = A^{[2]} - Y$$</p>
+<p>$$dW^{[2]} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
+<p>$$db^{[2]} = \frac{1}{N} \sum dZ^{[2]} $$</p>
+<p>$$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$$</p>
+<p>$$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$$</p>
+<p>$$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $$</p>
+<!-- raw HTML omitted -->
+<p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
+<p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
+<p>With $${g'(z)} = \frac{d}{dz} g(z) = \frac{dA^{[2]}}{dZ^{[2]}} $$</p>
+<p>Knwowing that for sigmoid fuction we get: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
+<h2 id="4-ann-from-scratch-a-idnn_scratcha">4. ANN from Scratch <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="lets-build-step-by-step-a-neural-network-python-class">Let&rsquo;s build step by step a Neural Network python class</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">class</span> <span style="color:#008b45;font-weight:bold">Neural_Network</span>:
     
@@ -291,7 +297,7 @@ ITERATIONS = <span style="color:#b452cd">50000</span>
     num_iter = ITERATIONS)
 </code></pre></div><h3 id="fit-the-model-over-training-set--and-finally-evaluate-our-model-">Fit the model over training set &hellip; and finally evaluate our model !</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">loss, accuracy = NN_model.fit(X_train, y_train)
-</code></pre></div><pre><code>100%|██████████| 50000/50000 [00:20&lt;00:00, 2459.90it/s]
+</code></pre></div><pre><code>100%|██████████| 50000/50000 [00:20&lt;00:00, 2426.84it/s]
 </code></pre>
 <h2 id="5model-evaluationa-idevaluationa">5.Model evaluation<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
 <h3 id="lets-have-a-look-on-our-accuracy-and-loss-evolution-">Let&rsquo;s have a look on our accuracy and loss evolution &hellip;</h3>
@@ -308,30 +314,30 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>), plt.ylabel(
 plt.title(<span style="color:#cd5555">&#39;Loss&#39;</span>, fontsize = <span style="color:#b452cd">14</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_43_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_48_0.png#c" alt="png"></p>
 <h3 id="and-check-the-models-accuracy-on-training-set">&hellip;and check the model&rsquo;s accuracy on training set</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train_pred = NN_model.predict(X_train)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_accuracy = (y_train_pred == y_train).mean()
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Accuracy over training set = {100 * train_accuracy}%&#39;</span>)
-</code></pre></div><pre><code>Accuracy over training set = 92.75%
+</code></pre></div><pre><code>Accuracy over training set = 92.0%
 </code></pre>
 <h3 id="now-lets-check-the-accuracy-of-our-model-on-the-testing-set">Now let&rsquo;s check the accuracy of our model on the testing set</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_test_pred = NN_model.predict(X_test)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_accuracy = (y_test_pred == y_test).mean()
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Accuracy over testing set = {100 * test_accuracy}%&#39;</span>)
-</code></pre></div><pre><code>Accuracy over testing set = 95.0%
+</code></pre></div><pre><code>Accuracy over testing set = 94.0%
 </code></pre>
 <h3 id="checking-classification-capabilities-with-the-classification-report">Checking classification capabilities with the Classification report</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">report = classification_report(y_test, y_test_pred)
 <span style="color:#8b008b;font-weight:bold">print</span>(report)
 </code></pre></div><pre><code>              precision    recall  f1-score   support
 
-           0       0.95      0.98      0.96       126
-           1       0.96      0.91      0.93        74
+           0       0.96      0.92      0.94        99
+           1       0.92      0.96      0.94       101
 
-    accuracy                           0.95       200
-   macro avg       0.95      0.94      0.95       200
-weighted avg       0.95      0.95      0.95       200
+    accuracy                           0.94       200
+   macro avg       0.94      0.94      0.94       200
+weighted avg       0.94      0.94      0.94       200
 </code></pre>
 <h3 id="and-finally-checking-classification-errors-with-the-confusion-matrix">And finally checking classification errors with the Confusion Matrix</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cf_matrix = confusion_matrix(y_test, y_test_pred)
@@ -350,7 +356,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span 
 plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">16</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_54_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_59_0.png#c" alt="png"></p>
       
       <div class="related">
 
