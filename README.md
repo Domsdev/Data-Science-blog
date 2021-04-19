@@ -1,5 +1,5 @@
 
-This is my Data Science blog repository.
+# This is my Data Science blog repository.
 
 #### link to my blog page: https://domsdev.github.io/Data-science-blog/
 
