@@ -123,7 +123,7 @@
 %matplotlib inline
 </code></pre></div><h2 id="1dataset">1.Dataset</h2>
 <h3 id="importing-dataset">Importing dataset</h3>
-<p>Fist we need to load the &ldquo;Boston Housing Dataset&rdquo; using sklearn datasets library:</p>
+<p>First we need to load the &ldquo;Boston Housing Dataset&rdquo; using sklearn datasets library:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.datasets</span> <span style="color:#8b008b;font-weight:bold">import</span> load_boston
 boston = load_boston()
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">boston.keys()
@@ -279,8 +279,8 @@ ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b4
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_41_0.png#c" alt="png"></p>
 <h2 id="2multiple-linear-model-definition">2.Multiple-Linear model definition</h2>
-<p>In statistics, multiple linear regression is a mathematical regression method extending
-<!-- raw HTML omitted -->simple linear regression<!-- raw HTML omitted --> to describe the variations of an endogenous variable associated with the variations of several exogenous variables.</p>
+<p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.</p>
+<!-- raw HTML omitted -->
 <p>The model is defined by:</p>
 <p>$$ y = X.\beta + \epsilon$$</p>
 <p>&hellip; and as we consider two features for our model, we got:</p>
@@ -368,7 +368,7 @@ plt.show()
     
     <span style="color:#8b008b;font-weight:bold">return</span> Beta, loss_history
 </code></pre></div><h2 id="6training-the-model">6.Training the model</h2>
-<p>Fisrt I define the hypermarameters:</p>
+<p>First I define the hypermarameters:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">500</span>
 LEARNING_RATE = <span style="color:#b452cd">0.001</span>
 </code></pre></div><p>Then I train the model on the data&hellip;</p>

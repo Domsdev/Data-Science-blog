@@ -143,8 +143,8 @@ plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df.plot.scatter(<span style="color:#cd5555">&#39;YearsExperience&#39;</span>, <span style="color:#cd5555">&#39;Salary&#39;</span>,
                 figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>), color=<span style="color:#cd5555">&#39;darkorange&#39;</span>,
                 marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
-plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
-plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (USD)&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_19_0.png#c" alt="png"></p>
@@ -181,8 +181,8 @@ X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>]
 <p>For visualization purpose, I added a constant value to Beta initial values.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Beta = np.random.randn(<span style="color:#b452cd">2</span>, <span style="color:#b452cd">1</span>) + <span style="color:#b452cd">10000</span>
 <span style="color:#8b008b;font-weight:bold">print</span>(Beta)
-</code></pre></div><pre><code>[[10000.22423308]
- [10000.89390439]]
+</code></pre></div><pre><code>[[ 9999.08003984]
+ [10000.77605995]]
 </code></pre>
 <h3 id="checking-models-initial-state">Checking model&rsquo;s initial state</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_init = model(X, Beta)
@@ -193,8 +193,8 @@ plt.plot(x, y_init, label=<span style="color:#cd5555">&#39;Custom model initial 
 plt.scatter(x, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
-plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
-plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (USD)&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">12</span>, <span style="color:#b452cd">1</span>))
 plt.yticks(np.arange(<span style="color:#b452cd">20000</span>, <span style="color:#b452cd">140000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
@@ -209,7 +209,7 @@ plt.show()
         <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(<span style="color:#b452cd">2</span>*m) * np.sum(np.square(model(X, Beta) - y))
 </code></pre></div><p>Let&rsquo;s check the initial loss value.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lossFunction(X, y, Beta)
-</code></pre></div><pre><code>99567133.59869272
+</code></pre></div><pre><code>99589404.65543446
 </code></pre>
 <h2 id="4gradient-definition">4.Gradient definition</h2>
 <p>$$\frac{\partial J(\beta) }{\partial \beta} = \frac{1}{m} X^T.(X.\beta - y)$$</p>
@@ -234,15 +234,15 @@ LEARNING_RATE = <span style="color:#b452cd">0.001</span>
 </code></pre></div><p>&hellip;so I can get the regression coefficients.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Intercept = {Final_Beta[0][0]:.2f}&#34;</span>)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;coefficient = {Final_Beta[1][0]:.2f}&#34;</span>)
-</code></pre></div><pre><code>Intercept = 25566.38
+</code></pre></div><pre><code>Intercept = 25566.37
 coefficient = 9483.47
 </code></pre>
 <p>Let&rsquo;s have a look on the Learning Curve:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">6</span>))
 plt.plot(<span style="color:#658b00">range</span>(N_ITERATIONS), loss_history, c= <span style="color:#cd5555">&#39;purple&#39;</span>)
 plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
-plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>)
-plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_62_0.png#c" alt="png"></p>
 <h2 id="7model-evaluation">7.Model evaluation</h2>
@@ -256,8 +256,8 @@ plt.plot(x, y_pred_custom, label=<span style="color:#cd5555">&#39;Custom model p
 plt.scatter(x, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>, loc=<span style="color:#cd5555">&#34;upper left&#34;</span>)
 plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
-plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
-plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (USD)&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">12</span>, <span style="color:#b452cd">1</span>))
 plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="color:#b452cd">140000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
@@ -272,8 +272,8 @@ X_estimation = np.hstack((np.ones(x_estimation.shape), x_estimation))
 y_estimation = model(X_estimation, Final_Beta)
 
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;The estimated annual salary of someone who has 12 years of experience is </span><span style="color:#cd5555">\
-</span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0]:.0f}€ </span><span style="color:#cd5555">\n</span><span style="color:#cd5555">... according to our dataset.&#39;</span>)
-</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139368€ 
+</span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0]:.0f} USD </span><span style="color:#cd5555">\n</span><span style="color:#cd5555">... according to our dataset.&#39;</span>)
+</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139368 USD 
 ... according to our dataset.
 </code></pre>
 <p>Let&rsquo;s visualize the result on the plot:</p>
@@ -286,8 +286,8 @@ plt.plot(x, y_pred_custom, label=<span style="color:#cd5555">&#39;Custom model p
 plt.scatter(x, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>, loc=<span style="color:#cd5555">&#34;upper left&#34;</span>)
 plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
-plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
-plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (USD)&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">13</span>, <span style="color:#b452cd">1</span>))
 plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="color:#b452cd">150000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
@@ -337,8 +337,8 @@ plt.plot(X, y_pred_sklearn, label=<span style="color:#cd5555">&#39;Sklearn model
 plt.scatter(X, y, c= <span style="color:#cd5555">&#39;darkorange&#39;</span>, label=<span style="color:#cd5555">&#39;Dataset&#39;</span>, marker=<span style="color:#cd5555">&#39;o&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">100</span>)
 plt.legend(facecolor=<span style="color:#cd5555">&#39;white&#39;</span>, loc=<span style="color:#cd5555">&#34;upper left&#34;</span>)
 plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
-plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>)
-plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (€)&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Years Experience&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Annual Salary (USD)&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.xticks(np.arange(<span style="color:#b452cd">1</span>, <span style="color:#b452cd">12</span>, <span style="color:#b452cd">1</span>))
 plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="color:#b452cd">140000</span>, <span style="color:#b452cd">10000</span>))
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
@@ -350,22 +350,28 @@ plt.show()
 y_estimation = LR_model.predict(X_estimation)
 
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;The estimated annual salary of someone who has 12 years of experience is </span><span style="color:#cd5555">\
-</span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0][0]:.0f}€&#39;</span>)
-</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139192€
+</span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0][0]:.0f} USD&#39;</span>)
+</code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139192 USD
 </code></pre>
 <h2 id="9conclusion">9.Conclusion</h2>
-<p><strong>The custom model build from scratch looks pretty good to predict salary given years of experience and fits pretty well to the data.</strong><!-- raw HTML omitted --></p>
-<p><strong>I get a R2 determination coefficient of 0.98 (almost 1) that indicates a good quality of predictions.</strong></p>
+<p><strong>The custom model build from scratch looks pretty good to predict salary given years of experience and fits pretty well to the data, thus I get a R2 determination coefficient of 0.98 (almost 1) that indicates a good quality of predictions.</strong></p>
 <p><strong>Comparing coefficients of regression and estimated salaries for both models, one can see that the custom model is pretty close to the Sklearn model.</strong></p>
-<h4 id="custom-linear-regression-model">Custom Linear regression model</h4>
-<p>Intercept = 25566.40<!-- raw HTML omitted --></p>
-<p>coefficient = 9483.47<!-- raw HTML omitted --></p>
-<p>12 years experience estimated annual salary = 139368€<!-- raw HTML omitted --></p>
-<h4 id="sklearn-linear-regression-model">Sklearn Linear regression model</h4>
-<p>Intercept = 25792.20<!-- raw HTML omitted --></p>
-<p>coefficient = 9449.96<!-- raw HTML omitted --></p>
-<p>12 years experience estimated annual salary = 139192€</p>
-<p><strong>Now we have a rather precise tool which can help human resources to estimate the annual salary of an employee of company X according to his number of experience in this company.</strong></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
+results = {
+    <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom LR model&#34;</span>, <span style="color:#cd5555">&#39;Sklearn LR model&#39;</span>],
+    <span style="color:#cd5555">&#39;Intercetp&#39;</span>: [<span style="color:#b452cd">25566.40</span>, <span style="color:#b452cd">25792.20</span>],
+    <span style="color:#cd5555">&#39;coefficient&#39;</span>: [<span style="color:#b452cd">9483.47</span>, <span style="color:#b452cd">9449.96</span>],
+    <span style="color:#cd5555">&#39;12 Years exp. estimated Ann. Salary&#39;</span>: [<span style="color:#b452cd">139368</span>, <span style="color:#b452cd">139192</span>]}
+
+df_results = pd.DataFrame(data=results).set_index(<span style="color:#cd5555">&#39;Model&#39;</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(df_results.to_markdown())
+</code></pre></div><pre><code>| Model            |   Intercetp |   coefficient |   12 Years exp. estimated Ann. Salary |
+|:-----------------|------------:|--------------:|--------------------------------------:|
+| Custom LR model  |     25566.4 |       9483.47 |                                139368 |
+| Sklearn LR model |     25792.2 |       9449.96 |                                139192 |
+</code></pre>
+<p><strong>Now we have a rather precise tool which can help human resources to estimate the annual salary of an employee of this anonymous company according to his number of experience in this company.</strong></p>
       
       <div class="related">
 </div>

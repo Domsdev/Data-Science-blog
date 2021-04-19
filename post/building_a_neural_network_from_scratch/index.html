@@ -444,7 +444,7 @@ plt.show()
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
 results = {
-    <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom AnN&#34;</span>, <span style="color:#cd5555">&#39;Sklearn ANN&#39;</span>],
+    <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom ANN&#34;</span>, <span style="color:#cd5555">&#39;Sklearn ANN&#39;</span>],
     <span style="color:#cd5555">&#39;f1&#39;</span>: [<span style="color:#b452cd">91</span>, <span style="color:#b452cd">91.5</span>],
     <span style="color:#cd5555">&#39;precision&#39;</span>: [<span style="color:#b452cd">91.5</span>, <span style="color:#b452cd">91.5</span>],
     <span style="color:#cd5555">&#39;recall&#39;</span>: [<span style="color:#b452cd">91</span>, <span style="color:#b452cd">91.5</span>],
@@ -460,7 +460,7 @@ df_results = pd.DataFrame(data=results).set_index(<span style="color:#cd5555">&#
 </code></pre>
 <p><strong>On the other hand</strong>, the Sklearn model is a lot more faster in term of convergence, as it uses a faster and ADAM  optimizer (see table below)</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">learning = {
-    <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom AnN&#34;</span>, <span style="color:#cd5555">&#39;Sklearn ANN&#39;</span>],
+    <span style="color:#cd5555">&#39;Model&#39;</span>: [<span style="color:#cd5555">&#34;Custom ANN&#34;</span>, <span style="color:#cd5555">&#39;Sklearn ANN&#39;</span>],
     <span style="color:#cd5555">&#39;lear iter&#39;</span>: [<span style="color:#b452cd">80000</span>, MLP_model.loss_curve_.index(MLP_model.loss_curve_[-<span style="color:#b452cd">1</span>])],
     <span style="color:#cd5555">&#39;final loss&#39;</span>: [<span style="color:#658b00">round</span>(loss[-<span style="color:#b452cd">1</span>],<span style="color:#b452cd">3</span>), <span style="color:#658b00">round</span>(MLP_model.loss_curve_[-<span style="color:#b452cd">1</span>], <span style="color:#b452cd">3</span>)]}
 
