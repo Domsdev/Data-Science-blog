@@ -53,5 +53,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>PCA</title>
+      <link>https://domsdev.github.io/Data-science-blog/tags/pca/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://domsdev.github.io/Data-science-blog/tags/pca/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unsupervised</title>
+      <link>https://domsdev.github.io/Data-science-blog/tags/unsupervised/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://domsdev.github.io/Data-science-blog/tags/unsupervised/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

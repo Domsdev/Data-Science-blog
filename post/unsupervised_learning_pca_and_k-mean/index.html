@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Unsupervised Learning PCA and K-mean | DomsDev Data-Science</title>
+
+
+
+<link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="alternate" type="application/rss+xml" title="DomsDev Data-Science">
+
+<link rel="stylesheet" href="https://domsdev.github.io/Data-science-blog/css/style.css"><link rel='stylesheet' href='https://domsdev.github.io/Data-science-blog/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="https://domsdev.github.io/Data-science-blog/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domsdev.github.io/Data-science-blog/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domsdev.github.io/Data-science-blog/favicon-16x16.png">
+<link rel="manifest" href="https://domsdev.github.io/Data-science-blog/site.webmanifest">
+<link rel="mask-icon" href="https://domsdev.github.io/Data-science-blog/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://domsdev.github.io/Data-science-blog/post/unsupervised_learning_pca_and_k-mean/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://domsdev.github.io/Data-science-blog/">
+          <h1 id="nav-heading" class="title is-4">DomsDev Data-Science</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/dominique-pothin-dev/'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="github" href='https://github.com/Domsdev'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:domsdev.sender@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://domsdev.github.io/Data-science-blog/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/pca/">#PCA</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/unsupervised/">#Unsupervised</a>
+  
+  | <a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/from-scratch/">#From Scratch</a>
+  
+
+
+      
+    </div>
+    <h2 class="subtitle is-6">September 9, 2020</h2>
+    <h1 class="title">Unsupervised Learning PCA and K-mean</h1>
+    
+    <div class="content">
+      <!-- raw HTML omitted -->
+<h2 id="objective">Objective:</h2>
+<p>Load the MNIST dataset and split it into a training set and a test set (take the first 60,000 instances for training, and the remaining 10,000 for testing). Train a Random Forest classifier on the dataset and time how long it takes, then evaluate the resulting model on the test set. Next, use PCA to reduce the dataset’s dimensionality, with an explained variance ratio of 95%. Train a new Random Forest classifier on the reduced dataset and see how long it takes. Was training much faster? Next evaluate the classifier on the test set: how does it compare to the previous classifier?</p>
+<p><img src="img/mnist.jpeg" alt="jpeg"></p>
+<h3 id="1-load-the-mnist-dataset">1) Load the MNIST dataset</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">keras.datasets</span> <span style="color:#8b008b;font-weight:bold">import</span> mnist
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
+
+(X_train, Y_train), (X_test, Y_test) = mnist.load_data()
+</code></pre></div><pre><code>Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
+11493376/11490434 [==============================] - 0s 0us/step
+</code></pre>
+<h3 id="2-investigate-the-shapes-of-your-data">2) Investigate the shapes of your data</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">num_classes = np.unique(Y_train).shape[<span style="color:#b452cd">0</span>]
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Shape of training dataset:&#34;</span>, X_train.shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of training examples:&#34;</span>, X_train.shape[<span style="color:#b452cd">0</span>])
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of testing examples:&#34;</span>, X_test.shape[<span style="color:#b452cd">0</span>])
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of classes:&#34;</span>, num_classes)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Image shape:&#34;</span>, X_train[<span style="color:#b452cd">0</span>].shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Image data type:&#34;</span>, X_train.dtype)
+</code></pre></div><pre><code>Shape of training dataset: (60000, 28, 28)
+Number of training examples: 60000
+Number of testing examples: 10000
+Number of classes: 10
+Image shape: (28, 28)
+Image data type: uint8
+</code></pre>
+<h3 id="3-train-a-random-forest-classifier-on-the-dataset-and-time-how-long-it-takes-then-evaluate-the-resulting-model-on-the-test-set">3) Train a Random Forest classifier on the dataset and time how long it takes, then evaluate the resulting model on the test set.</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.ensemble</span> <span style="color:#8b008b;font-weight:bold">import</span> RandomForestClassifier
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> accuracy_score
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">time</span>
+
+rd_model = RandomForestClassifier()
+nsamples, nx, ny = X_train.shape
+nsamples2, nx2, ny2 = X_test.shape
+X_train_2d = X_train.reshape((nsamples,nx*ny))
+X_test_2d = X_test.reshape((nsamples2,nx2*ny2))
+
+start_time=time.time()
+rd_model.fit(X_train_2d,Y_train)
+end_time=time.time()
+diff_time=(end_time-start_time)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;It took </span><span style="color:#cd5555">%.2f</span><span style="color:#cd5555"> ms to train the model.&#34;</span> % diff_time)
+
+Y_train_pred = rd_model.predict(X_train_2d)
+Y_test_pred = rd_model.predict(X_test_2d)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Training accuracy is:&#34;</span>, accuracy_score(y_pred=Y_train_pred, y_true=Y_train))
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Testing accuracy is:&#34;</span>, accuracy_score(y_pred=Y_test_pred, y_true=Y_test))
+</code></pre></div><pre><code>It took 44.18 ms to train the model.
+Training accuracy is: 1.0
+Testing accuracy is: 0.9701
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Y_train.shape
+</code></pre></div><pre><code>(60000,)
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train.shape
+</code></pre></div><pre><code>(60000, 28, 28)
+</code></pre>
+<h3 id="4-use-pca-to-reduce-the-datasets-dimensionality-with-an-explained-variance-ratio-of-95">4) Use PCA to reduce the dataset’s dimensionality, with an explained variance ratio of 95%.</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.decomposition</span> <span style="color:#8b008b;font-weight:bold">import</span> PCA
+
+pca = PCA(n_components=<span style="color:#b452cd">0.95</span>)
+
+X_train_pca = pca.fit_transform(X_train_2d)
+X_test_pca = pca.transform(X_test_2d)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Total explained variance ratio is: </span><span style="color:#cd5555">%.2f</span><span style="color:#cd5555">&#34;</span> % (<span style="color:#658b00">sum</span>(pca.explained_variance_ratio_)*<span style="color:#b452cd">100</span>))
+
+
+<span style="color:#8b008b;font-weight:bold">print</span>(X_train_2d.shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(X_train_pca.shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(X_test_pca.shape)
+</code></pre></div><pre><code>Total explained variance ratio is: 95.02
+(60000, 784)
+(60000, 154)
+(10000, 154)
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a61717;background-color:#e3d2d2">?</span> PCA
+</code></pre></div><h3 id="5-train-a-new-random-forest-classifier-on-the-reduced-dataset-and-see-how-long-it-takes">5) Train a new Random Forest classifier on the reduced dataset and see how long it takes.</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">rd_model_with_pca = RandomForestClassifier() <span style="color:#228b22">#min_impurity_decrease=0.0001)</span>
+
+start_time=time.time()
+rd_model_with_pca.fit(X_train_pca,Y_train)
+end_time=time.time()
+diff=(end_time-start_time)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;It took </span><span style="color:#cd5555">%.2f</span><span style="color:#cd5555"> ms to train the model.&#34;</span> % diff)
+
+Y_train_pca_pred = rd_model_with_pca.predict(X_train_pca)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Training accuracy is:&#34;</span>, accuracy_score(y_pred=Y_train_pca_pred, y_true=Y_train))
+Y_test_pca_pred = rd_model_with_pca.predict(X_test_pca)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Testing accuracy is:&#34;</span>, accuracy_score(y_pred=Y_test_pca_pred, y_true=Y_test))
+</code></pre></div><pre><code>It took 56263.25 ms to train the model.
+Training accuracy is: 1.0
+Training accuracy is: 0.954
+</code></pre>
+<h3 id="6-was-training-much-faster">6) Was training much faster?</h3>
+<p>dimensionality reduction does not always lead to faster training time: it depends on the dataset, the model and the training algorithm.</p>
+<h3 id="7-next-evaluate-the-classifier-on-the-test-set-how-does-it-compare-to-the-previous-classifier">7) Next evaluate the classifier on the test set: how does it compare to the previous classifier?</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Y_test_pca_pred = rd_model_with_pca.predict(X_test_pca)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Testing accuracy is:&#34;</span>, accuracy_score(y_pred=Y_test_pca_pred, y_true=Y_test))
+</code></pre></div><pre><code>Testing accuracy is: 0.9501
+</code></pre>
+<p>It is common for performance to drop slightly when reducing dimensionality, because we do lose some useful signal in the process. However, the performance drop is rather severe in this case. So PCA really did not help: it slowed down training and reduced performance.</p>
+<h3 id="8-choose-different-number-of-features-between-1-and-784-and-plot">8) Choose different number of features between 1 and 784 and plot:</h3>
+<ol>
+<li>Variance explained with PCA</li>
+<li>Train &amp; test accuracies</li>
+</ol>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_acc_score=[]
+test_acc_score=[]
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">tqdm</span> <span style="color:#8b008b;font-weight:bold">import</span> tqdm
+
+<span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> tqdm(<span style="color:#658b00">list</span>(<span style="color:#658b00">range</span>(<span style="color:#b452cd">10</span>,<span style="color:#b452cd">500</span>,<span style="color:#b452cd">50</span>))):
+    pca = PCA(n_components = i)
+    X_train_pca = pca.fit_transform(X_train_2d)
+    X_test_pca = pca.transform(X_test_2d)
+
+    model_pca=RandomForestClassifier(random_state=<span style="color:#b452cd">0</span>)
+    model_pca.fit(X_train_pca,Y_train)
+    y_train_pca_pred=model_pca.predict(X_train_pca)
+    train_acc_score.append(accuracy_score(Y_train,y_train_pca_pred))
+    y_test_pca_pred=model_pca.predict(X_test_pca)
+    test_acc_score.append(accuracy_score(Y_test,y_test_pca_pred))
+</code></pre></div><pre><code>  0%|          | 0/10 [00:00&lt;?, ?it/s][A[A
+
+ 10%|█         | 1/10 [00:33&lt;04:59, 33.33s/it][A[A
+
+ 20%|██        | 2/10 [01:53&lt;06:18, 47.32s/it][A[A
+
+ 30%|███       | 3/10 [03:40&lt;07:37, 65.42s/it][A[A
+
+ 40%|████      | 4/10 [05:51&lt;08:29, 84.93s/it][A[A
+
+ 50%|█████     | 5/10 [08:28&lt;08:52, 106.58s/it][A[A
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22">#print(train_acc_score)</span>
+<span style="color:#228b22">#print(test_acc_score)</span>
+plt.plot(train_acc_score)
+plt.plot(test_acc_score)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f468495a8d0&gt;]
+</code></pre>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Unsupervised_Learning_PCA_and_K-mean/2020-09-09/output_24_1.png#c" alt="png"></p>
+<h3 id="1-implement-pca-from-scratch">1) Implement PCA from scratch:</h3>
+<p>You have input data $$(x_1,\dots, x_n)$$ which is $$d$$-dimensional and number of projections $$k$$, return new data and percentage of you data explained. Test your function on different data.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">pca_from_scratch</span>(X,k):
+    <span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;PCA method from scratch&#34;</span>)
+    <span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;number of projections k:&#34;</span>, k)
+    X=X-np.mean(X,axis=<span style="color:#b452cd">0</span>)
+    s, w = np.linalg.eig(X.T.dot(X))
+    idx = s.argsort()[::-<span style="color:#b452cd">1</span>]  
+    s = s[idx]
+    w = w[:,idx]
+    X_new = X.dot(w[:,:k])
+    s=np.array(<span style="color:#658b00">sorted</span>(s,reverse=True))
+    explained_data=<span style="color:#658b00">sum</span>(<span style="color:#658b00">abs</span>(s[:k]))/<span style="color:#658b00">sum</span>(<span style="color:#658b00">abs</span>(s))
+    <span style="color:#8b008b;font-weight:bold">return</span> (X_new, explained_data)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.array([[<span style="color:#b452cd">1</span>, <span style="color:#b452cd">2</span>], [<span style="color:#b452cd">1.5</span>, <span style="color:#b452cd">1.8</span>], [<span style="color:#b452cd">5</span>, <span style="color:#b452cd">8</span> ], [<span style="color:#b452cd">8</span>, <span style="color:#b452cd">8</span>],[<span style="color:#b452cd">1</span>, <span style="color:#b452cd">0.6</span>],[<span style="color:#b452cd">9</span>,<span style="color:#b452cd">11</span>],[<span style="color:#b452cd">1</span>,<span style="color:#b452cd">3</span>],[<span style="color:#b452cd">8</span>,<span style="color:#b452cd">9</span>],[<span style="color:#b452cd">0</span>,<span style="color:#b452cd">3</span>], [<span style="color:#b452cd">5</span>,<span style="color:#b452cd">4</span>],[<span style="color:#b452cd">6</span>,<span style="color:#b452cd">4</span>]])
+x_new, explained_data = pca_from_scratch(X,<span style="color:#b452cd">1</span>) <span style="color:#228b22">#X_train_2d[:1000],154)</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(X_train_2d.shape,x_new.shape,explained_data)
+</code></pre></div><pre><code>PCA method from scratch
+number of projections k: 1
+[ 13.72385581 674.12614419]
+(60000, 784) (11, 1) 0.019951814798384815
+</code></pre>
+<h3 id="2-implement-k-means-from-scratch">2) Implement K-means from scratch:</h3>
+<p>You have input data $$(x_1,\dots, x_n)$$ which is $$d$$-dimensional and number of clusters $$k$$, return clustered data. Test your function on different data.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">class</span> <span style="color:#008b45;font-weight:bold">K_Means</span>:
+    <span style="color:#8b008b;font-weight:bold">def</span> __init__(self, k=<span style="color:#b452cd">2</span>, tol=<span style="color:#b452cd">0.001</span>, max_iter=<span style="color:#b452cd">300</span>):
+        self.k = k
+        self.tol = tol
+        self.max_iter = max_iter
+
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">fit</span>(self,data):
+
+        self.centroids = {}
+
+        <span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(self.k):
+            self.centroids[i] = data[i]
+
+        <span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(self.max_iter):
+            self.classifications = {}
+
+            <span style="color:#8b008b;font-weight:bold">for</span> i <span style="color:#8b008b">in</span> <span style="color:#658b00">range</span>(self.k):
+                self.classifications[i] = []
+
+            <span style="color:#8b008b;font-weight:bold">for</span> featureset <span style="color:#8b008b">in</span> data:
+                distances = [np.linalg.norm(featureset-self.centroids[centroid]) <span style="color:#8b008b;font-weight:bold">for</span> centroid <span style="color:#8b008b">in</span> self.centroids]
+                classification = distances.index(<span style="color:#658b00">min</span>(distances))
+                self.classifications[classification].append(featureset)
+            prev_centroids = <span style="color:#658b00">dict</span>(self.centroids)
+
+            <span style="color:#8b008b;font-weight:bold">for</span> classification <span style="color:#8b008b">in</span> self.classifications:
+                self.centroids[classification] = np.average(self.classifications[classification],axis=<span style="color:#b452cd">0</span>)
+
+            optimized = True
+
+            <span style="color:#8b008b;font-weight:bold">for</span> c <span style="color:#8b008b">in</span> self.centroids:
+                original_centroid = prev_centroids[c]
+                current_centroid = self.centroids[c]
+                <span style="color:#8b008b;font-weight:bold">if</span> np.sum((current_centroid-original_centroid)/original_centroid*<span style="color:#b452cd">100.0</span>) &gt; self.tol:
+                    <span style="color:#8b008b;font-weight:bold">print</span>(np.sum((current_centroid-original_centroid)/original_centroid*<span style="color:#b452cd">100.0</span>))
+                    optimized = False
+
+            <span style="color:#8b008b;font-weight:bold">if</span> optimized:
+                <span style="color:#8b008b;font-weight:bold">break</span>
+    <span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">predict</span>(self,data):
+        distances = [np.linalg.norm(data-self.centroids[centroid]) <span style="color:#8b008b;font-weight:bold">for</span> centroid <span style="color:#8b008b">in</span> self.centroids]
+        classification = distances.index(<span style="color:#658b00">min</span>(distances))
+        <span style="color:#8b008b;font-weight:bold">return</span> classification
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.array([[<span style="color:#b452cd">1</span>, <span style="color:#b452cd">2</span>], [<span style="color:#b452cd">1.5</span>, <span style="color:#b452cd">1.8</span>], [<span style="color:#b452cd">5</span>, <span style="color:#b452cd">8</span> ], [<span style="color:#b452cd">8</span>, <span style="color:#b452cd">8</span>],[<span style="color:#b452cd">1</span>, <span style="color:#b452cd">0.6</span>],[<span style="color:#b452cd">9</span>,<span style="color:#b452cd">11</span>],[<span style="color:#b452cd">1</span>,<span style="color:#b452cd">3</span>],[<span style="color:#b452cd">8</span>,<span style="color:#b452cd">9</span>],[<span style="color:#b452cd">0</span>,<span style="color:#b452cd">3</span>], [<span style="color:#b452cd">5</span>,<span style="color:#b452cd">4</span>],[<span style="color:#b452cd">6</span>,<span style="color:#b452cd">4</span>]])
+colors = [<span style="color:#cd5555">&#39;red&#39;</span>,<span style="color:#cd5555">&#39;blue&#39;</span>]
+clf = K_Means()
+clf.fit(X)
+
+<span style="color:#8b008b;font-weight:bold">for</span> centroid <span style="color:#8b008b">in</span> clf.centroids:
+    plt.scatter(clf.centroids[centroid][<span style="color:#b452cd">0</span>], clf.centroids[centroid][<span style="color:#b452cd">1</span>],
+                marker=<span style="color:#cd5555">&#34;o&#34;</span>, color=<span style="color:#cd5555">&#34;k&#34;</span>, s=<span style="color:#b452cd">50</span>, linewidths=<span style="color:#b452cd">5</span>)
+
+<span style="color:#8b008b;font-weight:bold">for</span> classification <span style="color:#8b008b">in</span> clf.classifications:
+    color = colors[classification]
+    <span style="color:#8b008b;font-weight:bold">for</span> featureset <span style="color:#8b008b">in</span> clf.classifications[classification]:
+        plt.scatter(featureset[<span style="color:#b452cd">0</span>], featureset[<span style="color:#b452cd">1</span>], marker=<span style="color:#cd5555">&#34;x&#34;</span>, color=color, s=<span style="color:#b452cd">50</span>, linewidths=<span style="color:#b452cd">5</span>)
+        
+plt.show()
+</code></pre></div><pre><code>484.7222222222223
+13.0
+52.10727969348656
+</code></pre>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/Unsupervised_Learning_PCA_and_K-mean/2020-09-09/output_30_1.png#c" alt="png"></p>
+      
+      <div class="related">
+
+<h3>Similar articles:</h3>
+<ul>
+	
+	<li><a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">A Simple Linear Regression from scratch</a></li>
+	
+</ul>
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="https://domsdev.github.io/Data-science-blog/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/Domsdev/Data-science-blog/blob/main/MIT%20Licence.md">DomsDev</a></p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
+
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
+
+
+</body>
+</html>
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
