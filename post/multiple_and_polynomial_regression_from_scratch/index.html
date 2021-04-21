@@ -297,7 +297,8 @@ plt.show()
 <p>For a given sequence of <strong>m</strong> observations, as we consider two features from our data</p>
 <p>$${(x_{1 i}, x_{2 i}, y_i) \hspace{4mm}i=1 &hellip;, m}$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
-<p>$$ Using \hspace{3mm}matrix \hspace{3mm}notations \hspace{3mm}x_1 = [x_{1 1}, x_{1 2}, &hellip;, x_{1 m}]^T \hspace{3mm}x_2 = [x_{2 1}, x_{2 2}, &hellip;, x_{2 m}]^T \hspace{3mm}and \hspace{3mm}  y = [y_1, y_2, &hellip;, y_m]^T$$</p>
+<p>$$ Using \hspace{3mm}matrix \hspace{3mm}notations \hspace{3mm}x_1 = [x_{1 1}, x_{1 2}, &hellip;, x_{1 m}]^T \hspace{3mm}x_2 = [x_{2 1}, x_{2 2}, &hellip;, x_{2 m}]^T \hspace{3mm}$$</p>
+<p>$$and \hspace{3mm}  y = [y_1, y_2, &hellip;, y_m]^T$$</p>
 <p>$$The \hspace{3mm}model \hspace{3mm}is:\hspace{3mm} y = X.\beta + \epsilon$$</p>
 <p>$$Where\hspace{3mm} X = [1 \hspace{3mm} x_{1}\hspace{3mm} x_{2}] \hspace{3mm}and\hspace{3mm} \beta= [\beta_{0} \hspace{3mm}\beta_{1}\hspace{3mm}\beta_{2}]^T$$</p>
 <h3 id="converting-data-into-arrays">Converting data into arrays</h3>
@@ -356,19 +357,21 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.5</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_59_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_60_0.png#c" alt="png"></p>
 <p>One clearly see on plot that the model is not fitted yet to our data !</p>
 <h2 id="3loss-function--mean-squared-error-mse">3.Loss function : Mean Squared Error (MSE)</h2>
+<p>To measure the error of our model we define the Loss function as the mean of the squares of the residuals:</p>
 <p>$$ J(\beta) = \frac{1}{m} \sum (y - X.\beta)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">lossFunction</span>(X, y, Beta):
         m = y.shape[<span style="color:#b452cd">0</span>]
         <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(m) * np.sum((model(X, Beta) - y)**<span style="color:#b452cd">2</span>)
-</code></pre></div><p>Let&rsquo;s check the initial loss value:</p>
+</code></pre></div><p>Let&rsquo;s check the initial Loss value:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lossFunction(X, y, Beta)
 </code></pre></div><pre><code>1015.5676625443134
 </code></pre>
 <h2 id="4gradient-definition">4.Gradient definition</h2>
-<p>$$\frac{\partial J(\beta) }{\partial \beta} = -2* \frac{1}{m} X^T.(y - X.\beta)$$</p>
+<p>$$\frac{\partial J(\beta) }{\partial \beta} = - \frac{2}{m} X^T.(y - X.\beta)$$</p>
+<p>But as we want to solve a minimization problem, we keep for calculations the gradient multiplied by -1:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradient</span>(X, y, Beta):
     m = y.shape[<span style="color:#b452cd">0</span>]
     <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">2</span>/m * X.T.dot(model(X, Beta) - y)
@@ -403,7 +406,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_80_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_83_0.png#c" alt="png"></p>
 <h2 id="7model-evaluation">7.Model evaluation</h2>
 <h3 id="regression-plane-visualization">Regression plane visualization</h3>
 <p>Let&rsquo;s create a 3D plot animation for better visualization:</p>
@@ -541,7 +544,7 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.3</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">10</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_114_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_117_0.png#c" alt="png"></p>
 <p>Perfect ! We can see that the regression surface is far from the dataset points. It&rsquo;s time to train our polynomial regression model.</p>
 <h3 id="lets-launch-the-train-">Let&rsquo;s launch the train &hellip;</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">50000</span>
@@ -682,7 +685,7 @@ ax.scatter(x1_new_data[<span style="color:#b452cd">0</span>], x2_new_data[<span 
 ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span style="color:#b452cd">1</span>], y_prediciton[<span style="color:#b452cd">1</span>][<span style="color:#b452cd">0</span>], color=<span style="color:#cd5555">&#39;yellow&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;k&#39;</span>, s=<span style="color:#b452cd">150</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_140_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_143_0.png#c" alt="png"></p>
 <h1 id="10conclusion">10.Conclusion</h1>
 <p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<!-- raw HTML omitted --></p>
 <p><strong>Multiple Linear regression model:  R2 = 81<!-- raw HTML omitted --></strong></p>

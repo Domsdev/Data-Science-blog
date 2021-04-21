@@ -236,7 +236,7 @@ plt.show()
 <p>Notice the high value of our Loss !! It can be possible to scale the values of the x feature in order to reduce the high values during the calculations &hellip; but for this try we can stay with non scaled values.</p>
 <h2 id="4gradient-definition">4.Gradient definition</h2>
 <p>Now we calculate the gradient of the Loss function:</p>
-<p>$$\frac{\partial J(\beta) }{\partial \beta} = -2* \frac{1}{m} X^T.(y - X.\beta)$$</p>
+<p>$$\frac{\partial J(\beta) }{\partial \beta} = - \frac{2}{m} X^T.(y - X.\beta)$$</p>
 <p>But as we want to solve a minimization problem, we keep for calculations the gradient multiplied by -1:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradient</span>(X, y, Beta):
     m = y.shape[<span style="color:#b452cd">0</span>]
