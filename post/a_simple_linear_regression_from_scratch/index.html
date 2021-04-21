@@ -111,21 +111,22 @@ if (!doNotTrack) {
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
-<li>Dataset</li>
-<li>Linear model definition</li>
-<li>Loss function definition</li>
-<li>Gradient definition</li>
-<li>Gradient descent algorithm</li>
-<li>Training the model on data</li>
-<li>Model evaluation</li>
-<li>Comparison with Sklearn model</li>
-<li>Conclusion</li>
+<li><a href="#data">Dataset</a></li>
+<li><a href="#model">Linear model definition</a></li>
+<li><a href="#loss">Loss function definition</a></li>
+<li><a href="#gradient">Gradient definition</a></li>
+<li><a href="#descent">Gradient descent algorithm</a></li>
+<li><a href="#training">Training the model on data</a></li>
+<li><a href="#evaluation">Model evaluation</a></li>
+<li><a href="#estimation">Salary estimation</a></li>
+<li><a href="#comparison">Comparison with Sklearn model</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
 </ol>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
-</code></pre></div><h2 id="1dataset">1.Dataset</h2>
+</code></pre></div><h2 id="1dataseta-iddataa">1.Dataset<a id="data"></a></h2>
 <p>The dataset is constituted of “YearsExperience” and “Salary” informations for 30 employees in an anonymous company.<br/></p>
 <p>Get the original dataset here: <a href="https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression">https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression</a></p>
 <h3 id="importing-dataset">Importing dataset</h3>
@@ -163,7 +164,7 @@ plt.title(<span style="color:#cd5555">&#39;Annual Salary v/s Years of Experience
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_19_0.png#c" alt="png"></p>
 <p>One can see on plot that annual salaries of employees looks linearly correlated to years of experience !</p>
-<h2 id="2linear-model-definition">2.Linear model definition</h2>
+<h2 id="2linear-model-definitiona-idmodela">2.Linear model definition<a id="model"></a></h2>
 <p>In statistics, linear regression is a linear approach to modelling the relationship between a scalar response and one or more explanatory variables (also known as dependent and independent variables). The case of one explanatory variable is called simple linear regression.</p>
 <p>Let&rsquo;s define <strong>y</strong> as the real random variable to be explained (dependent) and <strong>x</strong> the explanatory variable (independent). The model supposes that on average, <strong>y</strong> is an affine function of <strong>x</strong>. The writing of the model implicitly supposes a preliminary notion of causality in the sense that <strong>y</strong> depends on <strong>x</strong>:</p>
 <p>For a given sequence of <strong>m</strong> observations</p>
@@ -221,7 +222,7 @@ plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_47_0.png#c" alt="png"></p>
 <p>One clearly see that the model is not yet fitted to our data.</p>
-<h2 id="3loss-function-definition-using-mean-squared-error-mse">3.Loss function definition using Mean Squared Error (MSE)</h2>
+<h2 id="3loss-function-definition-using-mean-squared-error-msea-idlossa">3.Loss function definition using Mean Squared Error (MSE)<a id="loss"></a></h2>
 <p>From the previous equations, we know that the residuals are defined by:</p>
 <p>$$ \epsilon = y - X.\beta$$</p>
 <p>Then to measure the error of our model we define the Loss function as the mean of the squares of the residuals:</p>
@@ -234,7 +235,7 @@ plt.show()
 </code></pre></div><pre><code>199243474.14642814
 </code></pre>
 <p>Notice the high value of our Loss !! It can be possible to scale the values of the x feature in order to reduce the high values during the calculations &hellip; but for this try we can stay with non scaled values.</p>
-<h2 id="4gradient-definition">4.Gradient definition</h2>
+<h2 id="4gradient-definitiona-idgradienta">4.Gradient definition<a id="gradient"></a></h2>
 <p>Now we calculate the gradient of the Loss function:</p>
 <p>$$\frac{\partial J(\beta) }{\partial \beta} = - \frac{2}{m} X^T.(y - X.\beta)$$</p>
 <p>But as we want to solve a minimization problem, we keep for calculations the gradient multiplied by -1:</p>
@@ -246,7 +247,7 @@ plt.show()
 </code></pre></div><pre><code>[[ -25738.49612919]
  [-128193.59810319]]
 </code></pre>
-<h2 id="5gradient-descent-algorithm">5.Gradient descent algorithm</h2>
+<h2 id="5gradient-descent-algorithma-iddescenta">5.Gradient descent algorithm<a id="descent"></a></h2>
 <p>For each iteration of the calculus we update the parameters as well as the gradient of the model using the gradient descent algorithm:</p>
 <p>$$\beta' = \beta - \alpha \frac{\partial J(\beta) }{\partial \beta}$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradientDescent</span>(X, y, Beta, learning_rate, n_iterations):
@@ -256,7 +257,7 @@ plt.show()
         loss_history[i] = lossFunction(X, y, Beta)
     
     <span style="color:#8b008b;font-weight:bold">return</span> Beta, loss_history, gradient(X, y , Beta)
-</code></pre></div><h2 id="6training-the-model-on-data">6.Training the model on data</h2>
+</code></pre></div><h2 id="6training-the-model-on-dataa-idtraininga">6.Training the model on data<a id="training"></a></h2>
 <p>Fisrt I define the hypermarameters:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">20000</span>
 LEARNING_RATE = <span style="color:#b452cd">0.001</span>
@@ -281,7 +282,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <
 plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_79_0.png#c" alt="png"></p>
-<h2 id="7model-evaluation">7.Model evaluation</h2>
+<h2 id="7model-evaluationa-idevaluationa">7.Model evaluation<a id="evaluation"></a></h2>
 <h3 id="regression-line-visualization">Regression line visualization</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_pred_custom = model(X, Final_Beta)
 </code></pre></div><p>Let&rsquo;s have a look on the regression line:</p>
@@ -301,7 +302,18 @@ plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_84_0.png#c" alt="png"></p>
 <p>We can see on plot that this time the model fits pretty good on the data !</p>
-<h3 id="salary-estimation">Salary estimation</h3>
+<h3 id="coefficient-of-determination">Coefficient of determination</h3>
+<p>This coefficient indicates the quality of predictions made with our model.</p>
+<p>$$ R^2 = 1 - \frac{\sum ((y_i - \hat{y_i})^2}{\sum ((y_i - \bar{y})^2)} $$</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">determinationCoef</span>(y, y_pred):
+    SSR = ((y - y_pred)**<span style="color:#b452cd">2</span>).sum()    <span style="color:#228b22"># Residual sum of squares SSR</span>
+    SST = ((y - y.mean())**<span style="color:#b452cd">2</span>).sum()  <span style="color:#228b22"># Total sum of squares SST</span>
+    <span style="color:#8b008b;font-weight:bold">return</span> np.sqrt(<span style="color:#b452cd">1</span> - SSR/SST)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_pred_custom):0.2f}&#34;</span>)
+</code></pre></div><pre><code>R2 = 0.98
+</code></pre>
+<p>We almost reach the maximum value of 1 !! The model can estimate accuratly the annual salary of an employee in the company given his years of experience.</p>
+<h2 id="8salary-estimationa-idestimationa">8.Salary estimation<a id="estimation"></a></h2>
 <p>Now let&rsquo;s imagine that we want to have an estimation of the salary for someone who have 12 years of experience in the company.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_estimation = np.array([<span style="color:#b452cd">12</span>])
 X_estimation = np.hstack((np.ones(x_estimation.shape), x_estimation))
@@ -329,20 +341,9 @@ plt.yticks(np.arange(<span style="color:#b452cd">30000</span>, <span style="colo
 plt.grid(linestyle=<span style="color:#cd5555">&#39;--&#39;</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_90_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/output_96_0.png#c" alt="png"></p>
 <p>One can see on plot the estimated salary for someone who has 12 years of experience in the company.</p>
-<h3 id="coefficient-of-determination">Coefficient of determination</h3>
-<p>This coefficient indicates the quality of predictions made with our model.</p>
-<p>$$ R^2 = 1 - \frac{\sum ((y_i - \hat{y_i})^2}{\sum ((y_i - \bar{y})^2)} $$</p>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">determinationCoef</span>(y, y_pred):
-    SSR = ((y - y_pred)**<span style="color:#b452cd">2</span>).sum()    <span style="color:#228b22"># Residual sum of squares SSR</span>
-    SST = ((y - y.mean())**<span style="color:#b452cd">2</span>).sum()  <span style="color:#228b22"># Total sum of squares SST</span>
-    <span style="color:#8b008b;font-weight:bold">return</span> np.sqrt(<span style="color:#b452cd">1</span> - SSR/SST)
-</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_pred_custom):0.2f}&#34;</span>)
-</code></pre></div><pre><code>R2 = 0.98
-</code></pre>
-<p>We almost reach the maximum value of 1 !! The model can estimate accuratly any salary given the number of years of experience of an employee in the company.</p>
-<h2 id="8comparison-with-sklearn-linearregression-model">8.Comparison with sklearn LinearRegression model</h2>
+<h2 id="9comparison-with-sklearn-linearregression-modela-idcomparisona">9.Comparison with sklearn LinearRegression model<a id="comparison"></a></h2>
 <p>Scikit-Learn already provides a well built Linear Regression model for general purpose (linear, multi-linear or polynomial regressions). <br/>
 I will apply it on the Salary_data.csv dataset in order to compare and check the quality of my custom linear regression model.</p>
 <p>As I&rsquo;ve done previously, I define X, y variables</p>
@@ -389,7 +390,7 @@ y_estimation = LR_model.predict(X_estimation)
 </span><span style="color:#cd5555"></span><span style="color:#cd5555">{y_estimation[0][0]:.0f} USD&#39;</span>)
 </code></pre></div><pre><code>The estimated annual salary of someone who has 12 years of experience is 139192 USD
 </code></pre>
-<h2 id="9conclusion">9.Conclusion</h2>
+<h2 id="10conclusiona-idconclusiona">10.Conclusion<a id="conclusion"></a></h2>
 <p><strong>The custom model build from scratch looks pretty good to predict salary given years of experience and fits pretty well to the data, thus I get a R2 determination coefficient of 0.98 (almost 1) that indicates a good quality of predictions.</strong></p>
 <p><strong>Comparing coefficients of regression and estimated salaries for both models, one can see that the custom model gives the same results as the Sklearn model.</strong></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>

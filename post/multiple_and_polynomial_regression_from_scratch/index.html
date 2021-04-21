@@ -116,15 +116,15 @@ if (!doNotTrack) {
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
 <li><a href="#data">Dataset</a></li>
-<li>Multiple Linear model definition</li>
-<li>Loss function definition</li>
-<li>Gradient definition</li>
-<li>Gradient descent algorithm</li>
-<li>Training the model on data</li>
-<li>Model evaluation</li>
-<li>Multiple Polynomial Regression</li>
-<li>Median houses prices Estimations</li>
-<li>Conclusion</li>
+<li><a href="#model">Multiple Linear model definition</a></li>
+<li><a href="#loss">Loss function definition</a></li>
+<li><a href="#gradient">Gradient definition</a></li>
+<li><a href="#descent">Gradient descent algorithm</a></li>
+<li><a href="#training">Training the model on data</a></li>
+<li><a href="#evaluation">Model evaluation</a></li>
+<li><a href="#polynomial">Multiple Polynomial Regression</a></li>
+<li><a href="#estimation">Median houses prices Estimations</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
 </ol>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
@@ -291,9 +291,8 @@ ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b4
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_41_0.png#c" alt="png"></p>
-<h2 id="2multiple-linear-model-definition">2.Multiple-Linear model definition</h2>
-<p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.
-See: <a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">A Simple Linear Regression from scratch</a></p>
+<h2 id="2multiple-linear-model-definitiona-idmodela">2.Multiple-Linear model definition<a id="model"></a></h2>
+<p>In statistics, multiple linear regression is a mathematical regression method extending <a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">simple Linear Regression </a> to describe the variations of an endogenous variable associated with the variations of several exogenous variables.</p>
 <p>For a given sequence of <strong>m</strong> observations, as we consider two features from our data</p>
 <p>$${(x_{1 i}, x_{2 i}, y_i) \hspace{4mm}i=1 &hellip;, m}$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
@@ -359,7 +358,7 @@ ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b4
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_60_0.png#c" alt="png"></p>
 <p>One clearly see on plot that the model is not fitted yet to our data !</p>
-<h2 id="3loss-function--mean-squared-error-mse">3.Loss function : Mean Squared Error (MSE)</h2>
+<h2 id="3loss-function--mean-squared-error-msea-idlossa">3.Loss function : Mean Squared Error (MSE)<a id="loss"></a></h2>
 <p>To measure the error of our model we define the Loss function as the mean of the squares of the residuals:</p>
 <p>$$ J(\beta) = \frac{1}{m} \sum (y - X.\beta)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">lossFunction</span>(X, y, Beta):
@@ -369,13 +368,13 @@ plt.show()
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lossFunction(X, y, Beta)
 </code></pre></div><pre><code>1015.5676625443134
 </code></pre>
-<h2 id="4gradient-definition">4.Gradient definition</h2>
+<h2 id="4gradient-definitiona-idgradienta">4.Gradient definition<a id="gradient"></a></h2>
 <p>$$\frac{\partial J(\beta) }{\partial \beta} = - \frac{2}{m} X^T.(y - X.\beta)$$</p>
 <p>But as we want to solve a minimization problem, we keep for calculations the gradient multiplied by -1:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradient</span>(X, y, Beta):
     m = y.shape[<span style="color:#b452cd">0</span>]
     <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">2</span>/m * X.T.dot(model(X, Beta) - y)
-</code></pre></div><h2 id="5gradient-descent-algorithm">5.Gradient descent algorithm</h2>
+</code></pre></div><h2 id="5gradient-descent-algorithma-iddescenta">5.Gradient descent algorithm<a id="descent"></a></h2>
 <p>$$\beta' = \beta - \alpha \frac{\partial J(\beta) }{\partial \beta}$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradientDescent</span>(X, y, Beta, learning_rate, n_iterations):
     loss_history = np.zeros(n_iterations)
@@ -384,7 +383,7 @@ plt.show()
         loss_history[i] = lossFunction(X, y, Beta)
     
     <span style="color:#8b008b;font-weight:bold">return</span> Beta, loss_history
-</code></pre></div><h2 id="6training-the-model-on-data">6.Training the model on data</h2>
+</code></pre></div><h2 id="6training-the-model-on-dataa-idtraininga">6.Training the model on data<a id="training"></a></h2>
 <p>First I define the hypermarameters:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">500</span>
 LEARNING_RATE = <span style="color:#b452cd">0.001</span>
@@ -407,7 +406,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <
 plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_83_0.png#c" alt="png"></p>
-<h2 id="7model-evaluation">7.Model evaluation</h2>
+<h2 id="7model-evaluationa-idevaluationa">7.Model evaluation<a id="evaluation"></a></h2>
 <h3 id="regression-plane-visualization">Regression plane visualization</h3>
 <p>Let&rsquo;s create a 3D plot animation for better visualization:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">matplotlib</span> <span style="color:#8b008b;font-weight:bold">import</span> animation
@@ -465,7 +464,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<
 </code></pre>
 <p>The R2 coefficient is quite high, but far from the maximum value.<br/></p>
 <p><strong>This confirms what we can see on graphics: the model must be too simple&hellip; So let&rsquo;s try to improve it !</strong></p>
-<h2 id="8multiple-polynomial-regression">8.Multiple Polynomial Regression</h2>
+<h2 id="8multiple-polynomial-regressiona-idpolynomiala">8.Multiple Polynomial Regression<a id="polynomial"></a></h2>
 <p><strong>This time we will consider a non linear - polynomial correlation between the median price value and the percentage of lower status people feature.</strong></p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/feature_plots.png#c" alt="png"></p>
 <p>Polynomial regression is a form of regression analysis in which the relationship between the independent variable x and the dependent variable y is modelled as an nth degree polynomial in x.
@@ -604,7 +603,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation2.gif&#39;</span>, fps=<
 </code></pre></div><pre><code>R2 = 0.87
 </code></pre>
 <p>We see that for this model, the coefficient of determination is really better, in addition to the fact that the regression surface adapts quite well to our data!</p>
-<h2 id="9-median-houses-prices-estimations">9. Median houses prices Estimations</h2>
+<h2 id="9-median-houses-prices-estimationsa-idestimationa">9. Median houses prices Estimations<a id="estimation"></a></h2>
 <p><strong>Ok, now that we have a quite good model, let&rsquo;s try to do what we are here for : make some estimations.</strong></p>
 <p>Imagine that new data incoming &hellip; we get new lines in our dataframe, and it reveals that:<br/></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
@@ -686,7 +685,7 @@ ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span 
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_143_0.png#c" alt="png"></p>
-<h1 id="10conclusion">10.Conclusion</h1>
+<h1 id="10conclusiona-idconclusiona">10.Conclusion<a id="conclusion"></a></h1>
 <p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<br/></p>
 <p><strong>Multiple Linear regression model:  R2 = 81<br/></strong></p>
 <p><strong>Multiple Polynomial regression model: R2 = 87</strong></p>
