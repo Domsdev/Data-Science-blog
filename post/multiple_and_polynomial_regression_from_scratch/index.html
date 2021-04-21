@@ -115,7 +115,7 @@ if (!doNotTrack) {
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
-<li>Dataset</li>
+<li><a href="#data">Dataset</a></li>
 <li>Multiple Linear model definition</li>
 <li>Loss function definition</li>
 <li>Gradient definition</li>
@@ -134,7 +134,7 @@ if (!doNotTrack) {
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">dataframe_image</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">dfi</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">csv</span>
 %matplotlib inline
-</code></pre></div><h2 id="1dataset">1.Dataset</h2>
+</code></pre></div><h2 id="1dataseta-iddataa">1.Dataset<a id="data"></a></h2>
 <h3 id="importing-dataset">Importing dataset</h3>
 <p>First we need to load the &ldquo;Boston Housing Dataset&rdquo; using sklearn datasets library:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.datasets</span> <span style="color:#8b008b;font-weight:bold">import</span> load_boston
@@ -292,10 +292,8 @@ ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b4
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_41_0.png#c" alt="png"></p>
 <h2 id="2multiple-linear-model-definition">2.Multiple-Linear model definition</h2>
-<p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.</p>
-<ul>
-	<li>See:<a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">A Simple Linear Regression from scratch</a></li>
-</ul>
+<p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.
+See: <a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">A Simple Linear Regression from scratch</a></p>
 <p>For a given sequence of <strong>m</strong> observations, as we consider two features from our data</p>
 <p>$${(x_{1 i}, x_{2 i}, y_i) \hspace{4mm}i=1 &hellip;, m}$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
