@@ -115,16 +115,16 @@ if (!doNotTrack) {
 <hr>
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
-<li><a href="">Dataset</a></li>
-<li><a href="">Multiple Linear model definition</a></li>
-<li><a href="">Loss function definition</a></li>
-<li><a href="">Gradient definition</a></li>
-<li><a href="">Gradient descent algorithm</a></li>
-<li><a href="">Training model on data</a></li>
-<li><a href="">Model evaluation</a></li>
-<li><a href="">Multiple Polynomial Regression</a></li>
-<li><a href="">Median houses prices Estimations</a></li>
-<li><a href="">Conclusion</a></li>
+<li>Dataset</li>
+<li>Multiple Linear model definition</li>
+<li>Loss function definition</li>
+<li>Gradient definition</li>
+<li>Gradient descent algorithm</li>
+<li>Training the model on data</li>
+<li>Model evaluation</li>
+<li>Multiple Polynomial Regression</li>
+<li>Median houses prices Estimations</li>
+<li>Conclusion</li>
 </ol>
 <h3 id="importing-libraries">Importing libraries</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
@@ -294,10 +294,12 @@ plt.show()
 <h2 id="2multiple-linear-model-definition">2.Multiple-Linear model definition</h2>
 <p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.</p>
 <!-- raw HTML omitted -->
-<p>The model is defined by:</p>
-<p>$$ y = X.\beta + \epsilon$$</p>
-<p>&hellip; and as we consider two features for our model, we got:</p>
+<p>For a given sequence of <strong>m</strong> observations, as we consider two features from our data</p>
+<p>$${(x_{1 i}, x_{2 i}, y_i) \hspace{4mm}i=1 &hellip;, m}$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
+<p>$$ Using \hspace{3mm}matrix \hspace{3mm}notations \hspace{3mm}x_1 = [x_{1 1}, x_{1 2}, &hellip;, x_{1 m}]^T \hspace{3mm}x_2 = [x_{2 1}, x_{2 2}, &hellip;, x_{2 m}]^T \hspace{3mm}and \hspace{3mm}  y = [y_1, y_2, &hellip;, y_m]^T$$</p>
+<p>$$The \hspace{3mm}model \hspace{3mm}is:\hspace{3mm} y = X.\beta + \epsilon$$</p>
+<p>$$Where\hspace{3mm} X = [1 \hspace{3mm} x_{1}\hspace{3mm} x_{2}] \hspace{3mm}and\hspace{3mm} \beta= [\beta_{0} \hspace{3mm}\beta_{1}\hspace{3mm}\beta_{2}]^T$$</p>
 <h3 id="converting-data-into-arrays">Converting data into arrays</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1 = df[<span style="color:#cd5555">&#39;RM&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
 x2 = df[<span style="color:#cd5555">&#39;LSTAT&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
@@ -306,7 +308,6 @@ y = df[<span style="color:#cd5555">&#39;MEDV&#39;</span>].values.reshape(-<span 
 </code></pre></div><pre><code>(490, 1) (490, 1) (490, 1)
 </code></pre>
 <p>Adding identity column vector to features:</p>
-<p>$$X = [1 \hspace{3mm} x_1 \hspace{3mm} x_2]$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = np.hstack((x1, x2))
 X = np.hstack((np.ones(x1.shape), X))
 <span style="color:#8b008b;font-weight:bold">print</span>(X[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">5</span>])
@@ -355,22 +356,22 @@ ax.plot_surface(u1, u2, v, alpha=<span style="color:#b452cd">0.5</span>, cmap=<s
 
 ax.elev, ax.azim = <span style="color:#b452cd">5</span>, -<span style="color:#b452cd">130</span>
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_58_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_59_0.png#c" alt="png"></p>
 <p>One clearly see on plot that the model is not fitted yet to our data !</p>
 <h2 id="3loss-function--mean-squared-error-mse">3.Loss function : Mean Squared Error (MSE)</h2>
-<p>$$ J(\beta) = \frac{1}{2m} \sum (X.\beta - y)^2 $$</p>
+<p>$$ J(\beta) = \frac{1}{m} \sum (y - X.\beta)^2 $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">lossFunction</span>(X, y, Beta):
         m = y.shape[<span style="color:#b452cd">0</span>]
-        <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(<span style="color:#b452cd">2</span>*m) * np.sum((model(X, Beta) - y)**<span style="color:#b452cd">2</span>)
+        <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/(m) * np.sum((model(X, Beta) - y)**<span style="color:#b452cd">2</span>)
 </code></pre></div><p>Let&rsquo;s check the initial loss value:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lossFunction(X, y, Beta)
-</code></pre></div><pre><code>507.7838312721567
+</code></pre></div><pre><code>1015.5676625443134
 </code></pre>
 <h2 id="4gradient-definition">4.Gradient definition</h2>
-<p>$$\frac{\partial J(\beta) }{\partial \beta} = \frac{1}{m} X^T.(X.\beta - y)$$</p>
+<p>$$\frac{\partial J(\beta) }{\partial \beta} = -2* \frac{1}{m} X^T.(y - X.\beta)$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradient</span>(X, y, Beta):
     m = y.shape[<span style="color:#b452cd">0</span>]
-    <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">1</span>/m * X.T.dot(model(X, Beta) - y)
+    <span style="color:#8b008b;font-weight:bold">return</span> <span style="color:#b452cd">2</span>/m * X.T.dot(model(X, Beta) - y)
 </code></pre></div><h2 id="5gradient-descent-algorithm">5.Gradient descent algorithm</h2>
 <p>$$\beta' = \beta - \alpha \frac{\partial J(\beta) }{\partial \beta}$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">gradientDescent</span>(X, y, Beta, learning_rate, n_iterations):
@@ -380,7 +381,7 @@ plt.show()
         loss_history[i] = lossFunction(X, y, Beta)
     
     <span style="color:#8b008b;font-weight:bold">return</span> Beta, loss_history
-</code></pre></div><h2 id="6training-the-model">6.Training the model</h2>
+</code></pre></div><h2 id="6training-the-model-on-data">6.Training the model on data</h2>
 <p>First I define the hypermarameters:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_ITERATIONS = <span style="color:#b452cd">500</span>
 LEARNING_RATE = <span style="color:#b452cd">0.001</span>
@@ -390,9 +391,9 @@ LEARNING_RATE = <span style="color:#b452cd">0.001</span>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Intercept = {Final_Beta[0][0]:.2f}&#34;</span>)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;coefficient 1 = {Final_Beta[1][0]:.2f}&#34;</span>)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;coefficient 2 = {Final_Beta[2][0]:.2f}&#34;</span>)
-</code></pre></div><pre><code>Intercept = -0.88
-coefficient 1 = 4.76
-coefficient 2 = -0.56
+</code></pre></div><pre><code>Intercept = -0.87
+coefficient 1 = 4.78
+coefficient 2 = -0.57
 </code></pre>
 <p>Let&rsquo;s have a look on the Learning Curve:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
@@ -402,8 +403,7 @@ plt.title(<span style="color:#cd5555">&#39;Learning curve&#39;</span>, fontsize 
 plt.xlabel(<span style="color:#cd5555">&#39;Iterations&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.ylabel(<span style="color:#cd5555">&#39;Loss value&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_79_0.png#c" alt="png"></p>
-<p>What a beatifull learning curve isn&rsquo;t it ?!</p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_80_0.png#c" alt="png"></p>
 <h2 id="7model-evaluation">7.Model evaluation</h2>
 <h3 id="regression-plane-visualization">Regression plane visualization</h3>
 <p>Let&rsquo;s create a 3D plot animation for better visualization:</p>
@@ -451,11 +451,11 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<
 <p><strong>The model could be too simple to well modelize the data.</strong></p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>Coefficient values between [0, 1].  Indicates the quality of the prediction.</p>
-<p>$$ R^2 = 1 - \frac{\sum ((y^i - f(x^i))^2}{\sum ((y^i - \bar y)^2)} $$</p>
+<p>$$ R^2 = 1 - \frac{\sum ((y_i - \hat{y_i})^2}{\sum ((y_i - \bar{y})^2)} $$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">determinationCoef</span>(y, y_pred):
-    u = ((y - y_pred)**<span style="color:#b452cd">2</span>).sum()      <span style="color:#228b22"># Residual sum of squares SSR</span>
-    v = ((y - y.mean())**<span style="color:#b452cd">2</span>).sum()    <span style="color:#228b22"># Total sum of squares SST</span>
-    <span style="color:#8b008b;font-weight:bold">return</span> np.sqrt(<span style="color:#b452cd">1</span> - u/v)
+    SSR = ((y - y_pred)**<span style="color:#b452cd">2</span>).sum()    <span style="color:#228b22"># Residual sum of squares SSR</span>
+    SST = ((y - y.mean())**<span style="color:#b452cd">2</span>).sum()  <span style="color:#228b22"># Total sum of squares SST</span>
+    <span style="color:#8b008b;font-weight:bold">return</span> np.sqrt(<span style="color:#b452cd">1</span> - SSR/SST)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_prediction = model(X, Final_Beta)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_prediction):0.2f}&#34;</span>)
 </code></pre></div><pre><code>R2 = 0.81
@@ -469,7 +469,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<
 Polynomial regression fits a nonlinear relationship between the value of x and the corresponding conditional mean of y. Although polynomial regression fits a nonlinear function of the data, as a statistical estimation problem it is linear, in the sense that the regression model is linear to the unknown parameters that are estimated from the data. For this reason, polynomial regression is considered to be a special case of multiple linear regression.</p>
 <p><strong>The regression model remains linear to the unknown parameters:</strong></p>
 <p>$$ y = X.\beta + \epsilon$$</p>
-<p><strong>&hellip; and polynomial regression fits a nonlinear function of the features:</strong></p>
+<p><strong>&hellip; but polynomial regression fits a nonlinear function of the features:</strong></p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} +\beta_{3}.x_{1 i}.x_{2 i} +\beta_{4}.x_{2 i}^2 + \epsilon_i $$</p>
 <h3 id="converting-data-into-arrays-1">Converting data into arrays</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1 = df[<span style="color:#cd5555">&#39;RM&#39;</span>].values.reshape(-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">1</span>)
@@ -549,11 +549,11 @@ LEARNING_RATE = <span style="color:#b452cd">0.01</span>
 
 Final_Beta, loss_history = gradientDescent(X, y, Beta, LEARNING_RATE, N_ITERATIONS)
 <span style="color:#8b008b;font-weight:bold">print</span>(Final_Beta)
-</code></pre></div><pre><code>[[-0.54116164]
- [ 0.01817997]
- [-0.62022455]
- [-0.98121716]
- [-0.04114927]]
+</code></pre></div><pre><code>[[-0.54169521]
+ [ 0.00731156]
+ [-0.62805316]
+ [-1.00386475]
+ [-0.05360365]]
 </code></pre>
 <h3 id="-and-visualize-the-updated-regression-surface-">&hellip; and visualize the updated regression surface !</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
@@ -635,8 +635,8 @@ X = np.hstack((np.ones(x1_new.shape), X))
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_prediciton = MEDV_scaler.inverse_transform(y_prediciton_scaled)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;The estimated median price for (RM=4,LSTAT=35) is {y_prediciton[0][0]*1000:.0f} Dollars !&#34;</span>)
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;The estimated median price for (RM=8,LSTAT=6) is {y_prediciton[1][0]*1000:.0f} Dollars !&#34;</span>)
-</code></pre></div><pre><code>The estimated median price for (RM=4,LSTAT=35) is 16828 Dollars !
-The estimated median price for (RM=8,LSTAT=6) is 37033 Dollars !
+</code></pre></div><pre><code>The estimated median price for (RM=4,LSTAT=35) is 17064 Dollars !
+The estimated median price for (RM=8,LSTAT=6) is 37093 Dollars !
 </code></pre>
 <p>To finally report the estimated median price values on plots:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">%matplotlib inline
