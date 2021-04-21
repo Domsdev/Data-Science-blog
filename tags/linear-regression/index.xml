@@ -14,9 +14,9 @@
       <pubDate>Thu, 10 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domsdev.github.io/Data-science-blog/post/multiple_and_polynomial_regression_from_scratch/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;!--# Multiple and Polynomial Regression from scratch--&gt;
 &lt;h2 id=&#34;objective&#34;&gt;Objective:&lt;/h2&gt;
-&lt;p&gt;The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &amp;ldquo;Boston Housing Dataset&amp;rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &amp;ldquo;Boston Housing Dataset&amp;rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.&lt;br/&gt;&lt;/p&gt;
 &lt;p&gt;I won&amp;rsquo;t explain theory here, only background basic equations needed for code understanding.&lt;/p&gt;</description>
     </item>
     
@@ -26,9 +26,9 @@
       <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;!--# A Simple Linear Regression from scratch--&gt;
 &lt;h2 id=&#34;objective&#34;&gt;Objective:&lt;/h2&gt;
-&lt;p&gt;The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &amp;ldquo;Salary_Data.csv&amp;rdquo; Kaggle&amp;rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &amp;ldquo;Salary_Data.csv&amp;rdquo; Kaggle&amp;rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.&lt;br/&gt;&lt;/p&gt;
 &lt;p&gt;I won&amp;rsquo;t explain theory here, only background basic equations needed for code understanding.&lt;/p&gt;</description>
     </item>
     

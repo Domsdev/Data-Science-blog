@@ -107,9 +107,9 @@ if (!doNotTrack) {
     <h1 class="title">Multiple and Polynomial Regression from scratch</h1>
     
     <div class="content">
-      <!-- raw HTML omitted -->
+      <!--# Multiple and Polynomial Regression from scratch-->
 <h2 id="objective">Objective:</h2>
-<p>The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &ldquo;Boston Housing Dataset&rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.<!-- raw HTML omitted --></p>
+<p>The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &ldquo;Boston Housing Dataset&rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.<br/></p>
 <p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation.gif#c" alt="Alt Text"></p>
 <hr>
@@ -227,12 +227,12 @@ Data columns (total 14 columns):
 dtypes: float64(14)
 memory usage: 55.5 KB
 </code></pre>
-<p>One can see that our dataframe is composed of 14 columns and 506 entries (rows). All values are as float type and there is no null values.<!-- raw HTML omitted --></p>
+<p>One can see that our dataframe is composed of 14 columns and 506 entries (rows). All values are as float type and there is no null values.<br/></p>
 <p>Even more intersting statistical informations about our data:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dfi.export(df.describe(), <span style="color:#cd5555">&#34;img/boston_dataframe_describe.png&#34;</span>)
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/boston_dataframe_describe.png#c" alt="png"></p>
 <h3 id="outliers">Outliers</h3>
-<p><strong>An interesing fact on this dataset is about the max value of MEDV! From the original dataset description, we can read:</strong><!-- raw HTML omitted --></p>
+<p><strong>An interesing fact on this dataset is about the max value of MEDV! From the original dataset description, we can read:</strong><br/></p>
 <p><em>Variable #14 seems to be censored at 50.00 (corresponding to a median price of 50,000 Dollars); Censoring is suggested by the fact that the highest median price of exactly 50,000 Dollars is reported in 16 cases, while 15 cases have prices between 40,000 and 50,000 Dollars, with prices rounded to the nearest hundred. Harrison and Rubinfeld do not mention any censoring.</em></p>
 <p>So let&rsquo;s remove these problematic values where MEDV = 50.0 :</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = df[~(df[<span style="color:#cd5555">&#39;MEDV&#39;</span>] &gt;= <span style="color:#b452cd">50.0</span>)]
@@ -246,8 +246,8 @@ sns.heatmap(correlation.round(<span style="color:#b452cd">2</span>), mask=mask, 
             vmin=-<span style="color:#b452cd">1</span>, vmax=<span style="color:#b452cd">1</span>, center= <span style="color:#b452cd">0</span>, linewidths=<span style="color:#b452cd">2</span>, linecolor=<span style="color:#cd5555">&#39;white&#39;</span>)
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_33_0.png#c" alt="png"></p>
-<p>Remember, our target is the median price <strong>MEDV</strong> ! So we need to read the last line of our table.<!-- raw HTML omitted --></p>
-<p>We can observe that <strong>the target is highly and positively correlated to the RM</strong> feature (the average number of rooms per dwelling) and it looks normal as the more a dwelling has rooms, the more its price is.<!-- raw HTML omitted --></p>
+<p>Remember, our target is the median price <strong>MEDV</strong> ! So we need to read the last line of our table.<br/></p>
+<p>We can observe that <strong>the target is highly and positively correlated to the RM</strong> feature (the average number of rooms per dwelling) and it looks normal as the more a dwelling has rooms, the more its price is.<br/></p>
 <p>On the other hand, we see that <strong>the target is highly and negatively correlated to the LSTAT</strong> feature (% lower status of the population) &hellip; houses prices are lower when the amount of lower status people increase.</p>
 <p><strong>Given these observations, I will keep RM and LSTAT features for analysis as they are the two most correlated to our target.</strong></p>
 <h3 id="data-visualization">Data visualization</h3>
@@ -293,8 +293,9 @@ plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_41_0.png#c" alt="png"></p>
 <h2 id="2multiple-linear-model-definition">2.Multiple-Linear model definition</h2>
 <p>In statistics, multiple linear regression is a mathematical regression method extending simple linear regression to describe the variations of an endogenous variable associated with the variations of several exogenous variables.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<ul>
+	<li>See:<a href="https://domsdev.github.io/Data-science-blog/post/a_simple_linear_regression_from_scratch/">A Simple Linear Regression from scratch</a></li>
+</ul>
 <p>For a given sequence of <strong>m</strong> observations, as we consider two features from our data</p>
 <p>$${(x_{1 i}, x_{2 i}, y_i) \hspace{4mm}i=1 &hellip;, m}$$</p>
 <p>$$ y_i=\beta_{0} +\beta_{1}.x_{1 i} +\beta_{2}.x_{2 i} + \epsilon_i $$</p>
@@ -451,7 +452,7 @@ anim = animation.FuncAnimation(fig, animate, init_func=init,
 <span style="color:#228b22"># Saving the animation</span>
 anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<span style="color:#b452cd">25</span>)
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/animation1.gif#c" alt="Alt Text"></p>
-<p>The regression plane seems to fit pretty good on median prices lower than 40000 Dollars, But not so good for higher values ! It fits badly as well for median prices where the percentage of low status people is high. <!-- raw HTML omitted --></p>
+<p>The regression plane seems to fit pretty good on median prices lower than 40000 Dollars, But not so good for higher values ! It fits badly as well for median prices where the percentage of low status people is high. <br/></p>
 <p><strong>The model could be too simple to well modelize the data.</strong></p>
 <h3 id="coefficient-of-determination">Coefficient of determination</h3>
 <p>Coefficient values between [0, 1].  Indicates the quality of the prediction.</p>
@@ -464,7 +465,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation1.gif&#39;</span>, fps=<
 <span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;R2 = {determinationCoef(y, y_prediction):0.2f}&#34;</span>)
 </code></pre></div><pre><code>R2 = 0.81
 </code></pre>
-<p>The R2 coefficient is quite high, but far from the maximum value.<!-- raw HTML omitted --></p>
+<p>The R2 coefficient is quite high, but far from the maximum value.<br/></p>
 <p><strong>This confirms what we can see on graphics: the model must be too simple&hellip; So let&rsquo;s try to improve it !</strong></p>
 <h2 id="8multiple-polynomial-regression">8.Multiple Polynomial Regression</h2>
 <p><strong>This time we will consider a non linear - polynomial correlation between the median price value and the percentage of lower status people feature.</strong></p>
@@ -485,9 +486,9 @@ y = df[<span style="color:#cd5555">&#39;MEDV&#39;</span>].values.reshape(-<span 
 <h3 id="here-we-need-to-scale-our-data-in-order-to-avoid-memory-overflow-">Here we need to scale our data in order to avoid memory overflow !!</h3>
 <p>Calculations without scaling brings too high values &hellip;</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/overflow_encountered.png#c" alt="png"></p>
-<p>I used the sklearn MinMaxScaler preprocessing to scale the data:<!-- raw HTML omitted --></p>
-<p>$$X_{scaled} = X_{std} * (max - min) + min$$<!-- raw HTML omitted --></p>
-<p>where <!-- raw HTML omitted --></p>
+<p>I used the sklearn MinMaxScaler preprocessing to scale the data:<br/></p>
+<p>$$X_{scaled} = X_{std} * (max - min) + min$$<br/></p>
+<p>where <br/></p>
 <p>$$X_{std} = (X - X_{min}) / (X_{max} - X_{min})$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.preprocessing</span> <span style="color:#8b008b;font-weight:bold">import</span> MinMaxScaler
 RM_scaler = MinMaxScaler([-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>])
@@ -607,7 +608,7 @@ anim.save(<span style="color:#cd5555">&#39;igm/animation2.gif&#39;</span>, fps=<
 <p>We see that for this model, the coefficient of determination is really better, in addition to the fact that the regression surface adapts quite well to our data!</p>
 <h2 id="9-median-houses-prices-estimations">9. Median houses prices Estimations</h2>
 <p><strong>Ok, now that we have a quite good model, let&rsquo;s try to do what we are here for : make some estimations.</strong></p>
-<p>Imagine that new data incoming &hellip; we get new lines in our dataframe, and it reveals that:<!-- raw HTML omitted --></p>
+<p>Imagine that new data incoming &hellip; we get new lines in our dataframe, and it reveals that:<br/></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
 data_new = {<span style="color:#cd5555">&#39;RM&#39;</span>: [<span style="color:#b452cd">4</span>, <span style="color:#b452cd">8</span>], <span style="color:#cd5555">&#39;LSTAT&#39;</span>: [<span style="color:#b452cd">35</span>, <span style="color:#b452cd">6</span>], <span style="color:#cd5555">&#39;MEDV&#39;</span>: [<span style="color:#cd5555">&#39;estimation ?&#39;</span>, <span style="color:#cd5555">&#39;estimation ?&#39;</span>]}
 df_new = pd.DataFrame(data=data_new)
@@ -617,7 +618,7 @@ df_new = pd.DataFrame(data=data_new)
 |  0 |    4 |      35 | estimation ? |
 |  1 |    8 |       6 | estimation ? |
 </code></pre>
-<p><strong>Now, as it is our goal, we want to estimate the median price value (MEDV) for these new data!</strong><!-- raw HTML omitted --></p>
+<p><strong>Now, as it is our goal, we want to estimate the median price value (MEDV) for these new data!</strong><br/></p>
 <p>So let&rsquo;s convert our data into arrays:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1_new_data = np.array([<span style="color:#b452cd">4</span>, <span style="color:#b452cd">8</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
 x2_new_data = np.array([<span style="color:#b452cd">30</span>, <span style="color:#b452cd">6</span>]).reshape(-<span style="color:#b452cd">1</span>,<span style="color:#b452cd">1</span>)
@@ -688,8 +689,8 @@ ax.scatter(x1_new_data[<span style="color:#b452cd">1</span>], x2_new_data[<span 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Multiple_and_Polynomial_Regression_from_scratch/2020-09-10/output_143_0.png#c" alt="png"></p>
 <h1 id="10conclusion">10.Conclusion</h1>
-<p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<!-- raw HTML omitted --></p>
-<p><strong>Multiple Linear regression model:  R2 = 81<!-- raw HTML omitted --></strong></p>
+<p>I built a multiple linear regression model from scratch to estimate the average house price from the Boston data set. The model was pretty good but needed to be improved &hellip; Then I built a multiple polynomial regression model to better fit the data, and this model gave even better results:<br/></p>
+<p><strong>Multiple Linear regression model:  R2 = 81<br/></strong></p>
 <p><strong>Multiple Polynomial regression model: R2 = 87</strong></p>
 <p><strong>Now we have a tool which can help Boston City&rsquo;s real estate agencies to estimate the median house price as a support for their business activity.</strong></p>
       

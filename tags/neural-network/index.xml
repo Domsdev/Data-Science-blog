@@ -14,9 +14,9 @@
       <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domsdev.github.io/Data-science-blog/post/building_a_neural_network_from_scratch/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;!--# Building an Artificial Neural Network from scratch--&gt;
 &lt;h2 id=&#34;objective&#34;&gt;Objective:&lt;/h2&gt;
-&lt;p&gt;The goal here is to deal with the XOr classification problem that can&amp;rsquo;t be solved with classical logistic regression models. The XOr, or “exclusive or” problem is a classic problem that can be solved with Artificial Neural Network to predict the outputs of XOr logic gates given two binary inputs. The XOr function returns a true value if the two inputs are not equal and a false value if they are equal.&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;The goal here is to deal with the XOr classification problem that can&amp;rsquo;t be solved with classical logistic regression models. The XOr, or “exclusive or” problem is a classic problem that can be solved with Artificial Neural Network to predict the outputs of XOr logic gates given two binary inputs. The XOr function returns a true value if the two inputs are not equal and a false value if they are equal.&lt;br/&gt;&lt;/p&gt;
 &lt;p&gt;I will apply a such &lt;strong&gt;ANN built from scratch&lt;/strong&gt; to a custom dataset generated for XOr binary classification.&lt;/p&gt;</description>
     </item>
     

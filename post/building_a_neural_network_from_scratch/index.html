@@ -103,9 +103,9 @@ if (!doNotTrack) {
     <h1 class="title">Building a Neural Network from scratch</h1>
     
     <div class="content">
-      <!-- raw HTML omitted -->
+      <!--# Building an Artificial Neural Network from scratch-->
 <h2 id="objective">Objective:</h2>
-<p>The goal here is to deal with the XOr classification problem that can&rsquo;t be solved with classical logistic regression models. The XOr, or “exclusive or” problem is a classic problem that can be solved with Artificial Neural Network to predict the outputs of XOr logic gates given two binary inputs. The XOr function returns a true value if the two inputs are not equal and a false value if they are equal.<!-- raw HTML omitted --></p>
+<p>The goal here is to deal with the XOr classification problem that can&rsquo;t be solved with classical logistic regression models. The XOr, or “exclusive or” problem is a classic problem that can be solved with Artificial Neural Network to predict the outputs of XOr logic gates given two binary inputs. The XOr function returns a true value if the two inputs are not equal and a false value if they are equal.<br/></p>
 <p>I will apply a such <strong>ANN built from scratch</strong> to a custom dataset generated for XOr binary classification.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/xor_example.png#c" alt="png"></p>
 <hr>
@@ -129,7 +129,7 @@ if (!doNotTrack) {
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">seaborn</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">sns</span>
 <span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">tqdm</span> <span style="color:#8b008b;font-weight:bold">import</span> tqdm
 %matplotlib inline
-</code></pre></div><h2 id="1generating-dataseta-iddataa">1.Generating Dataset<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+</code></pre></div><h2 id="1generating-dataseta-iddataa">1.Generating Dataset<a id="data"></a></h2>
 <p><strong>Let&rsquo;s generate our dataset using Numpy XOr logical function</strong></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">np.random.seed(<span style="color:#b452cd">50</span>)
 n_samples = <span style="color:#b452cd">1000</span>
@@ -175,7 +175,7 @@ plt.legend(loc=<span style="color:#cd5555">&#34;upper left&#34;</span>, facecolo
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_14_0.png#c" alt="png"></p>
 <p>This is the kind of dataset where it is not possible to find a simple linear or non-linear frontier of separation between the two classes, and this is why an artificial neural network is helpfull in this case.</p>
-<h2 id="2data-preprocessing-a-iddataprepa">2.Data Preprocessing <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h2 id="2data-preprocessing-a-iddataprepa">2.Data Preprocessing <a id="dataprep"></a></h2>
 <h3 id="splitting-dataset">Splitting Dataset</h3>
 <p>Dataset is splitted into training set with 80% of the samples and test set with the remaining 20%, using &ldquo;stratified sampling&rdquo; to ensure that relative class frequencies is approximately preserved in each train and test fold.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train, X_test, y_train, y_test = train_test_split(
@@ -191,14 +191,14 @@ X_test shape: (200, 2)
 </code></pre>
 <h3 id="data-scaling">Data Scaling</h3>
 <p>Features are transformed to the given range [0,1] by scaling:</p>
-<p>$$X_{scaled} = X_{std} * (max - min) + min$$<!-- raw HTML omitted -->
+<p>$$X_{scaled} = X_{std} * (max - min) + min$$<br/>
 Where:
 $$X_{std} = (X - X_{min}) / (X_{max} - X_{min})$$</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">scaler = MinMaxScaler(feature_range=(<span style="color:#b452cd">0</span>, <span style="color:#b452cd">1</span>))
 
 X_train = scaler.fit_transform(X_train) <span style="color:#228b22"># fit and transform training set</span>
 X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform testing set with &#34;Scaler&#34; fited</span>
-</code></pre></div><h2 id="3ann---model-and-backgrounda-idbackgrounda">3.ANN - Model and background<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+</code></pre></div><h2 id="3ann---model-and-backgrounda-idbackgrounda">3.ANN - Model and background<a id="background"></a></h2>
 <h4 id="artificial-neuron">Artificial Neuron</h4>
 <p>As a reminder and support visualization for background equations, this is the structure of an artificial neuron.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/perceptron.png#c" alt="png"></p>
@@ -220,12 +220,12 @@ X_test  = scaler.transform(X_test)      <span style="color:#228b22"># transform 
 <p>$$dZ^{[1]} = ({W^{[2]}}^T  dZ^{[2]}) * {g^{[1]'}} (Z^{[1]})$$</p>
 <p>$$dW^{[1]} = \frac{1}{N} dZ^{[1]} {X}^T$$</p>
 <p>$$db^{[1]} = \frac{1}{N} \sum dZ^{[1]} $$</p>
-<!-- raw HTML omitted -->
+<br/>
 <p>Where $$ \frac{dJ}{dZ^{[2]}} = \frac{dJ}{dA^{[2]}} \frac{dA^{[2]}}{dZ^{[2]}} \implies {dZ^{[2]}} = dA^{[2]} {g^{[2]'}} (Z^{[2]}) = A^{[2]} - Y $$</p>
 <p>$$ \frac{dJ}{dW^{[2]}}  = \frac{dJ}{dZ^{[2]}} \frac{dZ^{[2]}}{dW^{[2]}} \implies {dW^{[2]}} = \frac{1}{N} dZ^{[2]} {A^{[1]}}^T$$</p>
 <p>With $${g'(z)} = \frac{d}{dz} g(z) $$</p>
 <p>Knwowing that for sigmoid fuction we get: $${\sigma}'(z) = \sigma(z) (1 - \sigma(z))$$</p>
-<h2 id="4-ann-from-scratch-a-idnn_scratcha">4. ANN from Scratch <!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h2 id="4-ann-from-scratch-a-idnn_scratcha">4. ANN from Scratch <a id="nn_scratch"></a></h2>
 <h3 id="lets-build-step-by-step-a-neural-network-python-class">Let&rsquo;s build step by step a Neural Network python class</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">class</span> <span style="color:#008b45;font-weight:bold">Artificial_Neural_Network</span>:
     
@@ -317,7 +317,7 @@ ITERATIONS = <span style="color:#b452cd">80000</span>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">loss, accuracy = ANN_model.fit(X_train, y_train)
 </code></pre></div><pre><code>100%|██████████| 80000/80000 [00:32&lt;00:00, 2473.67it/s]
 </code></pre>
-<h2 id="5model-evaluationa-idevaluationa">5.Model evaluation<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h2 id="5model-evaluationa-idevaluationa">5.Model evaluation<a id="evaluation"></a></h2>
 <h3 id="lets-have-a-look-on-our-accuracy-and-loss-evolution">Let&rsquo;s have a look on our accuracy and loss evolution</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">15</span>,<span style="color:#b452cd">5</span>))
 
@@ -378,9 +378,9 @@ plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<
 
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_62_0.png#c" alt="png"></p>
-<p>Over the 200 samples of the test set, we get only 7 samples with a Type I error (false positive) and only 11 samples with a Type II error (false negative).<!-- raw HTML omitted --></p>
+<p>Over the 200 samples of the test set, we get only 7 samples with a Type I error (false positive) and only 11 samples with a Type II error (false negative).<br/></p>
 <p><strong>We can say that our model has good classification capabilities regarding the given data.</strong></p>
-<h2 id="6comparison-with-sklearn-mlpclassifier-modela-idcomparisona">6.Comparison with sklearn MLPClassifier model<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h2 id="6comparison-with-sklearn-mlpclassifier-modela-idcomparisona">6.Comparison with sklearn MLPClassifier model<a id="comparison"></a></h2>
 <p>Fisrt I define hyperparameters, choosing same parameters that I used for the custom model, except the number of iterations set to 500 &hellip; that will be enough with this model.</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">N_HIDDEN_LAYER1 = <span style="color:#b452cd">3</span> <span style="color:#228b22"># nb of neurons of intermediate layer</span>
 
@@ -452,7 +452,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<
 plt.show()
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/Building_a_Neural_Network_from_scratch/2020-10-13/output_78_0.png#c" alt="png"></p>
 <p>Same comment for this confusion matrix &hellip; very close to the previous one obtained with the custom model.</p>
-<h2 id="7conclusiona-idconclusiona">7.Conclusion<!-- raw HTML omitted --><!-- raw HTML omitted --></h2>
+<h2 id="7conclusiona-idconclusiona">7.Conclusion<a id="conclusion"></a></h2>
 <p><strong>Comparing both models, one can see that the custom model is very close to the Sklearn model, ery similar results are observed:</strong></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">tabulate</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
@@ -484,7 +484,7 @@ df_learning = pd.DataFrame(data=learning).set_index(<span style="color:#cd5555">
 | Custom AnN  |        80000 |        0.198 |
 | Sklearn ANN |          217 |        0.221 |
 </code></pre>
-<p><strong>Now we have a custom Artificial Neural Network, built from scratch, with quiet good classification capabilities for all simple Xor-like datasets.<!-- raw HTML omitted --></strong></p>
+<p><strong>Now we have a custom Artificial Neural Network, built from scratch, with quiet good classification capabilities for all simple Xor-like datasets.<br/></strong></p>
 <p><strong>Compared to the prebuilt model that already exists in Sklearn library, this custom model is not so fast and optimized&hellip; but that is a funny and good start exercise for a better background comprehension of artificial neural networks.</strong></p>
 <p><strong>It is also a starting point from which we can improve and adapt this model to new issues! Ex: by adding more layers, implementing more robust optimizers, etc &hellip;</strong></p>
       

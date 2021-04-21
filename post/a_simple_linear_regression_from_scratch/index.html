@@ -103,9 +103,9 @@ if (!doNotTrack) {
     <h1 class="title">A Simple Linear Regression from scratch</h1>
     
     <div class="content">
-      <!-- raw HTML omitted -->
+      <!--# A Simple Linear Regression from scratch-->
 <h2 id="objective">Objective:</h2>
-<p>The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &ldquo;Salary_Data.csv&rdquo; Kaggle&rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.<!-- raw HTML omitted --></p>
+<p>The goal is to create a salary estimator based on years of experience of the employees of an anonymous company, using a simple Linear Regression Model build from scratch applied on &ldquo;Salary_Data.csv&rdquo; Kaggle&rsquo;s dataset. Then I will compare the performance of the model against the prebuilt Sklearn linear regression model.<br/></p>
 <p>I won&rsquo;t explain theory here, only background basic equations needed for code understanding.</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Linear_Regression_from_scratch/2020-09-09/linear_regression.png#c" alt="png"></p>
 <hr>
@@ -126,7 +126,7 @@ if (!doNotTrack) {
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
 <span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
 </code></pre></div><h2 id="1dataset">1.Dataset</h2>
-<p>The dataset is constituted of “YearsExperience” and “Salary” informations for 30 employees in an anonymous company.<!-- raw HTML omitted --></p>
+<p>The dataset is constituted of “YearsExperience” and “Salary” informations for 30 employees in an anonymous company.<br/></p>
 <p>Get the original dataset here: <a href="https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression">https://www.kaggle.com/karthickveerakumar/salary-data-simple-linear-regression</a></p>
 <h3 id="importing-dataset">Importing dataset</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df = pd.read_csv(<span style="color:#cd5555">&#34;data/Salary_Data.csv&#34;</span>, delimiter= <span style="color:#cd5555">&#39;,&#39;</span>)
@@ -343,7 +343,7 @@ plt.show()
 </code></pre>
 <p>We almost reach the maximum value of 1 !! The model can estimate accuratly any salary given the number of years of experience of an employee in the company.</p>
 <h2 id="8comparison-with-sklearn-linearregression-model">8.Comparison with sklearn LinearRegression model</h2>
-<p>Scikit-Learn already provides a well built Linear Regression model for general purpose (linear, multi-linear or polynomial regressions). <!-- raw HTML omitted -->
+<p>Scikit-Learn already provides a well built Linear Regression model for general purpose (linear, multi-linear or polynomial regressions). <br/>
 I will apply it on the Salary_data.csv dataset in order to compare and check the quality of my custom linear regression model.</p>
 <p>As I&rsquo;ve done previously, I define X, y variables</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X = df.iloc[:, :-<span style="color:#b452cd">1</span>].values

@@ -14,9 +14,9 @@
       <pubDate>Thu, 10 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domsdev.github.io/Data-science-blog/post/multiple_and_polynomial_regression_from_scratch/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;!--# Multiple and Polynomial Regression from scratch--&gt;
 &lt;h2 id=&#34;objective&#34;&gt;Objective:&lt;/h2&gt;
-&lt;p&gt;The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &amp;ldquo;Boston Housing Dataset&amp;rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;The goal is to create median house price estimator for Boston city, using a Multiple Linear Regression Model build from scratch, applied on the &amp;ldquo;Boston Housing Dataset&amp;rdquo;. Then I will try to improve this estimator, using a Multiple Polynomial Regression Model.&lt;br/&gt;&lt;/p&gt;
 &lt;p&gt;I won&amp;rsquo;t explain theory here, only background basic equations needed for code understanding.&lt;/p&gt;</description>
     </item>
     
