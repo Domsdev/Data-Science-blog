@@ -11,4 +11,4 @@
 ### This is my Data Science blog repository. The blog is generated with Hugo framework, using customized Kiss theme.
 ---
 
-![png](/images/README/2021-12-12/My_blog_screenshot.png#c)
+[![png](/images/README/2021-12-12/My_blog_screenshot.png#c)](https://domsdev.github.io/Data-science-blog/)
