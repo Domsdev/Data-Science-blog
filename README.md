@@ -1,8 +1,8 @@
 
 # <a href="https://domsdev.github.io/Data-science-blog/">DomsDev Data Science blog</a>
 
-[![python](https://img.shields.io/badge/python-3.8.5-brightgreen?style=plastic)](https://gohugo.io/)
-[![numpy](https://img.shields.io/badge/numpy-1.20.1-brightgreen?style=plastic)](https://github.com/ribice/kiss)
+[![python](https://img.shields.io/badge/-Hugo-brightgreen?style=plastic)](https://gohugo.io/)
+[![numpy](https://img.shields.io/badge/-Kiss-brightgreen?style=plastic)](https://github.com/ribice/kiss)
 [![licence](https://img.shields.io/badge/licence-MIT-yellow?style=plastic)](https://github.com/Domsdev/Data-science-blog/blob/main/MIT%20Licence.md)
 [![linkedIn](https://img.shields.io/badge/-LinkedIn%20-blue?style=plastic)](https://www.linkedin.com/in/dominique-pothin-dev/)
 
