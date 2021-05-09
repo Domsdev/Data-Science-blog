@@ -1,10 +1,15 @@
 
-# This is my Data Science blog repository.
+# <a href="https://domsdev.github.io/Data-science-blog/">DomsDev Data Science blog</a>
 
-#### link to my blog page: https://domsdev.github.io/Data-science-blog/
+[![python](https://img.shields.io/badge/python-3.8.5-brightgreen?style=plastic)](https://gohugo.io/)
+[![numpy](https://img.shields.io/badge/numpy-1.20.1-brightgreen?style=plastic)](https://github.com/ribice/kiss)
+[![licence](https://img.shields.io/badge/licence-MIT-yellow?style=plastic)](https://github.com/Domsdev/Data-science-blog/blob/main/MIT%20Licence.md)
+[![linkedIn](https://img.shields.io/badge/-LinkedIn%20-blue?style=plastic)](https://www.linkedin.com/in/dominique-pothin-dev/)
 
-#### This blog is generated with <a href="https://gohugo.io/">Hugo</a> static site generator, using customized <a href="https://github.com/ribice/kiss">Kiss</a> theme.
+---
 
+**This is my Data Science blog repository. This blog is generated with Hugo framework, using customized Kiss theme.**
+https://domsdev.github.io/Data-science-blog/
 ---
 
 ![png](/images/README/2021-12-12/My_blog_screenshot.png#c)
