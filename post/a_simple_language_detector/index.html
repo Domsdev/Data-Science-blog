@@ -147,9 +147,9 @@ This language detection task falls basically into Text Classification.</p>
 corpus_path = data_path + <span style="color:#cd5555">&#34;/Europarl_parallel_corpus&#34;</span>
 </code></pre></div><h2 id="1dataa-iddataa">1.Data<a id="data"></a></h2>
 <p>The Europarl parallel corpus is extracted from the proceedings of the European Parliament. It includes versions in 21 European languages: Romanic (French, Italian, Spanish, Portuguese, Romanian), Germanic (English, Dutch, German, Danish, Swedish), Slavik (Bulgarian, Czech, Polish, Slovak, Slovene), Finni-Ugric (Finnish, Hungarian, Estonian), Baltic (Latvian, Lithuanian), and Greek.<br/></p>
-<p><strong>This corpus will be used for language detection although it is originally intended for translation.</strong></p>
 <p>For a detailed description of this corpus, please read Europarl: A Parallel Corpus for Statistical Machine Translation, Philipp Koehn, MT Summit 2005, <a href="https://homepages.inf.ed.ac.uk/pkoehn/publications/europarl-mtsummit05.pdf">Pdf</a>.<br/></p>
 <p>Get the original data <a href="http://www.statmt.org/europarl/">here</a>.</p>
+<p><strong>I will use this corpus for language detection although it is originally intended for translation.</strong></p>
 <p>Here under is a small table to visualize some basic informations about the data:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sentence_aligned_corpora_df = pd.read_csv(data_path + <span style="color:#cd5555">&#34;Europarl_parallel_corpus_description.csv&#34;</span>)
 dfi.export(sentence_aligned_corpora_df, <span style="color:#cd5555">&#34;img/language_detection_Europarl_parallel_corpus_description_df.png&#34;</span>)
@@ -213,11 +213,11 @@ Maximum number of words by sentence: 227
 </code></pre></div><pre><code>Total number of characters: 87212619
 Number of different characters: 269
 </code></pre>
-<h3 id="lets-check-these-characters-in-the-detail">Let&rsquo;s check these characters in the detail</h3>
+<h3 id="lets-check-these-characters-and-their-occurrence-in-the-detail">Let&rsquo;s check these characters and their occurrence in the detail</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = <span style="color:#658b00">dict</span>(<span style="color:#658b00">sorted</span>(charDict.items(),key= <span style="color:#8b008b;font-weight:bold">lambda</span> x:x[<span style="color:#b452cd">1</span>], reverse=True))
 <span style="color:#8b008b;font-weight:bold">print</span>(charDict)
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/Czech_charDict.png#c" alt="png"></p>
-<h3 id="and-visualize-the-occurrence-of-these-characters">And visualize the occurrence of these characters</h3>
+<h3 id="and-visualize-the-ordered-occurrence-of-these-characters">And visualize the ordered occurrence of these characters</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22">#setting plots background color</span>
 plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">20</span>, <span style="color:#b452cd">8</span>))
@@ -265,13 +265,13 @@ On the other hand, we see that half of the sentences have less than 20 words.</p
 <li>remove string begin/end spaces</li>
 <li>lower capital letters</li>
 <li>divide compound words (vice-president -&gt; vice president)</li>
-<li>remove punctuation marks (! &quot; # $$ % &amp; ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~)</li>
+<li>remove punctuation marks</li>
 <li>remove digits</li>
 <li>remove non-ascii characters</li>
 <li>remove extra spaces</li>
 </ul>
 <h3 id="lets-see-the-result-of-each-pre-processing-steps-on-a-simple-exemple">Let&rsquo;s see the result of each pre-processing steps on a simple exemple</h3>
-<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">text = <span style="color:#cd5555">&#34;&#34;&#34;  PRE-Processing ! &#34;# &amp; &#39;()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł  &#34;&#34;&#34;</span>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">text = <span style="color:#cd5555">&#34;&#34;&#34;  PRE-Pross ! &#34;# &amp; &#39;()*./:;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł  &#34;&#34;&#34;</span>
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Defining dictionary for punctuation removal</span>
 <span style="color:#8b008b;font-weight:bold">for</span> char <span style="color:#8b008b">in</span> string.punctuation:
     <span style="color:#8b008b;font-weight:bold">print</span>(char, end = <span style="color:#cd5555">&#39; &#39;</span>)
@@ -293,21 +293,21 @@ text = re.sub(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555
 <span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
 text = re.sub(<span style="color:#cd5555">&#39; +&#39;</span>, <span style="color:#cd5555">&#39; &#39;</span>, text)            <span style="color:#228b22"># remove extra spaces</span>
 <span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
-</code></pre></div><pre><code>  PRE-Processing ! &quot;# &amp; '()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł   
+</code></pre></div><pre><code>  PRE-Pross ! &quot;# &amp; '()*./:;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł   
 
-PRE-Processing ! &quot;# &amp; '()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł 
+PRE-Pross ! &quot;# &amp; '()*./:;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł 
 
-pre-processing ! &quot;# &amp; '()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū щ %ъ &lt; ыэ §± »€ ≤• 223787° ý ł 
+pre-pross ! &quot;# &amp; '()*./:;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū щ %ъ &lt; ыэ §± »€ ≤• 223787° ý ł 
 
-pre processing ! &quot;# &amp; '()*./: ;+ ,  =&gt;$$? @ [\]^_ `{|} ~) ěï ū щ %ъ &lt; ыэ §± »€ ≤• 223787° ý ł 
+pre pross ! &quot;# &amp; '()*./:;+ ,  =&gt;$$? @ [\]^_ `{|} ~) ěï ū щ %ъ &lt; ыэ §± »€ ≤• 223787° ý ł 
 
-pre processing             ěï ū щ ъ  ыэ §± »€ ≤• 223787° ý ł 
+pre pross            ěï ū щ ъ  ыэ §± »€ ≤• 223787° ý ł 
 
-pre processing             ěï ū щ ъ  ыэ §± »€ ≤• ° ý ł 
+pre pross            ěï ū щ ъ  ыэ §± »€ ≤• ° ý ł 
 
-pre processing             ěï ū щ ъ  ыэ            ý ł 
+pre pross            ěï ū щ ъ  ыэ            ý ł 
 
-pre processing ěï ū щ ъ ыэ ý ł 
+pre pross ěï ū щ ъ ыэ ý ł 
 </code></pre>
 <h3 id="additional-pre-processing-step">Additional pre-processing step:</h3>
 <p><strong>I decided to rearrange the sentences during the data pre-processing phase so that I had the same specified number of words in each.</strong><br/>
@@ -384,12 +384,12 @@ dfi.export(english_df_preproc.head(<span style="color:#b452cd">10</span>), <span
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Number of different characters: {len(charDict)}&#39;</span>)
 </code></pre></div><pre><code>Number of different characters: 167
 </code></pre>
-<h3 id="check-these-characters-in-detail">Check these characters in detail</h3>
+<h3 id="check-these-characters-and-their-occurrence-in-detail">Check these characters and their occurrence in detail</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = <span style="color:#658b00">dict</span>(<span style="color:#658b00">sorted</span>(charDict.items(),key= <span style="color:#8b008b;font-weight:bold">lambda</span> x:x[<span style="color:#b452cd">1</span>], reverse=True))
 <span style="color:#8b008b;font-weight:bold">print</span>(charDict)
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/English_charDict.png#c" alt="png"></p>
 <p>After pre-processing, we can observe the occurrence of some characters that belongs to other languages (ß έ й ε ã &hellip;), and other special characters (¼ º ½ ¾) that has not been removed during pre-processing. It confirms what we saw during the data analysis: depending on the results and performance of the language detection model, we could have to clean the data a little more precisely.</p>
-<h3 id="and-visualize-the-occurrence-of-these-characters-1">And visualize the occurrence of these characters</h3>
+<h3 id="and-visualize-the-ordered-occurrence-of-these-characters-1">And visualize the ordered occurrence of these characters</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">20</span>, <span style="color:#b452cd">8</span>))
 plt.bar(<span style="color:#658b00">range</span>(<span style="color:#658b00">len</span>(charDict)), <span style="color:#658b00">list</span>(charDict.values()), align=<span style="color:#cd5555">&#39;center&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;black&#39;</span>, color=<span style="color:#cd5555">&#39;darkorange&#39;</span>)
 plt.xticks(<span style="color:#658b00">range</span>(<span style="color:#658b00">len</span>(charDict)), <span style="color:#658b00">list</span>(charDict.keys()))
