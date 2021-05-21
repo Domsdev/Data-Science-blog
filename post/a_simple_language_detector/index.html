@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>A Simple Language Detector | DomsDev Data-Science</title>
+<title>A simple Language Detector | DomsDev Data-Science</title>
 
 
 
@@ -100,7 +100,7 @@ if (!doNotTrack) {
       
     </div>
     <h2 class="subtitle is-6">December 10, 2020</h2>
-    <h1 class="title">A Simple Language Detector</h1>
+    <h1 class="title">A simple Language Detector</h1>
     
     <div class="content">
       <!--# A simple language detector-->
@@ -147,7 +147,7 @@ This language detection task falls basically into Text Classification.</p>
 corpus_path = data_path + <span style="color:#cd5555">&#34;/Europarl_parallel_corpus&#34;</span>
 </code></pre></div><h2 id="1dataa-iddataa">1.Data<a id="data"></a></h2>
 <p>The Europarl parallel corpus is extracted from the proceedings of the European Parliament. It includes versions in 21 European languages: Romanic (French, Italian, Spanish, Portuguese, Romanian), Germanic (English, Dutch, German, Danish, Swedish), Slavik (Bulgarian, Czech, Polish, Slovak, Slovene), Finni-Ugric (Finnish, Hungarian, Estonian), Baltic (Latvian, Lithuanian), and Greek.<br/></p>
-<p><strong>This corpus will be used for language detection although these are originally intended for translation.</strong></p>
+<p><strong>This corpus will be used for language detection although it is originally intended for translation.</strong></p>
 <p>For a detailed description of this corpus, please read Europarl: A Parallel Corpus for Statistical Machine Translation, Philipp Koehn, MT Summit 2005, <a href="https://homepages.inf.ed.ac.uk/pkoehn/publications/europarl-mtsummit05.pdf">Pdf</a>.<br/></p>
 <p>Get the original data <a href="http://www.statmt.org/europarl/">here</a>.</p>
 <p>Here under is a small table to visualize some basic informations about the data:</p>
@@ -172,7 +172,7 @@ pd.set_option(<span style="color:#cd5555">&#39;display.max_colwidth&#39;</span>,
 dfi.export(czech_df.head(<span style="color:#b452cd">20</span>), <span style="color:#cd5555">&#34;img/language_detection_czech_df.png&#34;</span>)
 </code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_czech_df.png#c" alt="png"></p>
 <p>We can see in the first lines of this czech dataset that some greek words appears (row 11), as well as some italian words (row 9).<br/>
-It is reasonable to think that there must exist many other mistakes inside the dataframe.</p>
+It is reasonable to think that there must exist many other imprecisions inside the dataframe.</p>
 <p>We can also observe some sentences that contains just numbers. These will be treated during the pre-processing phase.</p>
 <h3 id="czech-data-exploration">Czech Data Exploration</h3>
 <p>Getting counts of sentences, words and characters:</p>
@@ -197,7 +197,7 @@ charDict = {}
             charDict[char] += <span style="color:#b452cd">1</span>
         <span style="color:#8b008b;font-weight:bold">else</span>:
             charDict[char] = <span style="color:#b452cd">1</span>
-</code></pre></div><pre><code>100%|██████████| 646526/646526 [01:55&lt;00:00, 5612.17it/s]
+</code></pre></div><pre><code>100%|██████████| 646526/646526 [01:55&lt;00:00, 5613.49it/s]
 </code></pre>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of sentences:&#34;</span>, czech_df.shape[<span style="color:#b452cd">0</span>])
 <span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of words:&#34;</span>, total_num_words)
@@ -216,8 +216,7 @@ Number of different characters: 269
 <h3 id="lets-check-these-characters-in-the-detail">Let&rsquo;s check these characters in the detail</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = <span style="color:#658b00">dict</span>(<span style="color:#658b00">sorted</span>(charDict.items(),key= <span style="color:#8b008b;font-weight:bold">lambda</span> x:x[<span style="color:#b452cd">1</span>], reverse=True))
 <span style="color:#8b008b;font-weight:bold">print</span>(charDict)
-</code></pre></div><pre><code>{' ': 12353422, 'o': 6215099, 'e': 5482106, 'n': 4713401, 'a': 4351736, 't': 4005547, 's': 3347100, 'i': 3132895, 'v': 3032225, 'r': 2707930, 'p': 2669990, 'm': 2499806, 'l': 2494669, 'd': 2482522, 'í': 2419992, 'u': 2242738, 'k': 2240463, 'c': 1760769, 'á': 1694335, 'h': 1592242, 'z': 1549977, 'j': 1440882, 'y': 1300307, 'b': 1130339, ',': 1099440, 'ě': 1073902, 'é': 949065, 'ř': 914396, 'ž': 817444, 'ý': 663266, '.': 659373, 'č': 591926, 'š': 474196, 'ů': 431941, 'g': 211955, 'E': 194329, 'P': 169873, 'f': 153252, 'ú': 118250, '0': 99336, 'S': 89476, '-': 83630, 'V': 81224, 'K': 77145, 'T': 76129, 'N': 72173, 'R': 68824, 'U': 66644, 'J': 65541, '2': 63646, 'M': 60008, 'ň': 59720, 'D': 56947, '(': 54220, ')': 53063, 'A': 47400, '1': 45502, 'Z': 42948, 'B': 40357, 'x': 37638, 'C': 35175, 'O': 32898, 'L': 32850, '&quot;': 30381, 'I': 28283, ':': 25709, 'H': 22802, 'ť': 22577, 'F': 18567, '?': 18072, '9': 17340, '5': 17107, 'G': 15438, '3': 15332, '8': 13402, '7': 13238, '4': 12883, '%': 11882, '6': 11205, 'ó': 11074, 'Č': 10789, 'ď': 10659, ';': 9804, '/': 7640, 'Ř': 5409, 'Ú': 5103, 'w': 4834, 'Š': 4805, 'W': 4076, '!': 2730, 'Ž': 2515, 'Í': 1647, 'ö': 1154, 'q': 1109, 'ü': 757, &quot;'&quot;: 687, 'X': 569, '”': 523, 'è': 495, 'Y': 494, 'ä': 409, '&amp;': 365, 'Á': 362, '+': 310, 'ă': 292, 'Q': 267, '[': 205, 'ş': 202, 'Ť': 197, 'ė': 174, 'ç': 173, 'ł': 160, ']': 154, '°': 145, 'ß': 144, 'ń': 141, 'ő': 141, 'à': 129, 'ć': 120, 'ê': 115, 'ø': 111, 'Ţ': 108, 'ñ': 81, 'ã': 76, 'ę': 73, 'â': 61, 'ľ': 57, '•': 54, 'Ö': 51, 'ū': 47, 'ğ': 44, 'Ó': 43, 'ï': 35, '\u200b': 32, '=': 31, '_': 28, 'σ': 25, 'É': 25, 'ţ': 24, 'ε': 21, 'ρ': 21, 'ι': 21, 'ë': 19, 'ś': 19, 'α': 18, 'ô': 18, '·': 17, 'ī': 16, 'Α': 15, '@': 15, 'τ': 14, 'º': 14, 'ί': 13, 'Å': 13, 'η': 12, 'ς': 12, 'ν': 11, 'δ': 11, 'μ': 11, 'ò': 11, '\\': 11, 'а': 11, 'ą': 10, '*': 10, 'υ': 9, 'Đ': 9, 'ο': 9, 'о': 9, 'ĺ': 8, 'Ι': 8, 'Ő': 8, 'ź': 8, 'ż': 8, 'ì': 8, 'æ': 8, 'е': 8, 'Ν': 7, 'Β': 7, 'т': 7, 'κ': 6, 'ˇ': 6, 'ı': 6, 'Ş': 6, 'Ο': 6, 'û': 6, 'ǎ': 6, 'β': 6, 'с': 6, 'н': 6, 'χ': 5, 'λ': 5, 'î': 5, 'Ď': 5, 'Ł': 5, 'Ε': 5, '²': 5, 'Ø': 5, 'ζ': 4, 'π': 4, 'ό': 4, 'Ś': 4, 'Ü': 4, 'Τ': 4, 'в': 4, 'и': 4, 'р': 4, '¡': 3, '±': 3, 'ķ': 3, 'ņ': 3, 'ч': 3, 'ш': 3, 'к': 3, 'л': 3, 'õ': 2, 'ή': 2, 'γ': 2, 'ŕ': 2, 'ű': 2, 'Ç': 2, 'Ģ': 2, 'ù': 2, 'Ľ': 2, '§': 2, 'œ': 2, 'ǐ': 2, 'Ě': 2, 'ώ': 2, 'ύ': 2, 'Π': 2, 'έ': 2, '\t': 2, 'у': 2, 'й': 2, 'з': 2, 'я': 2, 'ь': 2, '¹': 1, 'Ĺ': 1, '»': 1, 'Ź': 1, 'Ż': 1, '˚': 1, 'Ý': 1, 'å': 1, 'Ρ': 1, '≤': 1, 'ē': 1, 'đ': 1, 'φ': 1, 'ŵ': 1, '¸': 1, 'ξ': 1, 'О': 1, 'п': 1, 'Н': 1, 'ж': 1, 'м': 1, 'П': 1, 'г': 1, 'д': 1, 'Т': 1, 'ы': 1, 'ā': 1, 'Ć': 1, '€': 1, '&lt;': 1, 'Ð': 1, 'ō': 1}
-</code></pre>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/Czech_charDict.png#c" alt="png"></p>
 <h3 id="and-visualize-the-occurrence-of-these-characters">And visualize the occurrence of these characters</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22">#setting plots background color</span>
 plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
@@ -230,7 +229,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;Number of occurrences&#39;</span>, f
 plt.title(<span style="color:#cd5555">&#39;Czech Data: Characters occurrences (first 50)&#39;</span>, fontsize = <span style="color:#b452cd">18</span>)
 plt.xlim([-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">50</span>])
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_35_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_36_0.png#c" alt="png"></p>
 <p>One can observe the occurrence of some typical Czech characters like ž ě ř č š ů.<br/>
 Digits and Punctuation should be removed, as well as special characters. Capital letters will be lowered.</p>
 <h3 id="now-lets-see--how-words-and-sentences-are-distributed">Now let&rsquo;s see  how words and sentences are distributed</h3>
@@ -257,7 +256,7 @@ plt.xlim([<span style="color:#b452cd">0</span>,<span style="color:#b452cd">230</
 
 plt.tight_layout()
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_38_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_39_0.png#c" alt="png"></p>
 <p>We can observe many outliers: sentences with a higher amount of words.<br/>
 On the other hand, we see that half of the sentences have less than 20 words.</p>
 <h2 id="3data-pre-processinga-idpreprocessinga">3.Data pre-processing<a id="preprocessing"></a></h2>
@@ -310,6 +309,7 @@ pre processing             ěï ū щ ъ  ыэ            ý ł
 
 pre processing ěï ū щ ъ ыэ ý ł 
 </code></pre>
+<h3 id="additional-pre-processing-step">Additional pre-processing step:</h3>
 <p><strong>I decided to rearrange the sentences during the data pre-processing phase so that I had the same specified number of words in each.</strong><br/>
 <strong>In this way, the machine learning model will be trained on a dataset with standardized length sentences.</strong></p>
 <p><strong>I arbitrary choosed to set the length of sentences to 50 words</strong></p>
@@ -359,7 +359,7 @@ pre processing ěï ū щ ъ ыэ ý ł
     dataframe.reset_index(drop=True, inplace=True)
     
     <span style="color:#8b008b;font-weight:bold">return</span> dataframe
-</code></pre></div><h3 id="applying-pre-processing-on-english-language-data">Applying pre-processing on English language data</h3>
+</code></pre></div><h3 id="as-a-verification-lets-apply-pre-processing-on-english-language-data">As a verification, let&rsquo;s apply pre-processing on English language data</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">english_df = pd.read_csv(
     corpus_path + <span style="color:#cd5555">&#34;/en-en/europarl-v7.fr-en.en&#34;</span>,
     <span style="color:#cd5555">&#34;UTF-8&#34;</span>, names=[<span style="color:#cd5555">&#34;English Sentences&#34;</span>],
@@ -387,8 +387,7 @@ dfi.export(english_df_preproc.head(<span style="color:#b452cd">10</span>), <span
 <h3 id="check-these-characters-in-detail">Check these characters in detail</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = <span style="color:#658b00">dict</span>(<span style="color:#658b00">sorted</span>(charDict.items(),key= <span style="color:#8b008b;font-weight:bold">lambda</span> x:x[<span style="color:#b452cd">1</span>], reverse=True))
 <span style="color:#8b008b;font-weight:bold">print</span>(charDict)
-</code></pre></div><pre><code>{' ': 48995688, 'e': 30736202, 't': 24202274, 'o': 19576051, 'i': 19560708, 'a': 18758278, 'n': 18117187, 's': 15692379, 'r': 15285289, 'h': 11248135, 'l': 9385501, 'c': 8172332, 'd': 7810234, 'u': 7248836, 'm': 6884720, 'p': 5985040, 'f': 5197431, 'g': 4174344, 'w': 3894673, 'y': 3528574, 'b': 3392858, 'v': 2625243, 'k': 1230381, 'x': 427752, 'j': 302757, 'q': 254573, 'z': 130605, 'é': 7087, 'ö': 5408, 'á': 4370, 'ü': 2351, 'í': 2276, 'ó': 2096, 'ä': 1740, 'è': 1377, 'à': 1018, 'š': 908, 'ú': 801, 'ç': 681, 'č': 623, 'ô': 512, 'ê': 475, 'ñ': 470, 'ï': 449, 'ã': 357, 'ń': 357, 'ă': 329, 'ε': 327, 'ò': 310, 'ß': 305, 'ş': 299, 'å': 299, 'ø': 287, 'æ': 238, 'ł': 230, 'ő': 229, 'ć': 217, 'ė': 182, 'α': 157, 'τ': 154, 'ţ': 151, 'ž': 123, 'â': 115, 'ο': 112, 'ν': 110, 'ë': 109, 'ľ': 92, 'ι': 87, 'ę': 78, 'ý': 76, 'ğ': 74, 'ň': 72, 'ś': 72, 'ū': 54, 'º': 52, 'ř': 46, 'μ': 38, 'ī': 37, 'ì': 36, 'û': 23, 'а': 22, 'ρ': 22, 'î': 19, 'β': 17, 'ź': 17, '½': 17, 'е': 15, 'о': 15, 'κ': 15, 'õ': 14, 'đ': 14, 'µ': 14, 'ą': 13, 'т': 12, 'н': 11, 'ż': 11, 'р': 10, 'œ': 10, 'ı': 10, 'ě': 10, 'ù': 10, 'ǎ': 9, '²': 9, 'с': 8, 'и': 8, 'в': 8, 'π': 7, 'ť': 7, 'к': 6, 'д': 6, 'м': 6, 'ķ': 6, 'л': 5, 'υ': 5, 'έ': 5, 'χ': 5, 'п': 4, 'ш': 4, 'й': 4, 'з': 4, 'ά': 4, 'ή': 4, 'ǐ': 4, 'ί': 4, 'δ': 4, 'ņ': 3, 'я': 3, 'ч': 3, 'у': 3, 'і': 3, '¹': 3, '¾': 3, 'λ': 3, 'г': 2, 'ь': 2, 'є': 2, 'ъ': 2, 'ʻ': 2, 'б': 2, 'ų': 2, 'ώ': 2, 'ό': 2, 'ς': 2, 'ď': 2, 'ð': 2, 'ů': 2, 'ē': 2, 'η': 2, 'ș': 2, 'ā': 2, 'σ': 2, 'ģ': 2, 'ы': 1, 'ǔ': 1, 'ŵ': 1, 'ю': 1, 'ї': 1, '¼': 1, 'þ': 1, 'ω': 1, 'ж': 1, 'φ': 1, 'γ': 1, 'ĉ': 1, '³': 1, 'ύ': 1, 'ō': 1}
-</code></pre>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/English_charDict.png#c" alt="png"></p>
 <p>After pre-processing, we can observe the occurrence of some characters that belongs to other languages (ß έ й ε ã &hellip;), and other special characters (¼ º ½ ¾) that has not been removed during pre-processing. It confirms what we saw during the data analysis: depending on the results and performance of the language detection model, we could have to clean the data a little more precisely.</p>
 <h3 id="and-visualize-the-occurrence-of-these-characters-1">And visualize the occurrence of these characters</h3>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">20</span>, <span style="color:#b452cd">8</span>))
@@ -400,7 +399,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;Number of occurrences&#39;</span>, f
 plt.title(<span style="color:#cd5555">&#39;English Data: Characters occurrences (first 50)&#39;</span>, fontsize = <span style="color:#b452cd">18</span>)
 plt.xlim([-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">50</span>])
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_61_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_64_0.png#c" alt="png"></p>
 <p>However, we observe here that the characters having a significant occurrence are those which compose classic English words and sentences! The appearance of characters that belongs to other languages and remaining special characters seems to be anecdotal.</p>
 <p><strong>So let&rsquo;s keep it like this for the moment, and do some more precise data cleaning later if necessary.</strong></p>
 <h3 id="corpus-pre-processing">Corpus pre-processing</h3>
@@ -429,7 +428,7 @@ plt.show()
     <span style="color:#cd5555">&#39;sl&#39;</span>: <span style="color:#cd5555">&#39;Slovenian&#39;</span>,
     <span style="color:#cd5555">&#39;sv&#39;</span>: <span style="color:#cd5555">&#39;Swedish&#39;</span>
 }
-</code></pre></div><p><strong>Again, for calculation purpose and to prevent memory issues that occurs with this large corpus, for each language, only 100000 sentences will be randomly selected.</strong></p>
+</code></pre></div><p><strong>For calculation purpose and to prevent memory issues that occurs with this large corpus, for each language, only 100000 sentences will be randomly selected.</strong></p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">languages = []
 d = {}
     
@@ -574,7 +573,7 @@ plt.ylabel(<span style="color:#cd5555">&#39;Number of sentences&#39;</span>, fon
 plt.title(<span style="color:#cd5555">&#39;Test Dataset: Number of sentenses by language&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
 
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_80_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_83_0.png#c" alt="png"></p>
 <p>Since the sentences of all languages are initially variable length, the result of the preprocessing gives us a different number of normalized length sentences for each language.</p>
 <h2 id="5variables-definitiona-idvariablesa">5.Variables definition<a id="variables"></a></h2>
 <h3 id="creating-variables-for-model-input">Creating variables for model input</h3>
@@ -595,7 +594,7 @@ y_test = test_df.iloc[:,<span style="color:#b452cd">1</span>] <span style="color
 <p>[&hellip;]</p>
 <p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_chart2.png#c" alt="png"></p>
 <p>Furhtermore, Character Tokenization splits a sentence into a set of characters, so it can overcomes <strong>&ldquo;Out Of Vocabulary&rdquo;</strong> words coherently by preserving the information of the word, and limits the size of the vocabulary.</p>
-<p>I use the TfidfVectorizer from Scikit-Learn library to convert raw sentences into matrix of TF-IDF features.
+<p>I use the <strong>TfidfVectorizer</strong> from Scikit-Learn library to convert raw sentences into matrix of TF-IDF features.
 Selecting the <strong>&lsquo;char_wb&rsquo; option</strong> to create n-grams of characters only from text inside word boundaries; n-grams at the edges of words are padded with space (whitespace can begin or end trigrams but cannot be in the middle).</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">vectorizer = feature_extraction.text.TfidfVectorizer(ngram_range=(<span style="color:#b452cd">1</span>,<span style="color:#b452cd">3</span>), analyzer=<span style="color:#cd5555">&#39;char_wb&#39;</span>)
 </code></pre></div><h3 id="lets-test-this-vectorizer-on-the-italian-data">Let&rsquo;s test this vectorizer on the Italian data:</h3>
@@ -680,7 +679,7 @@ plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<
 plt.xticks(rotation=<span style="color:#b452cd">45</span>)
 plt.title(<span style="color:#cd5555">&#39;Confusion Matrix&#39;</span>, size=<span style="color:#b452cd">18</span>, y=<span style="color:#b452cd">1.02</span>)
 plt.show()
-</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_119_0.png#c" alt="png"></p>
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_122_0.png#c" alt="png"></p>
 <p>The model has near perfect language classification and detection capability on test data!<br/>
 And it is reasonable to think that the misclassifications observed here are the result of the remaining sentences from other languages.</p>
 <h3 id="saving-model">Saving model</h3>
@@ -714,6 +713,8 @@ And it is reasonable to think that the misclassifications observed here are the 
     <span style="color:#cd5555">&#39;Slovenian&#39;</span>:  <span style="color:#cd5555">&#34;Statístika je znanost in veščina o razvoju znanja z uporabo izkustvenih podatkov. Njena osnova je matematična statistika, ki je veja uporabne matematike.&#34;</span>,
     <span style="color:#cd5555">&#39;Swedish&#39;</span>:    <span style="color:#cd5555">&#34;Statistik är en gren inom tillämpad matematik som sysslar med insamling, utvärdering, analys och presentation av data eller information.&#34;</span>,
 }
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Setting column width display option</span>
+pd.set_option(<span style="color:#cd5555">&#39;display.max_colwidth&#39;</span>, <span style="color:#b452cd">100</span>)
 </code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data = []
 <span style="color:#8b008b;font-weight:bold">for</span> _, (language, sentence) <span style="color:#8b008b">in</span> <span style="color:#658b00">enumerate</span>(inference_sentences.items()):
     sentence_array = np.array(sentence).reshape(-<span style="color:#b452cd">1</span>)
@@ -763,7 +764,7 @@ By the way, this pre-processing can split or concatenate some valid sentences wi
 <p>For the Natural Language Processing, I chose Character Tokenization because characters and n-grams of characters are the most relevant entities to recognize a language, it can overcomes &ldquo;Out Of Vocabulary&rdquo; words coherently by preserving the information of the word, as well as limiting the size of the vocabulary.</p>
 <p>I built a Machine Learning model with a pipeline combining a Vectorizer and a Classifier:</p>
 <ul>
-<li>Vectorizer: the TfidfVectorizer from Scikit-Learn library to convert raw sentences into matrix of TF-IDF features, selecting the &lsquo;char_wb&rsquo; option to create unigram, bigram and trigram features of characters only from text inside word boundaries.</li>
+<li>Vectorizer: the TfidfVectorizer from Scikit-Learn library which convert raw sentences into matrix of TF-IDF features, selecting the &lsquo;char_wb&rsquo; option to create unigram, bigram and trigram features of characters only from text inside word boundaries.</li>
 <li>Classifier: the logistic regression model from Scikit-Learn library.</li>
 </ul>
 <p>The model&rsquo;s training converged in 43 min with enough but borderline memory load!</p>
