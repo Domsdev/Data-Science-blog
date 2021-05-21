@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; &lt;a href=&#34;https://github.com/Domsdev/Data-science-blog/blob/main/MIT%20Licence.md&#34;&gt;DomsDev&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 13 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Simple Language Detector</title>
+      <link>https://domsdev.github.io/Data-science-blog/post/a_simple_language_detector/</link>
+      <pubDate>Thu, 10 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://domsdev.github.io/Data-science-blog/post/a_simple_language_detector/</guid>
+      <description>&lt;!--# A simple language detector--&gt;
+&lt;h2 id=&#34;objective&#34;&gt;Objective:&lt;/h2&gt;
+&lt;p&gt;The goal here is to create a language detector model based on &amp;ldquo;The Europarl parallel&amp;rdquo; corpus using classical techniques of Natural Language Processing and Machine Learning.&lt;br/&gt;
+I will then use this model to detect the language of new sentences taken from Wikipedia.&lt;br/&gt;
+This language detection task falls basically into Text Classification.&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Building a Neural Network from scratch</title>
       <link>https://domsdev.github.io/Data-science-blog/post/building_a_neural_network_from_scratch/</link>

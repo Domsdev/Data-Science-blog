@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>A Simple Language Detector | DomsDev Data-Science</title>
+
+
+
+<link href="https://domsdev.github.io/Data-science-blog/index.xml" rel="alternate" type="application/rss+xml" title="DomsDev Data-Science">
+
+<link rel="stylesheet" href="https://domsdev.github.io/Data-science-blog/css/style.css"><link rel='stylesheet' href='https://domsdev.github.io/Data-science-blog/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="https://domsdev.github.io/Data-science-blog/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domsdev.github.io/Data-science-blog/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domsdev.github.io/Data-science-blog/favicon-16x16.png">
+<link rel="manifest" href="https://domsdev.github.io/Data-science-blog/site.webmanifest">
+<link rel="mask-icon" href="https://domsdev.github.io/Data-science-blog/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://domsdev.github.io/Data-science-blog/post/a_simple_language_detector/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NMH2VJY863"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NMH2VJY863', { 'anonymize_ip': false });
+}
+</script>
+
+</head>
+<body>
+
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://domsdev.github.io/Data-science-blog/">
+          <h1 id="nav-heading" class="title is-4">DomsDev Data-Science</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="linkedin" href='https://linkedin.com/in/dominique-pothin-dev/'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="github" href='https://github.com/Domsdev'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:domsdev.sender@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="https://domsdev.github.io/Data-science-blog/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+      
+<a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/nlp/">#NLP</a>
+
+
+
+  
+  | <a class="subtitle is-6" href="https://domsdev.github.io/Data-science-blog/tags/language-classification/">#Language Classification</a>
+  
+
+
+      
+    </div>
+    <h2 class="subtitle is-6">December 10, 2020</h2>
+    <h1 class="title">A Simple Language Detector</h1>
+    
+    <div class="content">
+      <!--# A simple language detector-->
+<h2 id="objective">Objective:</h2>
+<p>The goal here is to create a language detector model based on &ldquo;The Europarl parallel&rdquo; corpus using classical techniques of Natural Language Processing and Machine Learning.<br/>
+I will then use this model to detect the language of new sentences taken from Wikipedia.<br/>
+This language detection task falls basically into Text Classification.</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_word_Art.jpg#c" alt="png"></p>
+<hr>
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+<li><a href="#data">Data</a></li>
+<li><a href="#data_analysis">Data analysis</a></li>
+<li><a href="#preprocessing">Data pre-processing</a></li>
+<li><a href="#preparing_datasets">Preparing Datasets</a></li>
+<li><a href="#variables">Variables definition</a></li>
+<li><a href="#data_vectorization">Data vectorization</a></li>
+<li><a href="#model">Model</a></li>
+<li><a href="#evaluation">Model evaluation</a></li>
+<li><a href="#inference">Inference</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ol>
+<h3 id="importing-libraries">Importing libraries</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">os</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">time</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">string</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">re</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">numpy</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">np</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pandas</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">pd</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">seaborn</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">sns</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">matplotlib.pyplot</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">plt</span>
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn</span> <span style="color:#8b008b;font-weight:bold">import</span> feature_extraction
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn</span> <span style="color:#8b008b;font-weight:bold">import</span> pipeline
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.linear_model</span> <span style="color:#8b008b;font-weight:bold">import</span> LogisticRegression
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> accuracy_score
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> classification_report
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">sklearn.metrics</span> <span style="color:#8b008b;font-weight:bold">import</span> confusion_matrix
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">itertools</span>
+<span style="color:#8b008b;font-weight:bold">from</span> <span style="color:#008b45;text-decoration:underline">tqdm</span> <span style="color:#8b008b;font-weight:bold">import</span> tqdm
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">dataframe_image</span> <span style="color:#8b008b;font-weight:bold">as</span> <span style="color:#008b45;text-decoration:underline">dfi</span>
+<span style="color:#8b008b;font-weight:bold">import</span> <span style="color:#008b45;text-decoration:underline">pickle</span>
+</code></pre></div><h3 id="global-data-path">Global data path</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data_path = <span style="color:#cd5555">&#34;data/Europarl/&#34;</span>
+corpus_path = data_path + <span style="color:#cd5555">&#34;/Europarl_parallel_corpus&#34;</span>
+</code></pre></div><h2 id="1dataa-iddataa">1.Data<a id="data"></a></h2>
+<p>The Europarl parallel corpus is extracted from the proceedings of the European Parliament. It includes versions in 21 European languages: Romanic (French, Italian, Spanish, Portuguese, Romanian), Germanic (English, Dutch, German, Danish, Swedish), Slavik (Bulgarian, Czech, Polish, Slovak, Slovene), Finni-Ugric (Finnish, Hungarian, Estonian), Baltic (Latvian, Lithuanian), and Greek.<br/></p>
+<p><strong>This corpus will be used for language detection although these are originally intended for translation.</strong></p>
+<p>For a detailed description of this corpus, please read Europarl: A Parallel Corpus for Statistical Machine Translation, Philipp Koehn, MT Summit 2005, <a href="https://homepages.inf.ed.ac.uk/pkoehn/publications/europarl-mtsummit05.pdf">Pdf</a>.<br/></p>
+<p>Get the original data <a href="http://www.statmt.org/europarl/">here</a>.</p>
+<p>Here under is a small table to visualize some basic informations about the data:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sentence_aligned_corpora_df = pd.read_csv(data_path + <span style="color:#cd5555">&#34;Europarl_parallel_corpus_description.csv&#34;</span>)
+dfi.export(sentence_aligned_corpora_df, <span style="color:#cd5555">&#34;img/language_detection_Europarl_parallel_corpus_description_df.png&#34;</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_Europarl_parallel_corpus_description_df.png#c" alt="png"></p>
+<p>Each folder of the parallel corpus contains two files (exemple for bulgarian folder &ldquo;bg-en&rdquo;):</p>
+<ul>
+<li>text in the considered language: &ldquo;europarl-v7.bg-en.bg&rdquo;</li>
+<li>same text translated in english: &ldquo;europarl-v7.bg-en.en&rdquo;</li>
+</ul>
+<p><strong>For language detection, I would keep only the texts in the languages considered. As to the detection of the English language, I will use the translation from French text file.</strong></p>
+<h2 id="2data-analysisa-iddata_analysisa">2.Data analysis<a id="data_analysis"></a></h2>
+<h3 id="lets-load-the-czech-data-from-folder">Let&rsquo;s load the Czech data from folder</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Setting column width display option</span>
+pd.set_option(<span style="color:#cd5555">&#39;display.max_colwidth&#39;</span>, <span style="color:#b452cd">150</span>)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">czech_df = pd.read_csv(
+    corpus_path + <span style="color:#cd5555">&#34;/cs-en/europarl-v7.cs-en.cs&#34;</span>,
+    <span style="color:#cd5555">&#34;UTF-8&#34;</span>, names=[<span style="color:#cd5555">&#34;Czech Sentences&#34;</span>],
+    engine=<span style="color:#cd5555">&#39;python&#39;</span>)
+
+dfi.export(czech_df.head(<span style="color:#b452cd">20</span>), <span style="color:#cd5555">&#34;img/language_detection_czech_df.png&#34;</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_czech_df.png#c" alt="png"></p>
+<p>We can see in the first lines of this czech dataset that some greek words appears (row 11), as well as some italian words (row 9).<br/>
+It is reasonable to think that there must exist many other mistakes inside the dataframe.</p>
+<p>We can also observe some sentences that contains just numbers. These will be treated during the pre-processing phase.</p>
+<h3 id="czech-data-exploration">Czech Data Exploration</h3>
+<p>Getting counts of sentences, words and characters:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">total_num_words = <span style="color:#b452cd">0</span>
+line_num_words = <span style="color:#b452cd">0</span>
+num_char = <span style="color:#b452cd">0</span>
+words_by_line = []
+charDict = {}
+
+<span style="color:#8b008b;font-weight:bold">for</span> i, row <span style="color:#8b008b">in</span> tqdm(czech_df.iterrows(), total=czech_df.shape[<span style="color:#b452cd">0</span>]):
+    line = row[<span style="color:#cd5555">&#39;Czech Sentences&#39;</span>]
+    line_num_words = <span style="color:#658b00">len</span>(line.split(<span style="color:#cd5555">&#34; &#34;</span>))
+    
+    <span style="color:#228b22"># words count</span>
+    total_num_words += line_num_words   
+    words_by_line.append(line_num_words)
+    
+    <span style="color:#228b22"># characters count</span>
+    <span style="color:#8b008b;font-weight:bold">for</span> char <span style="color:#8b008b">in</span> line:
+        num_char += <span style="color:#b452cd">1</span>
+        <span style="color:#8b008b;font-weight:bold">if</span> char <span style="color:#8b008b">in</span> charDict.keys():
+            charDict[char] += <span style="color:#b452cd">1</span>
+        <span style="color:#8b008b;font-weight:bold">else</span>:
+            charDict[char] = <span style="color:#b452cd">1</span>
+</code></pre></div><pre><code>100%|██████████| 646526/646526 [01:55&lt;00:00, 5612.17it/s]
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of sentences:&#34;</span>, czech_df.shape[<span style="color:#b452cd">0</span>])
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Number of words:&#34;</span>, total_num_words)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Minimum number of words by sentence:&#34;</span>, <span style="color:#658b00">min</span>(words_by_line))
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Maximum number of words by sentence:&#34;</span>, <span style="color:#658b00">max</span>(words_by_line))
+</code></pre></div><pre><code>Number of sentences: 646526
+Number of words: 12999948
+Minimum number of words by sentence: 1
+Maximum number of words by sentence: 227
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;Total number of characters:&#34;</span>, num_char)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Number of different characters: {len(charDict)}&#39;</span>)
+</code></pre></div><pre><code>Total number of characters: 87212619
+Number of different characters: 269
+</code></pre>
+<h3 id="lets-check-these-characters-in-the-detail">Let&rsquo;s check these characters in the detail</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = <span style="color:#658b00">dict</span>(<span style="color:#658b00">sorted</span>(charDict.items(),key= <span style="color:#8b008b;font-weight:bold">lambda</span> x:x[<span style="color:#b452cd">1</span>], reverse=True))
+<span style="color:#8b008b;font-weight:bold">print</span>(charDict)
+</code></pre></div><pre><code>{' ': 12353422, 'o': 6215099, 'e': 5482106, 'n': 4713401, 'a': 4351736, 't': 4005547, 's': 3347100, 'i': 3132895, 'v': 3032225, 'r': 2707930, 'p': 2669990, 'm': 2499806, 'l': 2494669, 'd': 2482522, 'í': 2419992, 'u': 2242738, 'k': 2240463, 'c': 1760769, 'á': 1694335, 'h': 1592242, 'z': 1549977, 'j': 1440882, 'y': 1300307, 'b': 1130339, ',': 1099440, 'ě': 1073902, 'é': 949065, 'ř': 914396, 'ž': 817444, 'ý': 663266, '.': 659373, 'č': 591926, 'š': 474196, 'ů': 431941, 'g': 211955, 'E': 194329, 'P': 169873, 'f': 153252, 'ú': 118250, '0': 99336, 'S': 89476, '-': 83630, 'V': 81224, 'K': 77145, 'T': 76129, 'N': 72173, 'R': 68824, 'U': 66644, 'J': 65541, '2': 63646, 'M': 60008, 'ň': 59720, 'D': 56947, '(': 54220, ')': 53063, 'A': 47400, '1': 45502, 'Z': 42948, 'B': 40357, 'x': 37638, 'C': 35175, 'O': 32898, 'L': 32850, '&quot;': 30381, 'I': 28283, ':': 25709, 'H': 22802, 'ť': 22577, 'F': 18567, '?': 18072, '9': 17340, '5': 17107, 'G': 15438, '3': 15332, '8': 13402, '7': 13238, '4': 12883, '%': 11882, '6': 11205, 'ó': 11074, 'Č': 10789, 'ď': 10659, ';': 9804, '/': 7640, 'Ř': 5409, 'Ú': 5103, 'w': 4834, 'Š': 4805, 'W': 4076, '!': 2730, 'Ž': 2515, 'Í': 1647, 'ö': 1154, 'q': 1109, 'ü': 757, &quot;'&quot;: 687, 'X': 569, '”': 523, 'è': 495, 'Y': 494, 'ä': 409, '&amp;': 365, 'Á': 362, '+': 310, 'ă': 292, 'Q': 267, '[': 205, 'ş': 202, 'Ť': 197, 'ė': 174, 'ç': 173, 'ł': 160, ']': 154, '°': 145, 'ß': 144, 'ń': 141, 'ő': 141, 'à': 129, 'ć': 120, 'ê': 115, 'ø': 111, 'Ţ': 108, 'ñ': 81, 'ã': 76, 'ę': 73, 'â': 61, 'ľ': 57, '•': 54, 'Ö': 51, 'ū': 47, 'ğ': 44, 'Ó': 43, 'ï': 35, '\u200b': 32, '=': 31, '_': 28, 'σ': 25, 'É': 25, 'ţ': 24, 'ε': 21, 'ρ': 21, 'ι': 21, 'ë': 19, 'ś': 19, 'α': 18, 'ô': 18, '·': 17, 'ī': 16, 'Α': 15, '@': 15, 'τ': 14, 'º': 14, 'ί': 13, 'Å': 13, 'η': 12, 'ς': 12, 'ν': 11, 'δ': 11, 'μ': 11, 'ò': 11, '\\': 11, 'а': 11, 'ą': 10, '*': 10, 'υ': 9, 'Đ': 9, 'ο': 9, 'о': 9, 'ĺ': 8, 'Ι': 8, 'Ő': 8, 'ź': 8, 'ż': 8, 'ì': 8, 'æ': 8, 'е': 8, 'Ν': 7, 'Β': 7, 'т': 7, 'κ': 6, 'ˇ': 6, 'ı': 6, 'Ş': 6, 'Ο': 6, 'û': 6, 'ǎ': 6, 'β': 6, 'с': 6, 'н': 6, 'χ': 5, 'λ': 5, 'î': 5, 'Ď': 5, 'Ł': 5, 'Ε': 5, '²': 5, 'Ø': 5, 'ζ': 4, 'π': 4, 'ό': 4, 'Ś': 4, 'Ü': 4, 'Τ': 4, 'в': 4, 'и': 4, 'р': 4, '¡': 3, '±': 3, 'ķ': 3, 'ņ': 3, 'ч': 3, 'ш': 3, 'к': 3, 'л': 3, 'õ': 2, 'ή': 2, 'γ': 2, 'ŕ': 2, 'ű': 2, 'Ç': 2, 'Ģ': 2, 'ù': 2, 'Ľ': 2, '§': 2, 'œ': 2, 'ǐ': 2, 'Ě': 2, 'ώ': 2, 'ύ': 2, 'Π': 2, 'έ': 2, '\t': 2, 'у': 2, 'й': 2, 'з': 2, 'я': 2, 'ь': 2, '¹': 1, 'Ĺ': 1, '»': 1, 'Ź': 1, 'Ż': 1, '˚': 1, 'Ý': 1, 'å': 1, 'Ρ': 1, '≤': 1, 'ē': 1, 'đ': 1, 'φ': 1, 'ŵ': 1, '¸': 1, 'ξ': 1, 'О': 1, 'п': 1, 'Н': 1, 'ж': 1, 'м': 1, 'П': 1, 'г': 1, 'д': 1, 'Т': 1, 'ы': 1, 'ā': 1, 'Ć': 1, '€': 1, '&lt;': 1, 'Ð': 1, 'ō': 1}
+</code></pre>
+<h3 id="and-visualize-the-occurrence-of-these-characters">And visualize the occurrence of these characters</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22">#setting plots background color</span>
+plt.rcParams.update({<span style="color:#cd5555">&#39;axes.facecolor&#39;</span>:<span style="color:#cd5555">&#39;#f8fafc&#39;</span>})
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">20</span>, <span style="color:#b452cd">8</span>))
+plt.bar(<span style="color:#658b00">range</span>(<span style="color:#658b00">len</span>(charDict)), <span style="color:#658b00">list</span>(charDict.values()), align=<span style="color:#cd5555">&#39;center&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;black&#39;</span>, color=<span style="color:#cd5555">&#39;darkorange&#39;</span>)
+plt.xticks(<span style="color:#658b00">range</span>(<span style="color:#658b00">len</span>(charDict)), <span style="color:#658b00">list</span>(charDict.keys()))
+plt.tick_params(labelsize = <span style="color:#b452cd">14</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Characters&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Number of occurrences&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+plt.title(<span style="color:#cd5555">&#39;Czech Data: Characters occurrences (first 50)&#39;</span>, fontsize = <span style="color:#b452cd">18</span>)
+plt.xlim([-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">50</span>])
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_35_0.png#c" alt="png"></p>
+<p>One can observe the occurrence of some typical Czech characters like ž ě ř č š ů.<br/>
+Digits and Punctuation should be removed, as well as special characters. Capital letters will be lowered.</p>
+<h3 id="now-lets-see--how-words-and-sentences-are-distributed">Now let&rsquo;s see  how words and sentences are distributed</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">14</span>, <span style="color:#b452cd">8</span>))
+
+<span style="color:#228b22"># BOXPLOT</span>
+plt.subplot(<span style="color:#b452cd">211</span>)
+flierprops = <span style="color:#658b00">dict</span>(marker=<span style="color:#cd5555">&#39;o&#39;</span>, markerfacecolor=<span style="color:#cd5555">&#39;darkorange&#39;</span>, markersize=<span style="color:#b452cd">10</span>)
+plt.boxplot(words_by_line, vert=False, patch_artist=True, meanline=True, showmeans=True, flierprops=flierprops)
+plt.xlabel(<span style="color:#cd5555">&#39;Number of words&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.title(<span style="color:#cd5555">&#39;Czech Data: Distribution of the number of words of sentences&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+plt.xticks(np.arange(<span style="color:#b452cd">0</span>, <span style="color:#b452cd">230</span>, <span style="color:#b452cd">20</span>))
+plt.xlim([<span style="color:#b452cd">0</span>,<span style="color:#b452cd">230</span>])
+plt.yticks([<span style="color:#b452cd">1</span>,], [<span style="color:#cd5555">&#34;Czech&#34;</span>], fontsize = <span style="color:#b452cd">12</span>)
+
+<span style="color:#228b22"># HISTOGRAM</span>
+plt.subplot(<span style="color:#b452cd">212</span>)
+plt.hist(words_by_line, bins=<span style="color:#b452cd">300</span>, color=<span style="color:#cd5555">&#39;purple&#39;</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Number of words&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Number of sentences&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.title(<span style="color:#cd5555">&#39;Czech Data: Distribution of sentences by the number of words&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+plt.xticks(np.arange(<span style="color:#b452cd">0</span>, <span style="color:#b452cd">230</span>, <span style="color:#b452cd">20</span>))
+plt.xlim([<span style="color:#b452cd">0</span>,<span style="color:#b452cd">230</span>])
+
+plt.tight_layout()
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_38_0.png#c" alt="png"></p>
+<p>We can observe many outliers: sentences with a higher amount of words.<br/>
+On the other hand, we see that half of the sentences have less than 20 words.</p>
+<h2 id="3data-pre-processinga-idpreprocessinga">3.Data pre-processing<a id="preprocessing"></a></h2>
+<h3 id="pre-processing-steps">Pre-processing steps:</h3>
+<ul>
+<li>remove string begin/end spaces</li>
+<li>lower capital letters</li>
+<li>divide compound words (vice-president -&gt; vice president)</li>
+<li>remove punctuation marks (! &quot; # $$ % &amp; ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~)</li>
+<li>remove digits</li>
+<li>remove non-ascii characters</li>
+<li>remove extra spaces</li>
+</ul>
+<h3 id="lets-see-the-result-of-each-pre-processing-steps-on-a-simple-exemple">Let&rsquo;s see the result of each pre-processing steps on a simple exemple</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">text = <span style="color:#cd5555">&#34;&#34;&#34;  PRE-Processing ! &#34;# &amp; &#39;()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł  &#34;&#34;&#34;</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#228b22"># Defining dictionary for punctuation removal</span>
+<span style="color:#8b008b;font-weight:bold">for</span> char <span style="color:#8b008b">in</span> string.punctuation:
+    <span style="color:#8b008b;font-weight:bold">print</span>(char, end = <span style="color:#cd5555">&#39; &#39;</span>)
+punctuation_marks = <span style="color:#658b00">dict</span>((<span style="color:#658b00">ord</span>(char), <span style="color:#cd5555">&#34;&#34;</span>) <span style="color:#8b008b;font-weight:bold">for</span> char <span style="color:#8b008b">in</span> string.punctuation)
+</code></pre></div><pre><code>! &quot; # $$ % &amp; ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~ 
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = text.strip()                       <span style="color:#228b22"># remove string begin/end spaces</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = text.lower()                       <span style="color:#228b22"># lower capital letters</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = text.replace(<span style="color:#cd5555">&#34;-&#34;</span>, <span style="color:#cd5555">&#34; &#34;</span>)             <span style="color:#228b22"># divide compound words</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = text.translate(punctuation_marks)  <span style="color:#228b22"># remove punctuation marks</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = re.sub(<span style="color:#cd5555">&#39;\d+&#39;</span>, <span style="color:#cd5555">&#39;&#39;</span>, text)            <span style="color:#228b22"># remove digits</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = re.sub(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">\\</span><span style="color:#cd5555">W&#39;</span>,<span style="color:#cd5555">&#39; &#39;</span>,text)             <span style="color:#228b22"># remove non-ascii characters</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+text = re.sub(<span style="color:#cd5555">&#39; +&#39;</span>, <span style="color:#cd5555">&#39; &#39;</span>, text)            <span style="color:#228b22"># remove extra spaces</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(text, <span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+</code></pre></div><pre><code>  PRE-Processing ! &quot;# &amp; '()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł   
+
+PRE-Processing ! &quot;# &amp; '()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū Щ %Ъ &lt; ЫЭ §± »€ ≤• 223787° ý ł 
+
+pre-processing ! &quot;# &amp; '()*./: ;+ ,- =&gt;$$? @ [\]^_ `{|} ~) ěï ū щ %ъ &lt; ыэ §± »€ ≤• 223787° ý ł 
+
+pre processing ! &quot;# &amp; '()*./: ;+ ,  =&gt;$$? @ [\]^_ `{|} ~) ěï ū щ %ъ &lt; ыэ §± »€ ≤• 223787° ý ł 
+
+pre processing             ěï ū щ ъ  ыэ §± »€ ≤• 223787° ý ł 
+
+pre processing             ěï ū щ ъ  ыэ §± »€ ≤• ° ý ł 
+
+pre processing             ěï ū щ ъ  ыэ            ý ł 
+
+pre processing ěï ū щ ъ ыэ ý ł 
+</code></pre>
+<p><strong>I decided to rearrange the sentences during the data pre-processing phase so that I had the same specified number of words in each.</strong><br/>
+<strong>In this way, the machine learning model will be trained on a dataset with standardized length sentences.</strong></p>
+<p><strong>I arbitrary choosed to set the length of sentences to 50 words</strong></p>
+<ul>
+<li>set lengh of sentences to 50 words:
+<ul>
+<li>each line wich has less than 50 words will be concatenated to the next one</li>
+<li>each line wich has 50 or more words will be sliced in order to respect the given lenght of 50 words by sentences</li>
+</ul>
+</li>
+</ul>
+<p>By the way, this pre-processing can split or concatenate some valid sentences with sentences from other languages and could reduce the imprecision over text data.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">def</span> <span style="color:#008b45">dataPreprocessing</span>(dataframe, NB_WORDS_BY_ROW=<span style="color:#b452cd">50</span>):
+    <span style="color:#cd5555">&#34;&#34;&#34;Processing data and dataframe&#34;&#34;&#34;</span>
+    <span style="color:#cd5555">&#34;&#34;&#34;Each row of the dataframe will contain &#39;NB_WORDS_BY_ROW&#39; words (50 by default)&#34;&#34;&#34;</span>
+    
+    stack_line = <span style="color:#cd5555">&#34;&#34;</span>
+    nonAscii = re.compile(<span style="color:#cd5555">&#39;</span><span style="color:#cd5555">\\</span><span style="color:#cd5555">W&#39;</span>) <span style="color:#228b22"># need to compile regular expression for better performance</span>
+
+    <span style="color:#8b008b;font-weight:bold">for</span> i, row <span style="color:#8b008b">in</span> tqdm(dataframe.iterrows(), total=dataframe.shape[<span style="color:#b452cd">0</span>]):
+        line = row[dataframe.columns[<span style="color:#b452cd">0</span>]]          <span style="color:#228b22"># get text data (type str) from dataframe</span>
+        line = (stack_line + <span style="color:#cd5555">&#34; &#34;</span> + line).strip()  <span style="color:#228b22"># remove string begin/end spaces</span>
+        line = line.lower()                       <span style="color:#228b22"># lower capital letters</span>
+        line = line.replace(<span style="color:#cd5555">&#34;-&#34;</span>, <span style="color:#cd5555">&#34; &#34;</span>)             <span style="color:#228b22"># divide compound words (vice-president)</span>
+        line = line.translate(punctuation_marks)  <span style="color:#228b22"># remove punctuation marks</span>
+        line = re.sub(<span style="color:#cd5555">&#39;\d+&#39;</span>, <span style="color:#cd5555">&#39;&#39;</span>, line)            <span style="color:#228b22"># remove digits       </span>
+        line = nonAscii.sub(<span style="color:#cd5555">&#39; &#39;</span>, line)            <span style="color:#228b22"># remove non-ascii characters</span>
+        line = re.sub(<span style="color:#cd5555">&#39; +&#39;</span>, <span style="color:#cd5555">&#39; &#39;</span>, line)            <span style="color:#228b22"># remove extra spaces</span>
+
+        line_list = line.split()
+        line_num_words = <span style="color:#658b00">len</span>(line_list)
+        
+        <span style="color:#8b008b;font-weight:bold">if</span> line_num_words &lt; NB_WORDS_BY_ROW:
+            stack_line = line        <span style="color:#228b22"># stack words of current line</span>
+            dataframe.iloc[i] = <span style="color:#cd5555">&#34;&#34;</span>   <span style="color:#228b22"># clear dataframe row</span>
+
+        <span style="color:#8b008b;font-weight:bold">elif</span> line_num_words &gt;= NB_WORDS_BY_ROW: <span style="color:#228b22"># when NB_WORDS_BY_ROW criteria is reached</span>
+            <span style="color:#228b22"># write down in dataframe the sentence with the specified number of words</span>
+            dataframe.iloc[i] = <span style="color:#cd5555">&#39; &#39;</span>.join(line_list[<span style="color:#b452cd">0</span>:NB_WORDS_BY_ROW])
+            <span style="color:#228b22"># and stack the lasts words</span>
+            stack_line = <span style="color:#cd5555">&#39; &#39;</span>.join(line_list[NB_WORDS_BY_ROW:])
+
+    <span style="color:#228b22"># remove empty rows and shuffle rows of dataframe</span>
+    drop_indexes = dataframe[dataframe[dataframe.columns[<span style="color:#b452cd">0</span>]] == <span style="color:#cd5555">&#34;&#34;</span>].index
+    dataframe.drop(drop_indexes, inplace=True)
+    dataframe = dataframe.sample(frac=<span style="color:#b452cd">1</span>)
+    dataframe.reset_index(drop=True, inplace=True)
+    
+    <span style="color:#8b008b;font-weight:bold">return</span> dataframe
+</code></pre></div><h3 id="applying-pre-processing-on-english-language-data">Applying pre-processing on English language data</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">english_df = pd.read_csv(
+    corpus_path + <span style="color:#cd5555">&#34;/en-en/europarl-v7.fr-en.en&#34;</span>,
+    <span style="color:#cd5555">&#34;UTF-8&#34;</span>, names=[<span style="color:#cd5555">&#34;English Sentences&#34;</span>],
+    engine=<span style="color:#cd5555">&#39;python&#39;</span>)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">english_df_preproc = dataPreprocessing(english_df)
+dfi.export(english_df_preproc.head(<span style="color:#b452cd">10</span>), <span style="color:#cd5555">&#34;img/language_detection_english_df_preproc.png&#34;</span>)
+</code></pre></div><pre><code>100%|██████████| 2005688/2005688 [10:22&lt;00:00, 3220.82it/s]
+</code></pre>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_english_df_preproc.png#c" alt="png"></p>
+<h3 id="now-lets-check-the-characters-that-make-up-the-words-and-sentences-of-english-data-after-pre-processing">Now let&rsquo;s check the characters that make up the words and sentences of English data after pre-processing</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = {}
+
+<span style="color:#8b008b;font-weight:bold">for</span> i, row <span style="color:#8b008b">in</span> tqdm(english_df_preproc.iterrows(), total=english_df_preproc.shape[<span style="color:#b452cd">0</span>]):
+    line = row[<span style="color:#cd5555">&#39;English Sentences&#39;</span>]
+    <span style="color:#8b008b;font-weight:bold">for</span> char <span style="color:#8b008b">in</span> line:
+        <span style="color:#8b008b;font-weight:bold">if</span> char <span style="color:#8b008b">in</span> charDict.keys():
+            charDict[char] += <span style="color:#b452cd">1</span>
+        <span style="color:#8b008b;font-weight:bold">else</span>:
+            charDict[char] = <span style="color:#b452cd">1</span>
+</code></pre></div><pre><code>100%|██████████| 999912/999912 [03:12&lt;00:00, 5194.18it/s]
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Number of different characters: {len(charDict)}&#39;</span>)
+</code></pre></div><pre><code>Number of different characters: 167
+</code></pre>
+<h3 id="check-these-characters-in-detail">Check these characters in detail</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">charDict = <span style="color:#658b00">dict</span>(<span style="color:#658b00">sorted</span>(charDict.items(),key= <span style="color:#8b008b;font-weight:bold">lambda</span> x:x[<span style="color:#b452cd">1</span>], reverse=True))
+<span style="color:#8b008b;font-weight:bold">print</span>(charDict)
+</code></pre></div><pre><code>{' ': 48995688, 'e': 30736202, 't': 24202274, 'o': 19576051, 'i': 19560708, 'a': 18758278, 'n': 18117187, 's': 15692379, 'r': 15285289, 'h': 11248135, 'l': 9385501, 'c': 8172332, 'd': 7810234, 'u': 7248836, 'm': 6884720, 'p': 5985040, 'f': 5197431, 'g': 4174344, 'w': 3894673, 'y': 3528574, 'b': 3392858, 'v': 2625243, 'k': 1230381, 'x': 427752, 'j': 302757, 'q': 254573, 'z': 130605, 'é': 7087, 'ö': 5408, 'á': 4370, 'ü': 2351, 'í': 2276, 'ó': 2096, 'ä': 1740, 'è': 1377, 'à': 1018, 'š': 908, 'ú': 801, 'ç': 681, 'č': 623, 'ô': 512, 'ê': 475, 'ñ': 470, 'ï': 449, 'ã': 357, 'ń': 357, 'ă': 329, 'ε': 327, 'ò': 310, 'ß': 305, 'ş': 299, 'å': 299, 'ø': 287, 'æ': 238, 'ł': 230, 'ő': 229, 'ć': 217, 'ė': 182, 'α': 157, 'τ': 154, 'ţ': 151, 'ž': 123, 'â': 115, 'ο': 112, 'ν': 110, 'ë': 109, 'ľ': 92, 'ι': 87, 'ę': 78, 'ý': 76, 'ğ': 74, 'ň': 72, 'ś': 72, 'ū': 54, 'º': 52, 'ř': 46, 'μ': 38, 'ī': 37, 'ì': 36, 'û': 23, 'а': 22, 'ρ': 22, 'î': 19, 'β': 17, 'ź': 17, '½': 17, 'е': 15, 'о': 15, 'κ': 15, 'õ': 14, 'đ': 14, 'µ': 14, 'ą': 13, 'т': 12, 'н': 11, 'ż': 11, 'р': 10, 'œ': 10, 'ı': 10, 'ě': 10, 'ù': 10, 'ǎ': 9, '²': 9, 'с': 8, 'и': 8, 'в': 8, 'π': 7, 'ť': 7, 'к': 6, 'д': 6, 'м': 6, 'ķ': 6, 'л': 5, 'υ': 5, 'έ': 5, 'χ': 5, 'п': 4, 'ш': 4, 'й': 4, 'з': 4, 'ά': 4, 'ή': 4, 'ǐ': 4, 'ί': 4, 'δ': 4, 'ņ': 3, 'я': 3, 'ч': 3, 'у': 3, 'і': 3, '¹': 3, '¾': 3, 'λ': 3, 'г': 2, 'ь': 2, 'є': 2, 'ъ': 2, 'ʻ': 2, 'б': 2, 'ų': 2, 'ώ': 2, 'ό': 2, 'ς': 2, 'ď': 2, 'ð': 2, 'ů': 2, 'ē': 2, 'η': 2, 'ș': 2, 'ā': 2, 'σ': 2, 'ģ': 2, 'ы': 1, 'ǔ': 1, 'ŵ': 1, 'ю': 1, 'ї': 1, '¼': 1, 'þ': 1, 'ω': 1, 'ж': 1, 'φ': 1, 'γ': 1, 'ĉ': 1, '³': 1, 'ύ': 1, 'ō': 1}
+</code></pre>
+<p>After pre-processing, we can observe the occurrence of some characters that belongs to other languages (ß έ й ε ã &hellip;), and other special characters (¼ º ½ ¾) that has not been removed during pre-processing. It confirms what we saw during the data analysis: depending on the results and performance of the language detection model, we could have to clean the data a little more precisely.</p>
+<h3 id="and-visualize-the-occurrence-of-these-characters-1">And visualize the occurrence of these characters</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">20</span>, <span style="color:#b452cd">8</span>))
+plt.bar(<span style="color:#658b00">range</span>(<span style="color:#658b00">len</span>(charDict)), <span style="color:#658b00">list</span>(charDict.values()), align=<span style="color:#cd5555">&#39;center&#39;</span>, edgecolor=<span style="color:#cd5555">&#39;black&#39;</span>, color=<span style="color:#cd5555">&#39;darkorange&#39;</span>)
+plt.xticks(<span style="color:#658b00">range</span>(<span style="color:#658b00">len</span>(charDict)), <span style="color:#658b00">list</span>(charDict.keys()))
+plt.tick_params(labelsize = <span style="color:#b452cd">14</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Characters&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Number of occurrences&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+plt.title(<span style="color:#cd5555">&#39;English Data: Characters occurrences (first 50)&#39;</span>, fontsize = <span style="color:#b452cd">18</span>)
+plt.xlim([-<span style="color:#b452cd">1</span>, <span style="color:#b452cd">50</span>])
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_61_0.png#c" alt="png"></p>
+<p>However, we observe here that the characters having a significant occurrence are those which compose classic English words and sentences! The appearance of characters that belongs to other languages and remaining special characters seems to be anecdotal.</p>
+<p><strong>So let&rsquo;s keep it like this for the moment, and do some more precise data cleaning later if necessary.</strong></p>
+<h3 id="corpus-pre-processing">Corpus pre-processing</h3>
+<p><strong>Now let&rsquo;s pre-process sentences for all languages of the entire corpus</strong></p>
+<p>Note: for english data, I choosed the file from <a href="http://www.statmt.org/europarl/v7/fr-en.tgz">&ldquo;fr-en&rdquo;</a> folder which is the english translated text from the french text.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">langDict = {
+    <span style="color:#cd5555">&#39;bg&#39;</span>: <span style="color:#cd5555">&#39;Bulgarian&#39;</span>,
+    <span style="color:#cd5555">&#39;cs&#39;</span>: <span style="color:#cd5555">&#39;Czech&#39;</span>,
+    <span style="color:#cd5555">&#39;da&#39;</span>: <span style="color:#cd5555">&#39;Danish&#39;</span>,
+    <span style="color:#cd5555">&#39;de&#39;</span>: <span style="color:#cd5555">&#39;German&#39;</span>,
+    <span style="color:#cd5555">&#39;el&#39;</span>: <span style="color:#cd5555">&#39;Greek&#39;</span>,
+    <span style="color:#cd5555">&#39;en&#39;</span>: <span style="color:#cd5555">&#39;English&#39;</span>,
+    <span style="color:#cd5555">&#39;es&#39;</span>: <span style="color:#cd5555">&#39;Spanish&#39;</span>,
+    <span style="color:#cd5555">&#39;et&#39;</span>: <span style="color:#cd5555">&#39;Estonian&#39;</span>,
+    <span style="color:#cd5555">&#39;fi&#39;</span>: <span style="color:#cd5555">&#39;Finnish&#39;</span>,
+    <span style="color:#cd5555">&#39;fr&#39;</span>: <span style="color:#cd5555">&#39;French&#39;</span>,
+    <span style="color:#cd5555">&#39;hu&#39;</span>: <span style="color:#cd5555">&#39;Hungarian&#39;</span>,
+    <span style="color:#cd5555">&#39;it&#39;</span>: <span style="color:#cd5555">&#39;Italian&#39;</span>,
+    <span style="color:#cd5555">&#39;lt&#39;</span>: <span style="color:#cd5555">&#39;Lithuanian&#39;</span>,
+    <span style="color:#cd5555">&#39;lv&#39;</span>: <span style="color:#cd5555">&#39;Latvian&#39;</span>,
+    <span style="color:#cd5555">&#39;nl&#39;</span>: <span style="color:#cd5555">&#39;Dutch&#39;</span>,
+    <span style="color:#cd5555">&#39;pl&#39;</span>: <span style="color:#cd5555">&#39;Polish&#39;</span>,
+    <span style="color:#cd5555">&#39;pt&#39;</span>: <span style="color:#cd5555">&#39;Portuguese&#39;</span>,
+    <span style="color:#cd5555">&#39;ro&#39;</span>: <span style="color:#cd5555">&#39;Romanian&#39;</span>,
+    <span style="color:#cd5555">&#39;sk&#39;</span>: <span style="color:#cd5555">&#39;Slovak&#39;</span>,
+    <span style="color:#cd5555">&#39;sl&#39;</span>: <span style="color:#cd5555">&#39;Slovenian&#39;</span>,
+    <span style="color:#cd5555">&#39;sv&#39;</span>: <span style="color:#cd5555">&#39;Swedish&#39;</span>
+}
+</code></pre></div><p><strong>Again, for calculation purpose and to prevent memory issues that occurs with this large corpus, for each language, only 100000 sentences will be randomly selected.</strong></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">languages = []
+d = {}
+    
+<span style="color:#8b008b;font-weight:bold">for</span> _, (key, language) <span style="color:#8b008b">in</span> <span style="color:#658b00">enumerate</span>(langDict.items()):
+    <span style="color:#8b008b;font-weight:bold">print</span>(language)
+    languages.append(language)
+    folder = key + <span style="color:#cd5555">&#39;-en&#39;</span>  <span style="color:#228b22"># a folder name is like &#34;bg-en&#34;</span>
+    files_path = os.path.join(corpus_path, folder)
+
+    <span style="color:#8b008b;font-weight:bold">for</span> <span style="color:#658b00">file</span> <span style="color:#8b008b">in</span> os.listdir(files_path):
+        d[language] = pd.read_csv(files_path + <span style="color:#cd5555">&#34;/&#34;</span> + <span style="color:#658b00">file</span>, <span style="color:#cd5555">&#34;UTF-8&#34;</span>, names=[<span style="color:#cd5555">&#34;Sentences&#34;</span>], engine=<span style="color:#cd5555">&#39;python&#39;</span>)
+        d[language] = d[language].sample(frac=<span style="color:#b452cd">1</span>)          <span style="color:#228b22"># randomize sentences</span>
+        d[language].reset_index(drop=True, inplace=True)
+        d[language] = d[language].iloc[<span style="color:#b452cd">0</span>:<span style="color:#b452cd">100000</span>].copy()   <span style="color:#228b22"># select 100000 sentences</span>
+        d[language] = dataPreprocessing(d[language])      <span style="color:#228b22"># pre-processing sentences</span>
+        d[language][<span style="color:#cd5555">&#39;Language&#39;</span>] = language                <span style="color:#228b22"># add column that indicates the language</span>
+</code></pre></div><pre><code>Bulgarian
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3045.56it/s]
+
+
+Czech
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3052.08it/s]
+
+
+Danish
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3084.68it/s]
+
+
+German
+100%|██████████| 100000/100000 [00:33&lt;00:00, 2997.50it/s]
+
+
+Greek
+100%|██████████| 100000/100000 [00:34&lt;00:00, 2910.47it/s]
+
+
+English
+100%|██████████| 100000/100000 [00:29&lt;00:00, 3345.92it/s]
+
+
+Spanish
+100%|██████████| 100000/100000 [00:33&lt;00:00, 2998.63it/s]
+
+
+Estonian
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3090.61it/s]
+
+
+Finnish
+100%|██████████| 100000/100000 [00:33&lt;00:00, 3012.31it/s]
+
+
+French
+100%|██████████| 100000/100000 [00:33&lt;00:00, 2970.94it/s]
+
+
+Hungarian
+100%|██████████| 100000/100000 [00:33&lt;00:00, 2963.75it/s]
+
+
+Italian
+100%|██████████| 100000/100000 [00:33&lt;00:00, 3007.12it/s]
+
+
+Lithuanian
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3056.49it/s]
+
+
+Latvian
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3062.43it/s]
+
+
+Dutch
+100%|██████████| 100000/100000 [00:31&lt;00:00, 3220.98it/s]
+
+
+Polish
+100%|██████████| 100000/100000 [00:33&lt;00:00, 2983.80it/s]
+
+
+Portuguese
+100%|██████████| 100000/100000 [00:33&lt;00:00, 3013.53it/s]
+
+
+Romanian
+100%|██████████| 100000/100000 [00:33&lt;00:00, 2992.63it/s]
+
+
+Slovak
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3050.19it/s]
+
+
+Slovenian
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3109.38it/s]
+
+
+Swedish
+100%|██████████| 100000/100000 [00:32&lt;00:00, 3056.71it/s]
+</code></pre>
+<h2 id="4preparing-datasetsa-idpreparing_datasetsa">4.Preparing Datasets<a id="preparing_datasets"></a></h2>
+<h3 id="now-we-are-ready-to-create-our-train-and-test-sets-by-concatenating-dataframes-of-each-languagebr">Now we are ready to create our Train and Test sets by concatenating dataframes of each language:<br/></h3>
+<ul>
+<li>80% of the data dedicated to Train set</li>
+<li>20% of the data dedicated to Test set</li>
+</ul>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_df = pd.DataFrame()
+test_df  = pd.DataFrame()
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">for</span> language <span style="color:#8b008b">in</span> languages:
+    ratio = <span style="color:#658b00">int</span>(d[language].shape[<span style="color:#b452cd">0</span>] * <span style="color:#b452cd">0.8</span>)
+    train_df = pd.concat([train_df, d[language][<span style="color:#b452cd">0</span>:ratio]], axis=<span style="color:#b452cd">0</span>)
+    test_df  = pd.concat([test_df,  d[language][ratio:]],  axis=<span style="color:#b452cd">0</span>)
+
+<span style="color:#228b22"># Saving Train and Test datasets as csv files</span>
+train_df.reset_index(drop=True, inplace=True)
+test_df.reset_index(drop=True, inplace=True)
+train_df.to_csv(data_path + <span style="color:#cd5555">&#39;/Europarl_csv/train_df.csv&#39;</span>, index = False)
+test_df.to_csv(data_path + <span style="color:#cd5555">&#39;/Europarl_csv/test_df.csv&#39;</span>, index = False)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(train_df.shape)
+<span style="color:#8b008b;font-weight:bold">print</span>(test_df.shape)
+</code></pre></div><pre><code>(741158, 2)
+(185303, 2)
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dfi.export(train_df.tail(), <span style="color:#cd5555">&#34;img/language_detection_train_df.png&#34;</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_train_df.png#c" alt="png"></p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dfi.export(test_df.tail(), <span style="color:#cd5555">&#34;img/language_detection_test_df.png&#34;</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_test_df.png#c" alt="png"></p>
+<h3 id="visualizing-the--number-of-sentences-for-each-language">Visualizing the  number of sentences for each language</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt.figure(figsize=(<span style="color:#b452cd">20</span>, <span style="color:#b452cd">12</span>))
+
+<span style="color:#228b22"># TRAIN DATASET</span>
+plt.subplot(<span style="color:#b452cd">211</span>)
+sns.countplot(data=train_df, x=train_df[<span style="color:#cd5555">&#39;Language&#39;</span>])
+plt.xlabel(<span style="color:#cd5555">&#39;Languages&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Number of sentences&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.title(<span style="color:#cd5555">&#39;Train Dataset: Number of sentenses by language&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+
+<span style="color:#228b22"># TEST DATASET</span>
+plt.subplot(<span style="color:#b452cd">212</span>)
+sns.countplot(data=test_df, x=test_df[<span style="color:#cd5555">&#39;Language&#39;</span>])
+plt.xlabel(<span style="color:#cd5555">&#39;Languages&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.ylabel(<span style="color:#cd5555">&#39;Number of sentences&#39;</span>, fontsize = <span style="color:#b452cd">12</span>)
+plt.title(<span style="color:#cd5555">&#39;Test Dataset: Number of sentenses by language&#39;</span>, fontsize = <span style="color:#b452cd">15</span>)
+
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_80_0.png#c" alt="png"></p>
+<p>Since the sentences of all languages are initially variable length, the result of the preprocessing gives us a different number of normalized length sentences for each language.</p>
+<h2 id="5variables-definitiona-idvariablesa">5.Variables definition<a id="variables"></a></h2>
+<h3 id="creating-variables-for-model-input">Creating variables for model input</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_df = pd.read_csv(data_path + <span style="color:#cd5555">&#39;/Europarl_csv/train_df.csv&#39;</span>, index_col = False)
+
+X_train = train_df.iloc[:,<span style="color:#b452cd">0</span>] <span style="color:#228b22"># Independent Variable</span>
+y_train = train_df.iloc[:,<span style="color:#b452cd">1</span>] <span style="color:#228b22"># Dependent Variable</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_df  = pd.read_csv(data_path + <span style="color:#cd5555">&#39;/Europarl_csv/test_df.csv&#39;</span>, index_col = False)
+
+X_test = test_df.iloc[:,<span style="color:#b452cd">0</span>] <span style="color:#228b22"># Independent Variable</span>
+y_test = test_df.iloc[:,<span style="color:#b452cd">1</span>] <span style="color:#228b22"># Dependent Variable</span>
+</code></pre></div><h2 id="6data-vectorizationa-iddata_vectorizationa">6.Data vectorization<a id="data_vectorization"></a></h2>
+<h3 id="applying-tf-idf-vectorizer-with-character-tokenization">Applying TF-IDF Vectorizer with Character Tokenization</h3>
+<p>I chose Character Tokenization because characters are the most relevant entities to recognize a language.<br/></p>
+<p>One can found on Wikipedia a <a href="https://en.wikipedia.org/wiki/Wikipedia:Language_recognition_chart">Language recognition chart</a>: &ldquo;This language recognition chart presents a variety of clues one can use to help determine the language in which a text is written.&quot;<br/></p>
+<p>Here under an extract of the article:</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_chart1.png#c" alt="png"></p>
+<p>[&hellip;]</p>
+<p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_chart2.png#c" alt="png"></p>
+<p>Furhtermore, Character Tokenization splits a sentence into a set of characters, so it can overcomes <strong>&ldquo;Out Of Vocabulary&rdquo;</strong> words coherently by preserving the information of the word, and limits the size of the vocabulary.</p>
+<p>I use the TfidfVectorizer from Scikit-Learn library to convert raw sentences into matrix of TF-IDF features.
+Selecting the <strong>&lsquo;char_wb&rsquo; option</strong> to create n-grams of characters only from text inside word boundaries; n-grams at the edges of words are padded with space (whitespace can begin or end trigrams but cannot be in the middle).</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">vectorizer = feature_extraction.text.TfidfVectorizer(ngram_range=(<span style="color:#b452cd">1</span>,<span style="color:#b452cd">3</span>), analyzer=<span style="color:#cd5555">&#39;char_wb&#39;</span>)
+</code></pre></div><h3 id="lets-test-this-vectorizer-on-the-italian-data">Let&rsquo;s test this vectorizer on the Italian data:</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Italian_Sentences = d[<span style="color:#cd5555">&#34;Italian&#34;</span>].iloc[:,<span style="color:#b452cd">0</span>]
+<span style="color:#8b008b;font-weight:bold">print</span>(Italian_Sentences.shape)
+</code></pre></div><pre><code>(50207,)
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#8b008b;font-weight:bold">print</span>(Italian_Sentences[<span style="color:#b452cd">0</span>])
+</code></pre></div><pre><code>è tuttora caratterizzata da una mancanza di parità tra i generi vorrei ringraziarvi per linteresse dimostrato verso lordine del giorno del prossimo consiglio europeo e sarò lieto di raccogliere i vostri stimolanti commenti e pareri in occasione della prossima discussione ho votato a favore della relazione gröner sulla lotta contro
+</code></pre>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Italian_vect = vectorizer.fit_transform(Italian_Sentences)
+Italian_vect = pd.DataFrame(Italian_vect.toarray(), columns= vectorizer.get_feature_names())
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Italian_vect.shape
+</code></pre></div><pre><code>(50207, 9398)
+</code></pre>
+<p>As we see the number of features (for Italian data) is equal to 9398.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dfi.export(Italian_vect.head(<span style="color:#b452cd">10</span>), <span style="color:#cd5555">&#34;img/language_detection_italian_vect.png&#34;</span>, max_cols=<span style="color:#b452cd">20</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_italian_vect.png#c" alt="png"></p>
+<p>And as expected, we can find some features that are composed with characters from other languages.</p>
+<h2 id="7modela-idmodela">7.Model<a id="model"></a></h2>
+<h3 id="model-definition">Model definition</h3>
+<p>For classification, I selected in a first approach the logistic regression model from Scikit-Learn library.<br/>
+The Vectorizer and the Classifier are then combined in a pipeline:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Language_detector = pipeline.Pipeline([
+    (<span style="color:#cd5555">&#39;vectorizer&#39;</span>, vectorizer),
+    (<span style="color:#cd5555">&#39;classifier&#39;</span>, LogisticRegression(max_iter=<span style="color:#b452cd">1000</span>))
+])
+</code></pre></div><h3 id="model-training">Model training</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">start_time = time.time()
+Language_detector.fit(X_train, y_train)
+end_time = time.time()
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">Processing time = {:0.2f} min&#34;</span>.format((end_time - start_time)/<span style="color:#b452cd">60</span>))
+</code></pre></div><pre><code>Processing time = 43.20 min
+</code></pre>
+<h2 id="8model-evaluationa-idevaluationa">8.Model evaluation<a id="evaluation"></a></h2>
+<h3 id="accuracy">Accuracy</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_test_pred = Language_detector.predict(X_test)
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">accuracy = accuracy_score(y_test, y_test_pred) * <span style="color:#b452cd">100</span>
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#34;Test Accuracy = {accuracy:.2f}%&#34;</span>)
+</code></pre></div><pre><code>Test Accuracy = 100.00%
+</code></pre>
+<p>Awesome! Even with special characters and characters from other languages, a 100% accuracy is achieved on test data.</p>
+<h3 id="classification-report">Classification report</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">report = classification_report(y_test, y_test_pred)
+<span style="color:#8b008b;font-weight:bold">print</span>(report)
+</code></pre></div><pre><code>              precision    recall  f1-score   support
+
+   Bulgarian       1.00      1.00      1.00      9180
+       Czech       1.00      1.00      1.00      7948
+      Danish       1.00      1.00      1.00      9034
+       Dutch       1.00      1.00      1.00     10101
+     English       1.00      1.00      1.00      9990
+    Estonian       1.00      1.00      1.00      6804
+     Finnish       1.00      1.00      1.00      6649
+      French       1.00      1.00      1.00     10541
+      German       1.00      1.00      1.00      9259
+       Greek       1.00      1.00      1.00     10290
+   Hungarian       1.00      1.00      1.00      7905
+     Italian       1.00      1.00      1.00     10042
+     Latvian       1.00      1.00      1.00      7404
+  Lithuanian       1.00      1.00      1.00      7073
+      Polish       1.00      1.00      1.00      8005
+  Portuguese       1.00      1.00      1.00     10184
+    Romanian       1.00      1.00      1.00      9623
+      Slovak       1.00      1.00      1.00      7987
+   Slovenian       1.00      1.00      1.00      7933
+     Spanish       1.00      1.00      1.00     10472
+     Swedish       1.00      1.00      1.00      8879
+
+    accuracy                           1.00    185303
+   macro avg       1.00      1.00      1.00    185303
+weighted avg       1.00      1.00      1.00    185303
+</code></pre>
+<p>Precision, recall and f1-score all reach the maximum value !</p>
+<h3 id="confusion-matrix">Confusion matrix</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cm = confusion_matrix(y_test, y_test_pred)
+
+fig = plt.figure(figsize=(<span style="color:#b452cd">16</span>, <span style="color:#b452cd">10</span>))
+sns.heatmap(cm, annot=True, cmap=<span style="color:#cd5555">&#34;Blues&#34;</span>, fmt=<span style="color:#cd5555">&#39;.0f&#39;</span>, xticklabels=languages, yticklabels=languages)
+plt.ylabel(<span style="color:#cd5555">&#39;True labels&#39;</span>, size=<span style="color:#b452cd">15</span>)
+plt.xlabel(<span style="color:#cd5555">&#39;Predicted labels&#39;</span>, size=<span style="color:#b452cd">15</span>)
+plt.xticks(rotation=<span style="color:#b452cd">45</span>)
+plt.title(<span style="color:#cd5555">&#39;Confusion Matrix&#39;</span>, size=<span style="color:#b452cd">18</span>, y=<span style="color:#b452cd">1.02</span>)
+plt.show()
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/output_119_0.png#c" alt="png"></p>
+<p>The model has near perfect language classification and detection capability on test data!<br/>
+And it is reasonable to think that the misclassifications observed here are the result of the remaining sentences from other languages.</p>
+<h3 id="saving-model">Saving model</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pickle.dump(Language_detector, <span style="color:#658b00">open</span>(data_path + <span style="color:#cd5555">&#34;Language_detector.model&#34;</span>, <span style="color:#cd5555">&#34;wb&#34;</span>))
+</code></pre></div><p>Gives us the possibility to re-use this pre-trained model for deployment (in web application for exemple).</p>
+<h2 id="9inferencea-idinferencea">9.Inference<a id="inference"></a></h2>
+<h3 id="importing-the-model">Importing the model</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Language_detector = pickle.load(<span style="color:#658b00">open</span>(data_path + <span style="color:#cd5555">&#34;Language_detector.model&#34;</span>, <span style="color:#cd5555">&#34;rb&#34;</span>))
+</code></pre></div><h3 id="inference-on-new-sentences">Inference on new sentences</h3>
+<p>Let&rsquo;s pick up few sentences in different languages from Wikipedia and test our model&rsquo;s language detection capability:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">inference_sentences = {
+    <span style="color:#cd5555">&#39;Bulgarian&#39;</span>:  <span style="color:#cd5555">&#34;Статистиката е дисциплина, която се занимава със събирането, организирането, анализа, интерпретацията и представянето на данни.&#34;</span>,
+    <span style="color:#cd5555">&#39;Czech&#39;</span>:      <span style="color:#cd5555">&#34;Statistika je vědní obor, který se zabývá sběrem, organizací, analýzou, interpretací a prezentací empirických dat za účelem prohloubení znalostí určité oblasti, obvykle hromadného jevu.&#34;</span>,
+    <span style="color:#cd5555">&#39;Danish&#39;</span>:     <span style="color:#cd5555">&#34;Statistik er en videnskabelig metode, hvormed man effektivt anvender numeriske data, som fx kan komme fra eksperimenter, spørgeskemaer eller registre.&#34;</span>,
+    <span style="color:#cd5555">&#39;German&#39;</span>:     <span style="color:#cd5555">&#34;Statistik „ist die Lehre von Methoden zum Umgang mit quantitativen Informationen“ (Daten).[1] Sie ist eine Möglichkeit, „eine systematische Verbindung zwischen Erfahrung (Empirie) und Theorie herzustellen“.&#34;</span>,
+    <span style="color:#cd5555">&#39;Greek&#39;</span>:      <span style="color:#cd5555">&#34;Η Στατιστική είναι μία μεθοδική μαθηματική, παλαιότερα τεχνική και σήμερα επιστήμη που επιχειρεί να εξαγάγει έγκυρη γνώση χρησιμοποιώντας εμπειρικά δεδομένα παρατήρησης ή και πειράματος.&#34;</span>,
+    <span style="color:#cd5555">&#39;English&#39;</span>:    <span style="color:#cd5555">&#34;Statistics is the discipline that concerns the collection, organization, analysis, interpretation, and presentation of data.&#34;</span>,
+    <span style="color:#cd5555">&#39;Spanish&#39;</span>:    <span style="color:#cd5555">&#34;La estadística (la forma femenina del término alemán Statistik, derivado a su vez del italiano statista, hombre de Estado),1​ es la rama de las matemáticas que estudia la variabilidad, colección, organización, análisis, interpretación, y presentación de los datos, así como el proceso aleatorio que los genera siguiendo las leyes de la probabilidad.&#34;</span>,
+    <span style="color:#cd5555">&#39;Estonian&#39;</span>:   <span style="color:#cd5555">&#34;Statistika ehk arvustikuteadus on teadus, mis käsitleb andmete kogumist, töötlemist ja analüüsi. Statistika on teadus massnähtuste kvantitatiivse uurimise meetoditest.&#34;</span>,
+    <span style="color:#cd5555">&#39;Finnish&#39;</span>:    <span style="color:#cd5555">&#34;Tilastotiede on todennäköisyyslaskentaan perustuva tieteenala, joka tutkii tilastollisten aineistojen keräämistä, käsittelyä ja tältä pohjalta tehtävää päättelyä.&#34;</span>,
+    <span style="color:#cd5555">&#39;French&#39;</span>:     <span style="color:#cd5555">&#34;La statistique est la discipline qui étudie des phénomènes à travers la collecte de données, leur traitement, leur analyse, l&#39;interprétation des résultats et leur présentation afin de rendre ces données compréhensibles par tous.&#34;</span>,
+    <span style="color:#cd5555">&#39;Hungarian&#39;</span>:  <span style="color:#cd5555">&#34;A statisztika avagy számhasonlítás[1] a valóság számszerű információinak megfigyelésére, összegzésére, elemzésére és modellezésére irányuló gyakorlati tevékenység és tudomány. &#34;</span>,
+    <span style="color:#cd5555">&#39;Italian&#39;</span>:    <span style="color:#cd5555">&#34;La statistica è una disciplina che ha come fine lo studio quantitativo e qualitativo di un particolare fenomeno collettivo in condizioni di incertezza o non determinismo, cioè di non completa conoscenza di esso o di una sua parte.&#34;</span>,
+    <span style="color:#cd5555">&#39;Lithuanian&#39;</span>: <span style="color:#cd5555">&#34;Statistika – tikslusis mokslas, kuriame efektyviai panaudojami duomenys iš gautų bandymų ir eksperimentų. Į tai įeina ne tik duomenų rinkimas, jų analizė ir interpretavimas, tačiau ir duomenų prognozavimas iš apklausų ir eksperimentų rezultatų.&#34;</span>,
+    <span style="color:#cd5555">&#39;Latvian&#39;</span>:    <span style="color:#cd5555">&#34;Statistika ir zinātne, kas nodarbojas ar datu iegūšanu, apstrādi, analīzi un to izskaidrošanu.[1] Statistika tiek plaši izmantota dažādās jomās, piemēram, valsts iestādēm statistiskie dati, kurus tās iegūst no tautas skaitīšanas, ir nepieciešami, lai noskaidrotu sabiedrības dzīves un tautsaimniecības kvantitatīvās likumsakarības.&#34;</span>,
+    <span style="color:#cd5555">&#39;Dutch&#39;</span>:      <span style="color:#cd5555">&#34;Statistiek is de wetenschap en de techniek van het verzamelen, bewerken, interpreteren en presenteren van gegevens.&#34;</span>,
+    <span style="color:#cd5555">&#39;Polish&#39;</span>:     <span style="color:#cd5555">&#34;Statystyka (niem. Statistik, „badanie faktów i osób publicznych”, z łac. [now.] statisticus, „polityczny, dot. polityki”, od status, „państwo, stan”) – nauka, której przedmiotem zainteresowania są metody pozyskiwania i prezentacji, a przede wszystkim analizy danych opisujących zjawiska, w tym masowe. &#34;</span>,
+    <span style="color:#cd5555">&#39;Portuguese&#39;</span>: <span style="color:#cd5555">&#34;Estatística é a ciência que utiliza as teorias probabilísticas para explicar a frequência da ocorrência de eventos,[1] tanto em estudos observacionais quanto em experimentos para modelar a aleatoriedade e a incerteza de forma a estimar ou possibilitar a previsão de fenômenos futuros, conforme o caso. &#34;</span>,
+    <span style="color:#cd5555">&#39;Romanian&#39;</span>:   <span style="color:#cd5555">&#34;Statistica este o știință care, folosind calculul probabilităților, studiază fenomenele și procesele de tip colectiv (din societate, natură etc.) din punct de vedere cantitativ[1][2] în scopul descrierii acestora și al descoperirii legilor care guvernează manifestarea lor.&#34;</span>,
+    <span style="color:#cd5555">&#39;Slovak&#39;</span>:     <span style="color:#cd5555">&#34;Štatistika je veda založená na využívaní empirických (t. j. založených na skúsenostiach) dát.&#34;</span>,
+    <span style="color:#cd5555">&#39;Slovenian&#39;</span>:  <span style="color:#cd5555">&#34;Statístika je znanost in veščina o razvoju znanja z uporabo izkustvenih podatkov. Njena osnova je matematična statistika, ki je veja uporabne matematike.&#34;</span>,
+    <span style="color:#cd5555">&#39;Swedish&#39;</span>:    <span style="color:#cd5555">&#34;Statistik är en gren inom tillämpad matematik som sysslar med insamling, utvärdering, analys och presentation av data eller information.&#34;</span>,
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data = []
+<span style="color:#8b008b;font-weight:bold">for</span> _, (language, sentence) <span style="color:#8b008b">in</span> <span style="color:#658b00">enumerate</span>(inference_sentences.items()):
+    sentence_array = np.array(sentence).reshape(-<span style="color:#b452cd">1</span>)
+    predicted_language = Language_detector.predict(sentence_array)
+    data.append([sentence, language, predicted_language[<span style="color:#b452cd">0</span>]])
+
+inference_df = pd.DataFrame(data, columns=[<span style="color:#cd5555">&#34;Sentence&#34;</span>, <span style="color:#cd5555">&#34;Language&#34;</span>, <span style="color:#cd5555">&#34;Predicted language&#34;</span>])
+dfi.export(inference_df, <span style="color:#cd5555">&#34;img/language_detection_inference_df.png&#34;</span>)
+</code></pre></div><p><img src="https://domsdev.github.io/Data-science-blog/images/A_Simple_Language_Detector/2020-12-10/language_detection_inference_df.png#c" alt="png"></p>
+<p>Thus I can build a language detection parser which takes a sentence as input and returns the detected language accordingly.</p>
+<h3 id="language-detection-parser">Language detection parser</h3>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sentence = <span style="color:#658b00">input</span>(<span style="color:#cd5555">&#39;Sentence: </span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#39;</span>)
+sentence_array = np.array(sentence).reshape(-<span style="color:#b452cd">1</span>)
+predicted_language = Language_detector.predict(sentence_array)
+<span style="color:#8b008b;font-weight:bold">print</span>(<span style="color:#cd5555">&#34;</span><span style="color:#cd5555">\n</span><span style="color:#cd5555">&#34;</span>)
+<span style="color:#8b008b;font-weight:bold">print</span>(f<span style="color:#cd5555">&#39;Language detected: {predicted_language[0]}&#39;</span>)
+</code></pre></div><pre><code>Sentence: 
+Automatisch leren, machinaal leren of machine learning is een breed onderzoeksveld binnen kunstmatige intelligentie, dat zich bezighoudt met de ontwikkeling van algoritmes en technieken waarmee computers kunnen leren. 
+
+
+Language detected: Dutch
+</code></pre>
+<h2 id="10conclusiona-idconclusiona">10.Conclusion<a id="conclusion"></a></h2>
+<p>The Europarl parallel corpus - extracted from the proceedings of the European Parliament - includes versions in 21 European languages.<br/>
+I used this corpus originally intended for translation to build a language detection model.</p>
+<p>The analysis of the data revealed some imprecisions: each language data contains some sentences from other languages, and these imprecisions exists for all language data:<br/></p>
+<ul>
+<li>Analysing characters, the occurrence of letters of other alphabets allow us to understand that these appearances are anecdotal.</li>
+<li>On the other hand it is more difficult to estimate the number of sentences of other languages whose alphabets are common with the considered language.</li>
+</ul>
+<p>Despite of this, I made the initial hypothesis that these sentences are rare enough to be unsignificant, and do some more precise data cleaning in a second step if necessary.</p>
+<p>Then I applied the following basic pre-processing techniques:</p>
+<ul>
+<li>remove string begin/end spaces</li>
+<li>lower capital letters</li>
+<li>divide compound words</li>
+<li>remove punctuation marks</li>
+<li>remove digits</li>
+<li>remove non-ascii characters</li>
+<li>remove extra spaces</li>
+<li>set the length of sentences to 50 words</li>
+</ul>
+<p>I arbitrary choosed to set the length of sentences to 50 words, in order to train a machine learning model on a dataset with standardized word length sentences. Sentences has been concatenated or sliced to fit this given word length.<br/>
+This pre-processing is possible as for language detection I do not analyse the semantic content of sentences but only words or characters.<br/>
+By the way, this pre-processing can split or concatenate some valid sentences with sentences from other languages and could reduce the imprecision over text data.</p>
+<p>For calculation purpose and to prevent memory issues that occurs with this large corpus, I randomly selected only 100000 sentences for each language.</p>
+<p>For the Natural Language Processing, I chose Character Tokenization because characters and n-grams of characters are the most relevant entities to recognize a language, it can overcomes &ldquo;Out Of Vocabulary&rdquo; words coherently by preserving the information of the word, as well as limiting the size of the vocabulary.</p>
+<p>I built a Machine Learning model with a pipeline combining a Vectorizer and a Classifier:</p>
+<ul>
+<li>Vectorizer: the TfidfVectorizer from Scikit-Learn library to convert raw sentences into matrix of TF-IDF features, selecting the &lsquo;char_wb&rsquo; option to create unigram, bigram and trigram features of characters only from text inside word boundaries.</li>
+<li>Classifier: the logistic regression model from Scikit-Learn library.</li>
+</ul>
+<p>The model&rsquo;s training converged in 43 min with enough but borderline memory load!</p>
+<p>The model evaluation shows:</p>
+<ul>
+<li>100% accuracy on test data, ven with special characters and characters from other languages.</li>
+<li>Precision, recall and f1-score all reach the maximum value.</li>
+<li>The model shows a near perfect language classification and detection capability on test data.</li>
+</ul>
+<p><strong>Now we have a language detection model that can predict accurately the language (in the list the Europarl corpus languages) of any new sentence, and that can be deployed on a web application for exemple.</strong></p>
+      
+      <div class="related">
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="https://domsdev.github.io/Data-science-blog/js/copycode.js"></script>
+
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/Domsdev/Data-science-blog/blob/main/MIT%20Licence.md">DomsDev</a></p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> static site generator.</p>
+    
+  </div>
+</section>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'G-NMH2VJY863', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
+
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
+
+
+</body>
+</html>
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
